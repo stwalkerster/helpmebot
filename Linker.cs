@@ -81,6 +81,7 @@ namespace helpmebot6
                     lastLink.Remove( Channel );
                 }
                 lastLink.Add( Channel , newLink );
+                sendLink(Channel, newLink); 
             }
         }
 
@@ -112,5 +113,12 @@ namespace helpmebot6
             }
             return result;
         }
+
+        void sendLink(string Channel, string Link)
+        {
+            if (Configuration.Singleton().retrieveLocalStringOption("autoLink", Channel) == "true")
+                Helpmebot6.irc.IrcPrivmsg(Channel, "http://enwp.org/" + Link);
+        }
+
     }
 }
