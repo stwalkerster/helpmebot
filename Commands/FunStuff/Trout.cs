@@ -15,7 +15,9 @@ namespace helpmebot6.Commands
         {
             string name = string.Join( " ", args );
 
-            if( name.ToLower() == helpmebot6.Helpmebot6.irc.IrcNickname.ToLower() || name.ToLower() == "stwalkerster" )
+            string forbiddenTargets = { "stwalkerster", "itself", "himself", "herself", Helpmebot6.irc.IrcNickname.ToLower( ) };
+
+            if( GlobalFunctions.isInArray(name,forbiddenTargets) != -1)
             {
                 name = source.Nickname;
             }
