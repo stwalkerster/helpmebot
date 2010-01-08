@@ -42,6 +42,7 @@ namespace helpmebot6
 
         private bool logDal;
         private bool logIRC;
+        private bool logDallock;
 
         public bool LogDAL
         {
@@ -65,6 +66,17 @@ namespace helpmebot6
                 logIRC = value;
             }
         }
+        public bool LogDALLOCK
+        {
+            get
+            {
+                return logDallock;
+            }
+            set
+            {
+                logDallock = value;
+            }
+        }
 
         public enum LogTypes
         {
@@ -74,7 +86,8 @@ namespace helpmebot6
             COMMAND , // command log events, BLUE
             GENERAL , // general log events, WHITE
             ERROR, // error events, RED
-            IRC // raw IRC events, 
+            IRC, // raw IRC events, 
+            DALLOCK
         } // DATE: GREEN
 
         public void addToLog( string message , LogTypes type )
@@ -92,6 +105,16 @@ namespace helpmebot6
                         Console.Write( dateString );
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.WriteLine( "A " + message );
+                        break;
+                    case LogTypes.DALLOCK:
+                        if( logDallock )
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write( dateString );
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.WriteLine( "DL " + message );
+                        }
+                        DalLogger.WriteLine( dateString + message );
                         break;
                     case LogTypes.DAL:
                         if( logDal )

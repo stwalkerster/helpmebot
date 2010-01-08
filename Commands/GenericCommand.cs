@@ -16,7 +16,15 @@ namespace helpmebot6.Commands
 
             string[ ] wc = { "typename = \"" + command + "\"" };
             string al = DAL.Singleton( ).Select( "accesslevel", "command", null, wc, null, null, null, 1, 0 );
-            accessLevel = (User.userRights)Enum.Parse( typeof( User.userRights ), al, true );
+            try
+            {
+                accessLevel = (User.userRights)Enum.Parse( typeof( User.userRights ), al, true );
+            }
+            catch( ArgumentException )
+            {
+                accessLevel = User.userRights.Developer;
+                Logger.Instance( ).addToLog( "Warning: " + command + " not found in access list.", Logger.LogTypes.ERROR );
+            }
 
             // check the access level
             if( source.AccessLevel < accessLevel )
