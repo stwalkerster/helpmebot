@@ -183,13 +183,24 @@ namespace helpmebot6.Monitoring
             return pageList;
         }
 
-        public void setDelay( string keyword , int newDelay )
+        public CommandResponseHandler setDelay( string keyword , int newDelay )
         {
+            if( newDelay < 1 )
+            {
+                string message = Configuration.Singleton( ).GetMessage( "delayTooShort" );
+                return new CommandResponseHandler( message );
+            }
+
             CategoryWatcher cw = getWatcher( keyword );
             if( cw != null )
             {
                 DAL.Singleton( ).ExecuteNonQuery( "UPDATE watcher SET watcher_sleeptime = " + newDelay + " WHERE watcher_keyword = '" + keyword + "';" );
                 cw.SleepTime = newDelay;
+                return new CommandResponseHandler( Configuration.Singleton( ).GetMessage( "done" ) );
+            }
+            else
+            {
+                return new CommandResponseHandler( );
             }
         }
 

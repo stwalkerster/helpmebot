@@ -41,7 +41,16 @@ namespace helpmebot6.Commands
             {
                 AccessLog.instance( ).Save( new AccessLog.AccessLogEntry( source, this.GetType( ), true ) );
                 Log( "Starting command execution..." );
-                CommandResponseHandler crh = execute( source, channel, args );
+                CommandResponseHandler crh;
+                try 
+                {
+                    crh = execute(source, channel, args);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Instance().addToLog(ex.ToString(),Logger.LogTypes.ERROR);
+                    crh = new CommandResponseHandler(ex.Message);
+                }
                 Log( "Command execution complete." );
                 return crh;
             }
