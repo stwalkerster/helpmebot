@@ -108,7 +108,7 @@ namespace helpmebot6.Commands
 
             // api-> get mainpage name (Mediawiki:mainpage)
             string apiQuery = "?action=query&prop=revisions&titles=Mediawiki:Mainpage&rvprop=content&format=xml";
-            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( api + apiQuery );
+            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader(  HttpRequest.get(api + apiQuery) );
             do
             {
                 creader.Read( );
@@ -140,7 +140,7 @@ namespace helpmebot6.Commands
 
             // api-> get mainpage name (Mediawiki:mainpage)
             string apiQuery = "?action=query&prop=revisions&titles=Mediawiki:Mainpage&rvprop=content&format=xml";
-            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( api + apiQuery );
+            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( HttpRequest.get( api + apiQuery) );
             do
             {
                 creader.Read( );
@@ -172,7 +172,7 @@ namespace helpmebot6.Commands
 
             // api-> get mainpage name (Mediawiki:mainpage)
             string apiQuery = "?action=query&prop=revisions&titles=Mediawiki:Mainpage&rvprop=content&format=xml";
-            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( api + apiQuery );
+            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader(  HttpRequest.get(api + apiQuery) );
             do
             {
                 creader.Read( );
@@ -204,7 +204,7 @@ namespace helpmebot6.Commands
 
             // api-> get mainpage name (Mediawiki:mainpage)
             string apiQuery = "?action=query&prop=revisions&titles=Mediawiki:Mainpage&rvprop=content&format=xml";
-            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( api + apiQuery );
+            System.Xml.XmlTextReader creader = new System.Xml.XmlTextReader( HttpRequest.get( api + apiQuery) );
             do
             {
                 creader.Read( );
@@ -253,8 +253,9 @@ namespace helpmebot6.Commands
                 initial.userAge = ageCommand.getWikipedianAge( userName, channel );
                 ageCommand = null;
 
-              initial.editRate = initial.editCount / initial.userAge.TotalDays;
+                initial.editRate = initial.editCount / initial.userAge.TotalDays;
 
+                initial.blockInformation = new Blockinfo( ).getBlockInformation( userName ).ToString( );
 
                 return initial;
             }
@@ -303,7 +304,7 @@ namespace helpmebot6.Commands
             crh.respond( userInformation.talkPage );
             crh.respond( userInformation.userContribs );
             crh.respond( userInformation.userBlockLog );
-
+            crh.respond( userInformation.blockInformation );
             string message = "";
             if( userInformation.userGroups!= "" )
             {
@@ -341,6 +342,7 @@ namespace helpmebot6.Commands
             public string userContribs;
             public string userBlockLog;
             public TimeSpan userAge;
+            public string blockInformation;
         }
     }
 }

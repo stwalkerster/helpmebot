@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Collections;
-
+using helpmebot6.Threading;
 
 namespace helpmebot6.Monitoring
 {
-    public class CategoryWatcher
+    public class CategoryWatcher : IThreadedSystem
     {
 
         string _site;
@@ -46,6 +46,8 @@ namespace helpmebot6.Monitoring
             _category = Category;
             _key = Key;
             _sleepTime = SleepTime;
+
+            RegisterInstance( );
 
             watcherThread = new Thread( new ThreadStart( this.watcherThreadMethod ) );
             watcherThread.Start( );
@@ -74,11 +76,7 @@ namespace helpmebot6.Monitoring
             Logger.Instance( ).addToLog( "Category watcher for '" + _key + "' died." , Logger.LogTypes.ERROR );
         }
 
-        public void Stop()
-        {
-            Logger.Instance( ).addToLog( "Stopping Watcher Thread for " + _category + " ..." , Logger.LogTypes.GENERAL );
-            watcherThread.Abort();
-        }
+
 
         /// <summary>
         /// The time to sleep, in seconds.
@@ -107,7 +105,7 @@ namespace helpmebot6.Monitoring
             try
             {
                 //Create the XML Reader
-                System.Xml.XmlTextReader xmlreader = new System.Xml.XmlTextReader( _site + "?action=query&list=categorymembers&format=xml&cmprop=title&cmtitle=" + _category );
+                System.Xml.XmlTextReader xmlreader = new System.Xml.XmlTextReader(  HttpRequest.get(_site + "?action=query&list=categorymembers&format=xml&cmprop=title&cmtitle=" + _category ));
 
                 //Disable whitespace so that you don't have to read over whitespaces
                 xmlreader.WhitespaceHandling = System.Xml.WhitespaceHandling.None;
@@ -147,6 +145,25 @@ namespace helpmebot6.Monitoring
             return pages;
 
         }
-        
+
+
+        #region IThreadedSystem Members
+
+        public void RegisterInstance( )
+        {
+            ThreadList.instance( ).register( this );
+        }
+
+        public void Stop( )
+        {
+            Logger.Instance( ).addToLog( "Stopping Watcher Thread for " + _category + " ...", Logger.LogTypes.GENERAL );
+            watcherThread.Abort( );
+        }
+
+        public string[ ] getThreadStatus( )
+        {
+            throw new NotImplementedException( );
+        }
+        #endregion
     }
 }
