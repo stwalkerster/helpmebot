@@ -255,7 +255,7 @@ namespace helpmebot6.Commands
 
                 initial.editRate = initial.editCount / initial.userAge.TotalDays;
 
-                initial.blockInformation = new Blockinfo( ).getBlockInformation( userName ).ToString( );
+                initial.blockInformation = new Blockinfo( ).getBlockInformation( userName, channel ).ToString( );
 
                 return initial;
             }
