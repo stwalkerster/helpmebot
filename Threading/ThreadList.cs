@@ -29,10 +29,19 @@ namespace helpmebot6.Threading
 
         public void stop( )
         {
+            System.Threading.Thread shutdownControllerThread
+                    = new System.Threading.Thread( new System.Threading.ThreadStart( shutdown_method ) );
+
+            shutdownControllerThread.Start();
+        }
+
+        private void shutdown_method()
+        {
             foreach( object obj in threadedObjects )
             {
                 try
                 {
+                    Logger.Instance( ).addToLog( "Attempting to shut down threaded system: " + obj.GetType( ), Logger.LogTypes.GENERAL );
                     ( (IThreadedSystem)obj ).Stop( );
                 }
                 catch( NotImplementedException ex )
@@ -40,6 +49,8 @@ namespace helpmebot6.Threading
                     GlobalFunctions.ErrorLog( ex );
                 }
             }
+
+            Logger.Instance( ).addToLog( "All threaded systems have been shut down.", Logger.LogTypes.GENERAL );
         }
 
         public string[ ] getAllThreadStatus( )
