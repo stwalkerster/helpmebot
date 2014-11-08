@@ -20,10 +20,8 @@
 
 namespace Helpmebot.Tests.Legacy
 {
-    using System.Collections;
-    using System.Collections.Generic;
-
     using Helpmebot.Legacy;
+    using Helpmebot.Tests.TestData;
 
     using NUnit.Framework;
 
@@ -45,23 +43,9 @@ namespace Helpmebot.Tests.Legacy
         /// The expected data.
         /// </param>
         /// <param name="expectedRedir">
-        /// The expected redir.
+        /// The expected redirection.
         /// </param>
-        ////[TestCaseSource(typeof(RedirectionDataSource))]
-        [TestCase("a b c", "a b c", "")]
-        [TestCase("a", "a", "")]
-        [TestCase(">foo", "", "foo")]
-        [TestCase("> foo", "", "foo")]
-        [TestCase("a >b c", "a c", "b")]
-        [TestCase("a > b c", "a c", "b", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a >b >c d", "a d", "b c", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a >b", "a", "b")]
-        [TestCase(">a b", "b", "a")]
-        [TestCase("a > b", "a", "b")]
-        [TestCase("> a b", "b", "a", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a> b", "a> b", "")]
-        [TestCase("a >", "a >", "")]
-        [TestCase("a b >>>", "a b >>>", "", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
+        [TestCaseSource(typeof(CommandParserRedirectionDataSource))]
         public void TestFindRedirection(string inputdata, string expecteddata, string expectedRedir)
         {
             // arrange
@@ -84,23 +68,9 @@ namespace Helpmebot.Tests.Legacy
         /// The expected data.
         /// </param>
         /// <param name="expectedRedir">
-        /// The expected redir.
+        /// The expected redirection.
         /// </param>
-        ////[TestCaseSource(typeof(RedirectionDataSource))]
-        [TestCase("a b c", "a b c", "")]
-        [TestCase("a", "a", "")]
-        [TestCase(">foo", "", "foo")]
-        [TestCase("> foo", "", "foo")]
-        [TestCase("a >b c", "a c", "b")]
-        [TestCase("a > b c", "a c", "b", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a >b >c d", "a d", "b c")]
-        [TestCase("a >b", "a", "b")]
-        [TestCase(">a b", "b", "a")]
-        [TestCase("a > b", "a", "b")]
-        [TestCase("> a b", "b", "a", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a> b", "a> b", "")]
-        [TestCase("a >", "a >", "", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
-        [TestCase("a b >>>", "a b >>>", "", Ignore = true, IgnoreReason = "Long-term issue, re-enable when this starts passing.")]
+        [TestCaseSource(typeof(CommandParserRedirectionDataSource))]
         public void TestPostRedirectionMessage(string inputdata, string expecteddata, string expectedRedir)
         {
             // arrange
@@ -113,73 +83,12 @@ namespace Helpmebot.Tests.Legacy
             }
 
             // act
-            string redir = LegacyCommandParser.FindRedirection(ref input);
+            LegacyCommandParser.FindRedirection(ref input);
 
             // assert
             Assert.That(input, Is.EqualTo(expected));
         }
 
         #endregion
-
-        /// <summary>
-        /// The redirection data source.
-        /// </summary>
-        private class RedirectionDataSource : IEnumerable<string[]>
-        {
-            #region Fields
-
-            /// <summary>
-            /// The data.
-            /// </summary>
-            private readonly List<string[]> data = new List<string[]>
-                                                       {
-                                                           new[] { "a b c", "a b c", string.Empty }, 
-                                                           new[] { "a", "a",  string.Empty }, 
-                                                           new[] { ">foo", string.Empty, "foo" }, 
-                                                           new[] { "> foo", string.Empty, "foo" }, 
-                                                           new[] { "a >b c", "a c", "b" }, 
-                                                           new[] { "a > b c", "a c", "b" }, 
-                                                           new[] { "a >b >c d", "a d", "b c" }, 
-                                                           new[] { "a >b", "a", "b" }, 
-                                                           new[] { ">a b", "b", "a" }, 
-                                                           new[] { "a > b", "a", "b" }, 
-                                                           new[] { "> a b", "b", "a" }, 
-                                                           new[] { "a> b", "a> b",  string.Empty }, 
-                                                           new[] { "a >", "a >",  string.Empty }, 
-                                                           new[] { "a b >>>", "a b >>>",  string.Empty }, 
-                                                       };
-
-            #endregion
-
-            #region Public Methods and Operators
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            public IEnumerator<string[]> GetEnumerator()
-            {
-                return this.data.GetEnumerator();
-            }
-
-            #endregion
-
-            #region Explicit Interface Methods
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return this.GetEnumerator();
-            }
-
-            #endregion
-        }
     }
 }

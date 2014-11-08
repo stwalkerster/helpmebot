@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="CommandFlagAttribute.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,41 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The command flag attribute.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.Attributes
 {
-    using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
-    using Helpmebot.Model.Interfaces;
+    using System;
 
     /// <summary>
-    /// The join event args.
+    /// The command flag attribute.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class CommandFlagAttribute : Attribute
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// Initialises a new instance of the <see cref="CommandFlagAttribute"/> class.
         /// </summary>
-        /// <param name="message">
-        ///     The message.
+        /// <param name="flag">
+        /// The flag.
         /// </param>
-        /// <param name="user">
-        ///     The user.
-        /// </param>
-        /// <param name="channel">
-        ///     The channel.
-        /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
+        public CommandFlagAttribute(string flag)
         {
-            this.channel = channel;
+            this.Flag = flag;
         }
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
-        /// Gets the channel.
+        /// Gets or sets the flag.
         /// </summary>
-        public string Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        public string Flag { get; private set; }
+
+        #endregion
     }
 }

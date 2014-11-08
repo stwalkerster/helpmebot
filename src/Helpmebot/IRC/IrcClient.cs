@@ -678,7 +678,7 @@ namespace Helpmebot.IRC
                 EventHandler<JoinEventArgs> temp = this.JoinReceivedEvent;
                 if (temp != null)
                 {
-                    temp(this, new JoinEventArgs(e.Message, user, channelName));
+                    temp(this, new JoinEventArgs(e.Message, user, channelName, this));
                 }
             }
         }
@@ -784,7 +784,7 @@ namespace Helpmebot.IRC
                 if (inviteReceivedEvent != null)
                 {
                     List<string> parameters = e.Message.Parameters.ToList();
-                    inviteReceivedEvent(this, new InviteEventArgs(e.Message, user, parameters[1], parameters[0]));
+                    inviteReceivedEvent(this, new InviteEventArgs(e.Message, user, parameters[1], parameters[0], this));
                 }
             }
         }
@@ -1069,7 +1069,7 @@ namespace Helpmebot.IRC
             EventHandler<MessageReceivedEventArgs> receivedMessageEvent = this.ReceivedMessage;
             if (receivedMessageEvent != null)
             {
-                receivedMessageEvent(this, new MessageReceivedEventArgs(message));
+                receivedMessageEvent(this, new MessageReceivedEventArgs(message, this));
             }
         }
 

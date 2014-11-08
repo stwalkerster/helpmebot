@@ -86,6 +86,11 @@ namespace Helpmebot
         private static IJoinMessageService joinMessageService;
 
         /// <summary>
+        /// The command handler.
+        /// </summary>
+        private static ICommandHandler commandHandler;
+
+        /// <summary>
         /// Gets or sets the Castle.Windsor Logger
         /// </summary>
         public static ILogger Log { get; set; }
@@ -186,7 +191,8 @@ namespace Helpmebot
             container.Register(Component.For<IIrcClient>().Instance(newIrc));
 
             joinMessageService = container.Resolve<IJoinMessageService>();
-
+            commandHandler = container.Resolve<ICommandHandler>();
+            
             SetupEvents();
 
             // initialise the deferred installers.
@@ -203,6 +209,8 @@ namespace Helpmebot
             newIrc.JoinReceivedEvent += NotifyOnJoinEvent;
 
             newIrc.ReceivedMessage += ReceivedMessage;
+
+            newIrc.ReceivedMessage += commandHandler.OnMessageReceived;
 
             newIrc.InviteReceivedEvent += IrcInviteEvent;
         }
@@ -313,7 +321,7 @@ namespace Helpmebot
             try
             {
                 bool overrideSilence = cmd.OverrideBotSilence;
-                if (cmd.IsRecognisedMessage(ref message, ref overrideSilence, (IIrcClient)sender))
+                if (cmd.IsRecognisedMessage(ref message, ref overrideSilence, ea.Client))
                 {
                     cmd.OverrideBotSilence = overrideSilence;
                     string[] messageWords = message.Split(' ');

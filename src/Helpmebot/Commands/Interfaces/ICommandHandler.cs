@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceInstaller.cs" company="Helpmebot Development Team">
+// <copyright file="ICommandHandler.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,40 +14,28 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the ServiceInstaller type.
+//   The i command handler.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.Startup.Installers
+namespace Helpmebot.Commands.Interfaces
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
-
-    using Helpmebot.Commands.CommandUtilities;
-    using Helpmebot.Commands.Interfaces;
+    using Helpmebot.IRC.Events;
 
     /// <summary>
-    /// The service installer.
+    /// The i command handler.
     /// </summary>
-    [InstallerPriority(InstallerPriorityAttribute.Default)]
-    public class ServiceInstaller : IWindsorInstaller
+    public interface ICommandHandler
     {
         /// <summary>
-        /// The install.
+        /// Called on new messages received by the IRC client
         /// </summary>
-        /// <param name="container">
-        /// The container.
+        /// <param name="sender">
+        /// The sender.
         /// </param>
-        /// <param name="store">
-        /// The store.
+        /// <param name="e">
+        /// The e.
         /// </param>
-        public void Install(IWindsorContainer container, IConfigurationStore store)
-        {
-            container.Register(
-                Classes.FromThisAssembly().InNamespace("Helpmebot.Services").WithService.AllInterfaces(),
-                Component.For<ICommandServiceHelper>().ImplementedBy<CommandServiceHelper>(),
-                Component.For<ICommandHandler>().ImplementedBy<CommandHandler>());
-        }
+        void OnMessageReceived(object sender, MessageReceivedEventArgs e);
     }
 }

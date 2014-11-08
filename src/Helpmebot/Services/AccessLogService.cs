@@ -45,6 +45,7 @@ namespace Helpmebot.Services
         /// </param>
         public void Success(IUser user, Type command, IEnumerable<string> arguments)
         {
+            return; // FIXME: implement
             throw new NotImplementedException();
         }
 
@@ -62,6 +63,7 @@ namespace Helpmebot.Services
         /// </param>
         public void Failure(IUser user, Type command, IEnumerable<string> arguments)
         {
+            return; // FIXME: implement
             throw new NotImplementedException();
         }
     }

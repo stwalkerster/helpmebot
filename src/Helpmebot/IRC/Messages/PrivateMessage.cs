@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceInstaller.cs" company="Helpmebot Development Team">
+// <copyright file="PrivateMessage.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,40 +14,37 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the ServiceInstaller type.
+//   The private message.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.Startup.Installers
+namespace Helpmebot.IRC.Messages
 {
-    using Castle.MicroKernel.Registration;
-    using Castle.MicroKernel.SubSystems.Configuration;
-    using Castle.Windsor;
+    using System.Collections.Generic;
 
-    using Helpmebot.Commands.CommandUtilities;
-    using Helpmebot.Commands.Interfaces;
+    using NHibernate.Mapping;
 
     /// <summary>
-    /// The service installer.
+    /// The private message.
     /// </summary>
-    [InstallerPriority(InstallerPriorityAttribute.Default)]
-    public class ServiceInstaller : IWindsorInstaller
+    internal class PrivateMessage : Message
     {
+        #region Constructors and Destructors
+
         /// <summary>
-        /// The install.
+        /// Initialises a new instance of the <see cref="PrivateMessage"/> class.
         /// </summary>
-        /// <param name="container">
-        /// The container.
+        /// <param name="destination">
+        /// The destination.
         /// </param>
-        /// <param name="store">
-        /// The store.
+        /// <param name="message">
+        /// The message.
         /// </param>
-        public void Install(IWindsorContainer container, IConfigurationStore store)
+        public PrivateMessage(string destination, string message)
+            : base("PRIVMSG", new List<string> { destination, message })
         {
-            container.Register(
-                Classes.FromThisAssembly().InNamespace("Helpmebot.Services").WithService.AllInterfaces(),
-                Component.For<ICommandServiceHelper>().ImplementedBy<CommandServiceHelper>(),
-                Component.For<ICommandHandler>().ImplementedBy<CommandHandler>());
         }
+
+        #endregion
     }
 }

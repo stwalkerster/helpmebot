@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="CommandExecutionException.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,38 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The command execution exception.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.Exceptions
 {
-    using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
-    using Helpmebot.Model.Interfaces;
+    using System;
 
     /// <summary>
-    /// The join event args.
+    /// The command execution exception.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    internal abstract class CommandExecutionException : Exception
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// Initialises a new instance of the <see cref="CommandExecutionException"/> class. 
         /// </summary>
         /// <param name="message">
-        ///     The message.
+        /// The message that describes the error. 
         /// </param>
-        /// <param name="user">
-        ///     The user.
-        /// </param>
-        /// <param name="channel">
-        ///     The channel.
-        /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
+        protected CommandExecutionException(string message)
+            : base(message)
         {
-            this.channel = channel;
         }
 
         /// <summary>
-        /// Gets the channel.
+        /// Initialises a new instance of the <see cref="CommandExecutionException"/> class. 
         /// </summary>
-        public string Channel
+        protected CommandExecutionException()
         {
-            get
-            {
-                return this.channel;
-            }
         }
+
+        #endregion
     }
 }

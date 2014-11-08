@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="CommandInvocationAttribute.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,41 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The command invocation attribute.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.Attributes
 {
-    using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
-    using Helpmebot.Model.Interfaces;
+    using System;
 
     /// <summary>
-    /// The join event args.
+    /// The command invocation attribute.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+    public class CommandInvocationAttribute : Attribute
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// Initialises a new instance of the <see cref="CommandInvocationAttribute"/> class.
         /// </summary>
-        /// <param name="message">
-        ///     The message.
+        /// <param name="commandName">
+        /// The command name.
         /// </param>
-        /// <param name="user">
-        ///     The user.
-        /// </param>
-        /// <param name="channel">
-        ///     The channel.
-        /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
+        public CommandInvocationAttribute(string commandName)
         {
-            this.channel = channel;
+            this.CommandName = commandName;
         }
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
-        /// Gets the channel.
+        /// Gets the command name.
         /// </summary>
-        public string Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        public string CommandName { get; private set; }
+
+        #endregion
     }
 }

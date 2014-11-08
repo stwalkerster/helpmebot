@@ -72,6 +72,8 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AccessLog.cs" />
+    <Compile Include="Attributes\CommandFlagAttribute.cs" />
+    <Compile Include="Attributes\CommandInvocationAttribute.cs" />
     <Compile Include="Background\Interfaces\ISystemMonitoringClientService.cs" />
     <Compile Include="Background\Interfaces\INotificationBackgroundService.cs" />
     <Compile Include="Background\Interfaces\ITimerBackgroundService.cs" />
@@ -79,23 +81,35 @@
     <Compile Include="Background\SystemMonitoringClientService.cs" />
     <Compile Include="Background\TimerBackgroundServiceBase.cs" />
     <Compile Include="CommandResponse.cs" />
-    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\CommandUtilities\Models\RedirectionResult.cs" />
+    <Compile Include="Exceptions\ArgumentCountException.cs" />
+    <Compile Include="Commands\AccessControl\FlagGroupCommand.cs" />
+    <Compile Include="Commands\CommandUtilities\CommandBase.cs" />
+    <Compile Include="Commands\CommandUtilities\CommandHandler.cs" />
+    <Compile Include="Commands\Interfaces\ICommandHandler.cs" />
     <Compile Include="Commands\Interfaces\ICommandServiceHelper.cs" />
     <Compile Include="Commands\Interfaces\ICommand.cs" />
+    <Compile Include="Commands\KeywordRetrieveCommand.cs" />
+    <Compile Include="Commands\OtherTestCommand.cs" />
+    <Compile Include="Commands\TestCommand.cs" />
     <Compile Include="Configuration\IConfigurationHelper.cs" />
     <Compile Include="Configuration\XmlSections\CoreConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\Interfaces\ICoreConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\Interfaces\IPrivateConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\Interfaces\IIrcConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\IrcConfiguration.cs" />
+    <Compile Include="Exceptions\CommandExecutionException.cs" />
+    <Compile Include="Exceptions\CommandInvocationException.cs" />
     <Compile Include="ExtensionMethods\EnumerableExtensions.cs" />
     <Compile Include="ExtensionMethods\MediaWikiSiteExtensions.cs" />
     <Compile Include="ExtensionMethods\ObjectExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
+    <Compile Include="ExtensionMethods\TypedFactoryExtensions.cs" />
     <Compile Include="IRC\Events\JoinEventArgs.cs" />
     <Compile Include="IRC\Events\UserEventArgsBase.cs" />
     <Compile Include="IRC\Interfaces\IIrcClient.cs" />
     <Compile Include="IRC\Events\InviteEventArgs.cs" />
+    <Compile Include="IRC\Messages\PrivateMessage.cs" />
     <Compile Include="IRC\Model\IrcChannel.cs" />
     <Compile Include="IRC\Events\MessageReceivedEventArgs.cs" />
     <Compile Include="IRC\Interfaces\INetworkClient.cs" />
@@ -104,7 +118,7 @@
     <Compile Include="IRC\Model\IrcUser.cs" />
     <Compile Include="IRC\Model\ServerUser.cs" />
     <Compile Include="IRC\SslNetworkClient.cs" />
-    <Compile Include="Commands\CommandServiceHelper.cs" />
+    <Compile Include="Commands\CommandUtilities\CommandServiceHelper.cs" />
     <Compile Include="Legacy\Commands\AccBot\AccCount.cs" />
     <Compile Include="Legacy\Commands\AccBot\AccStats.cs" />
     <Compile Include="Legacy\Commands\AccBot\AccStatus.cs" />
@@ -125,6 +139,8 @@
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Legacy\Database\ILegacyDatabase.cs" />
     <Compile Include="Legacy\Model\ILegacyUser.cs" />
+    <Compile Include="Model\CommandMessage.cs" />
+    <Compile Include="Model\Flag.cs" />
     <Compile Include="Model\InterwikiPrefix.cs" />
     <Compile Include="Model\MediaWikiSite.cs" />
     <Compile Include="Model\Response.cs" />
@@ -188,6 +204,8 @@
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\WelcomeUserRepository.cs" />
     <Compile Include="Services\AccessLogService.cs" />
+    <Compile Include="Services\CommandParser.cs" />
+    <Compile Include="Services\Interfaces\ICommandParser.cs" />
     <Compile Include="Services\Interfaces\IKeywordService.cs" />
     <Compile Include="Services\Interfaces\IAccessLogService.cs" />
     <Compile Include="Services\Interfaces\IJoinMessageService.cs" />
@@ -296,14 +314,21 @@
     <Compile Include="Services\MessageService.cs" />
     <Compile Include="Startup\InstallerPriorityAttribute.cs" />
     <Compile Include="Startup\Installers\StartableInstaller.cs" />
+    <Compile Include="Startup\Installers\TypedFactoryInstaller.cs" />
+    <Compile Include="Startup\Installers\EventWiringFacilitySetup.cs" />
     <Compile Include="Startup\Resolvers\AppSettingsDependencyResolver.cs" />
     <Compile Include="Startup\WindsorBootstrap.cs" />
     <Compile Include="Threading\IThreadedSystem.cs" />
     <Compile Include="Threading\ThreadList.cs" />
     <Compile Include="Legacy\Model\LegacyUser.cs" />
     <Compile Include="Startup\WindsorServiceLocator.cs" />
+    <Compile Include="TypedFactories\ICommandTypedFactory.cs" />
+    <Compile Include="TypedFactories\IKeywordCommandFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Castle.Facilities.EventWiring">
+      <HintPath>..\..\lib\castle.windsor\Castle.Facilities.EventWiring.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\..\lib\fluentnhibernate\FluentNHibernate.dll</HintPath>
     </Reference>

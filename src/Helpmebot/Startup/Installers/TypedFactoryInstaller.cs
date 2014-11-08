@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceInstaller.cs" company="Helpmebot Development Team">
+// <copyright file="TypedFactoryInstaller.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,40 +14,38 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the ServiceInstaller type.
+//   The typed factory facility.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace Helpmebot.Startup.Installers
 {
+    using Castle.Facilities.TypedFactory;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
 
-    using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
+    using Helpmebot.TypedFactories;
 
     /// <summary>
-    /// The service installer.
+    /// The typed factory facility.
     /// </summary>
-    [InstallerPriority(InstallerPriorityAttribute.Default)]
-    public class ServiceInstaller : IWindsorInstaller
+    [InstallerPriority(InstallerPriorityAttribute.Factory)]
+    public class TypedFactoryInstaller : IWindsorInstaller
     {
         /// <summary>
-        /// The install.
+        /// Performs the installation in the <see cref="T:Castle.Windsor.IWindsorContainer"/>.
         /// </summary>
-        /// <param name="container">
-        /// The container.
-        /// </param>
-        /// <param name="store">
-        /// The store.
-        /// </param>
+        /// <param name="container">The container.</param><param name="store">The configuration store.</param>
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
+            container.AddFacility<TypedFactoryFacility>();
+
             container.Register(
-                Classes.FromThisAssembly().InNamespace("Helpmebot.Services").WithService.AllInterfaces(),
-                Component.For<ICommandServiceHelper>().ImplementedBy<CommandServiceHelper>(),
-                Component.For<ICommandHandler>().ImplementedBy<CommandHandler>());
+                Component.For<ICommandTypedFactory>().AsFactory(),
+                Component.For<IKeywordCommandFactory>().AsFactory(),
+                Classes.FromThisAssembly().BasedOn<ICommand>().WithServiceSelf().WithServices(typeof(ICommand)).LifestyleTransient());
         }
     }
 }

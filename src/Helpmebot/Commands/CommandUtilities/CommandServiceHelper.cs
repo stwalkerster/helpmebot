@@ -14,7 +14,7 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Helpmebot.Commands
+namespace Helpmebot.Commands.CommandUtilities
 {
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Configuration;

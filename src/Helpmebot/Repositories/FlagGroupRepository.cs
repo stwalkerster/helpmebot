@@ -17,21 +17,24 @@
 //   Defines the FlagGroupRepository type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Repositories
 {
     using Castle.Core.Logging;
 
+    using Helpmebot.ExtensionMethods;
     using Helpmebot.Model;
     using Helpmebot.Repositories.Interfaces;
 
     using NHibernate;
+    using NHibernate.Criterion;
 
     /// <summary>
     /// The flag group repository.
     /// </summary>
     public class FlagGroupRepository : RepositoryBase<FlagGroup>, IFlagGroupRepository
     {
+        #region Constructors and Destructors
+
         /// <summary>
         /// Initialises a new instance of the <see cref="FlagGroupRepository"/> class.
         /// </summary>
@@ -46,6 +49,25 @@ namespace Helpmebot.Repositories
         {
         }
 
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        /// The delete by name.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        public void DeleteByName(string name)
+        {
+            this.Transactionally(delegate { this.Get(Restrictions.Eq("Name", name)).Apply(this.Delete); });
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// The dispose.
         /// </summary>
@@ -56,5 +78,7 @@ namespace Helpmebot.Repositories
         {
             base.Dispose(true);
         }
+
+        #endregion
     }
 }

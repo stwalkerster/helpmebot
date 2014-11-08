@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FlagGroupMap.cs" company="Helpmebot Development Team">
+// <copyright file="Flag.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,32 +14,28 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the FlagGroupMap type.
+//   The flag.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.Persistence.Mappings
+namespace Helpmebot.Model
 {
-    using FluentNHibernate.Mapping;
-    using FluentNHibernate.Utils;
-
-    using Helpmebot.Model;
-
     /// <summary>
-    /// The flag group map.
+    /// The flag.
     /// </summary>
-    public class FlagGroupMap : ClassMap<FlagGroup>
+    public class Flag
     {
-        /// <summary>
-        /// Initialises a new instance of the <see cref="FlagGroupMap"/> class.
-        /// </summary>
-        public FlagGroupMap()
-        {
-            this.Table("flaggroup");
-            this.Id(x => x.Id, "id");
-            this.Map(x => x.Name, "name");
+        #region Constants
 
-            this.HasMany(x => x.Flags).Inverse().Cascade.AllDeleteOrphan();
-        }
+        /// <summary>
+        /// The debug.
+        /// </summary>
+        public const string Debug = "D";
+
+        /// <summary>
+        /// The access.
+        /// </summary>
+        public const string Access = "A";
+        #endregion
     }
 }

@@ -58,6 +58,11 @@ namespace Helpmebot.Startup
         public const int WindsorSetup = 0;
 
         /// <summary>
+        /// Priority for Typed Factories. Probably needs to be after most stuff.
+        /// </summary>
+        public const int Factory = 120;
+
+        /// <summary>
         /// The background.
         /// </summary>
         public const int Background = 150;

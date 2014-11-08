@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICommand.cs" company="Helpmebot Development Team">
+// <copyright file="RedirectionResult.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,66 +14,75 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The Command interface.
+//   The redirection result.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Helpmebot.Commands.Interfaces
+
+namespace Helpmebot.Commands.CommandUtilities.Models
 {
     using System.Collections.Generic;
 
-    using Helpmebot.Model.Interfaces;
-
     /// <summary>
-    /// The Command interface.
+    /// The redirection result.
     /// </summary>
-    public interface ICommand
+    public class RedirectionResult
     {
-        #region Public Properties
+        #region Fields
 
         /// <summary>
-        /// Gets the arguments to the command.
+        /// The arguments.
         /// </summary>
-        IEnumerable<string> Arguments { get; }
+        private readonly IEnumerable<string> arguments;
 
         /// <summary>
-        /// Gets the source (where the command was triggered).
+        /// The target.
         /// </summary>
-        string CommandSource { get; }
-
-        /// <summary>
-        /// Gets the flag required to execute.
-        /// </summary>
-        string Flag { get; }
-
-        /// <summary>
-        /// Gets or sets the redirection target.
-        /// </summary>
-        IEnumerable<string> RedirectionTarget { get; set; }
-
-        /// <summary>
-        /// Gets the user who triggered the command.
-        /// </summary>
-        IUser User { get; }
+        private readonly IEnumerable<string> target;
 
         #endregion
 
-        #region Public Methods and Operators
+        #region Constructors and Destructors
 
         /// <summary>
-        /// Returns true if the command can be executed.
+        /// Initialises a new instance of the <see cref="RedirectionResult"/> class.
         /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        bool CanExecute();
+        /// <param name="arguments">
+        /// The arguments.
+        /// </param>
+        /// <param name="target">
+        /// The target.
+        /// </param>
+        public RedirectionResult(IEnumerable<string> arguments, IEnumerable<string> target)
+        {
+            this.arguments = arguments;
+            this.target = target;
+        }
+
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
-        /// The run.
+        /// Gets the arguments.
         /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        IEnumerable<CommandResponse> Run();
+        public IEnumerable<string> Arguments
+        {
+            get
+            {
+                return this.arguments;
+            }
+        }
+
+        /// <summary>
+        /// Gets the target.
+        /// </summary>
+        public IEnumerable<string> Target
+        {
+            get
+            {
+                return this.target;
+            }
+        }
 
         #endregion
     }

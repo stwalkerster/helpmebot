@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="FlagGroupCommandTests.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,48 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The flag group command tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.Tests.Commands.AccessControl
 {
-    using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
-    using Helpmebot.Model.Interfaces;
+    using Helpmebot.Commands.AccessControl;
+    using Helpmebot.Model;
+    using Helpmebot.Tests.TestData;
+
+    using NUnit.Framework;
 
     /// <summary>
-    /// The join event args.
+    /// The flag group command tests.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    [TestFixture]
+    public class FlagGroupCommandTests : TestBase
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Public Methods and Operators
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// The test parse flags.
         /// </summary>
-        /// <param name="message">
-        ///     The message.
+        /// <param name="input">
+        /// The input.
         /// </param>
-        /// <param name="user">
-        ///     The user.
+        /// <param name="flags">
+        /// The flags.
         /// </param>
-        /// <param name="channel">
-        ///     The channel.
+        /// <param name="expected">
+        /// The expected.
         /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
+        [TestCaseSource(typeof(FlagGroupParseFlagsDataSource))]
+        public void TestParseFlags(FlagGroup input, string flags, FlagGroup expected)
         {
-            this.channel = channel;
+            // act
+            FlagGroupCommand.ParseFlags(flags, input);
+
+            // assert
+            Assert.That(input.ToString(), Is.EqualTo(expected.ToString()));
         }
 
-        /// <summary>
-        /// Gets the channel.
-        /// </summary>
-        public string Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        #endregion
     }
 }

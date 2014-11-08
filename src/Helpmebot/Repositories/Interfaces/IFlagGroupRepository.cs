@@ -27,5 +27,12 @@ namespace Helpmebot.Repositories.Interfaces
     /// </summary>
     public interface IFlagGroupRepository : IRepository<FlagGroup>
     {
+        /// <summary>
+        /// The delete by name.
+        /// </summary>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        void DeleteByName(string name);
     }
 }

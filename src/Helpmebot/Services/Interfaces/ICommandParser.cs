@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserEventArgsBase.cs" company="Helpmebot Development Team">
+// <copyright file="ICommandParser.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,62 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the UserEventArgsBase type.
+//   The CommandParser interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.Services.Interfaces
 {
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
+    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
-    /// The user event args base.
+    /// The CommandParser interface.
     /// </summary>
-    public class UserEventArgsBase : MessageReceivedEventArgs
+    public interface ICommandParser
     {
         /// <summary>
-        /// The user.
+        /// The get command.
         /// </summary>
-        private readonly IUser user;
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="UserEventArgsBase"/> class.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
+        /// <param name="commandMessage">
+        /// The command Message.
         /// </param>
         /// <param name="user">
         /// The user.
         /// </param>
+        /// <param name="destination">
+        /// The destination.
+        /// </param>
         /// <param name="client">
         /// The client.
         /// </param>
-        public UserEventArgsBase(IMessage message, IUser user, IIrcClient client)
-            : base(message, client)
-        {
-            this.user = user;
-        }
+        /// <returns>
+        /// The <see cref="ICommand"/>.
+        /// </returns>
+        ICommand GetCommand(CommandMessage commandMessage, IUser user, string destination, IIrcClient client);
 
         /// <summary>
-        /// Gets the user.
+        /// The release.
         /// </summary>
-        public IUser User
-        {
-            get
-            {
-                return this.user;
-            }
-        }
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        void Release(ICommand command);
+
+        /// <summary>
+        /// The parse command message.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="nickname">
+        /// The nickname of the IRC client.
+        /// </param>
+        /// <returns>
+        /// The <see cref="CommandMessage"/>.
+        /// </returns>
+        CommandMessage ParseCommandMessage(string message, string nickname);
     }
 }

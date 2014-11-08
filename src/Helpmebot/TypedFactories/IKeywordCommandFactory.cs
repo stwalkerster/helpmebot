@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="IKeywordCommandFactory.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,62 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The KeywordCommandFactory interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.TypedFactories
 {
+    using System.Collections.Generic;
+
+    using Helpmebot.Commands;
     using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
+    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
-    /// The join event args.
+    /// The KeywordCommandFactory interface.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    public interface IKeywordCommandFactory
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Public Methods and Operators
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// The create.
         /// </summary>
-        /// <param name="message">
-        ///     The message.
+        /// <param name="commandSource">
+        /// The command source.
         /// </param>
         /// <param name="user">
-        ///     The user.
+        /// The user.
         /// </param>
-        /// <param name="channel">
-        ///     The channel.
+        /// <param name="arguments">
+        /// The arguments.
         /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
-        {
-            this.channel = channel;
-        }
+        /// <param name="client">
+        /// The client.
+        /// </param>
+        /// <param name="keyword">
+        /// The keyword.
+        /// </param>
+        /// <returns>
+        /// The <see cref="KeywordRetrieveCommand"/>.
+        /// </returns>
+        KeywordRetrieveCommand CreateKeyword(
+            string commandSource, 
+            IUser user, 
+            IEnumerable<string> arguments, 
+            IIrcClient client, 
+            Keyword keyword);
 
         /// <summary>
-        /// Gets the channel.
+        /// The release.
         /// </summary>
-        public string Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        void Release(KeywordRetrieveCommand command);
+
+        #endregion
     }
 }

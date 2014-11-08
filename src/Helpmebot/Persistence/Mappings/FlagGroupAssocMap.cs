@@ -37,6 +37,7 @@ namespace Helpmebot.Persistence.Mappings
             this.Table("flaggroup_assoc");
             this.Id(x => x.Id, "id");
             this.Map(x => x.Flag, "flag");
+            this.References(x => x.FlagGroup, "flaggroup_id");
         }
     }
 }

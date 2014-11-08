@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FlagGroupAssoc.cs" company="Helpmebot Development Team">
+// <copyright file="CommandMessage.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,29 +14,32 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The flag group associations
+//   The command message.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Model
 {
-    using Helpmebot.Persistence;
-
     /// <summary>
-    /// The flag group associations
+    /// The command message.
     /// </summary>
-    public class FlagGroupAssoc : EntityBase
+    public class CommandMessage
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the name.
+        /// Gets or sets the argument list.
         /// </summary>
-        public virtual string Flag { get; set; }
+        public string ArgumentList { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag group.
+        /// Gets or sets the command name.
         /// </summary>
-        public virtual FlagGroup FlagGroup { get; set; }
+        public string CommandName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether override silence.
+        /// </summary>
+        public bool OverrideSilence { get; set; }
 
         #endregion
 
@@ -53,12 +56,12 @@ namespace Helpmebot.Model
         /// </param>
         public override bool Equals(object obj)
         {
-            if (object.ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, obj))
             {
                 return false;
             }
 
-            if (object.ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, obj))
             {
                 return true;
             }
@@ -68,7 +71,7 @@ namespace Helpmebot.Model
                 return false;
             }
 
-            return this.Equals((FlagGroupAssoc)obj);
+            return this.Equals((CommandMessage)obj);
         }
 
         /// <summary>
@@ -81,8 +84,26 @@ namespace Helpmebot.Model
         {
             unchecked
             {
-                return (base.GetHashCode() * 397) ^ (this.Flag != null ? this.Flag.GetHashCode() : 0);
+                var hashCode = this.ArgumentList != null ? this.ArgumentList.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ (this.CommandName != null ? this.CommandName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ this.OverrideSilence.GetHashCode();
+                return hashCode;
             }
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(
+                "ArgumentList: {0}, CommandName: {1}, OverrideSilence: {2}", 
+                this.ArgumentList, 
+                this.CommandName, 
+                this.OverrideSilence);
         }
 
         #endregion
@@ -98,9 +119,11 @@ namespace Helpmebot.Model
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected bool Equals(FlagGroupAssoc other)
+        protected bool Equals(CommandMessage other)
         {
-            return base.Equals(other) && string.Equals(this.Flag, other.Flag);
+            return string.Equals(this.ArgumentList, other.ArgumentList)
+                   && string.Equals(this.CommandName, other.CommandName)
+                   && this.OverrideSilence.Equals(other.OverrideSilence);
         }
 
         #endregion

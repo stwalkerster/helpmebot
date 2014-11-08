@@ -28,6 +28,8 @@ namespace Helpmebot.Services
     using Helpmebot.Repositories.Interfaces;
     using Helpmebot.Services.Interfaces;
 
+    using NHibernate.Mapping;
+
     /// <summary>
     /// The user flag service.
     /// </summary>
@@ -69,6 +71,7 @@ namespace Helpmebot.Services
         /// </returns>
         public IEnumerable<string> GetFlagsForUser(IUser user)
         {
+            return new List<string> { "D", "A" };
             throw new NotImplementedException();
         }
 

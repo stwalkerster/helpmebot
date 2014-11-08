@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="JoinEventArgs.cs" company="Helpmebot Development Team">
+// <copyright file="ICommandTypedFactory.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,53 +14,59 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   Defines the JoinEventArgs type.
+//   The CommandTypedFactory interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Events
+namespace Helpmebot.TypedFactories
 {
+    using System.Collections.Generic;
+
+    using Castle.MicroKernel.ModelBuilder.Descriptors;
+
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
-    using Helpmebot.IRC.Messages;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
-    /// The join event args.
+    /// The CommandTypedFactory interface.
     /// </summary>
-    public class JoinEventArgs : UserEventArgsBase
+    public interface ICommandTypedFactory
     {
-        /// <summary>
-        /// The channel.
-        /// </summary>
-        private readonly string channel;
+        #region Public Methods and Operators
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="JoinEventArgs"/> class.
+        /// The get.
         /// </summary>
-        /// <param name="message">
-        ///     The message.
+        /// <param name="commandSource">
+        /// The command Source.
         /// </param>
         /// <param name="user">
-        ///     The user.
+        /// The user.
         /// </param>
-        /// <param name="channel">
-        ///     The channel.
+        /// <param name="arguments">
+        /// The arguments.
         /// </param>
-        public JoinEventArgs(IMessage message, IUser user, string channel, IIrcClient client)
-            : base(message, user, client)
-        {
-            this.channel = channel;
-        }
+        /// <param name="client">
+        /// The client.
+        /// </param>5
+        /// <typeparam name="T">
+        /// The command type
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="ICommand"/>.
+        /// </returns>
+        T Create<T>(string commandSource, IUser user, IEnumerable<string> arguments, IIrcClient client)
+            where T : ICommand;
 
         /// <summary>
-        /// Gets the channel.
+        /// The release.
         /// </summary>
-        public string Channel
-        {
-            get
-            {
-                return this.channel;
-            }
-        }
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        void Release(ICommand command);
+
+        #endregion
     }
 }
