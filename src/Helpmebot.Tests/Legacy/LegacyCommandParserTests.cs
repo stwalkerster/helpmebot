@@ -20,8 +20,19 @@
 
 namespace Helpmebot.Tests.Legacy
 {
+    using Castle.MicroKernel.Registration;
+    using Castle.Windsor;
+
     using Helpmebot.Legacy;
+    using Helpmebot.Services;
+    using Helpmebot.Services.Interfaces;
+    using Helpmebot.Startup;
     using Helpmebot.Tests.TestData;
+    using Helpmebot.TypedFactories;
+
+    using Microsoft.Practices.ServiceLocation;
+
+    using Moq;
 
     using NUnit.Framework;
 
@@ -87,6 +98,22 @@ namespace Helpmebot.Tests.Legacy
 
             // assert
             Assert.That(input, Is.EqualTo(expected));
+        }
+
+        /// <summary>
+        /// The local setup.
+        /// </summary>
+        public override void LocalSetup()
+        {
+            var windsorContainer = new WindsorContainer();
+            ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(windsorContainer));
+
+            ICommandTypedFactory commandFactory = new Mock<ICommandTypedFactory>().Object;
+            IKeywordService keywordService = new Mock<IKeywordService>().Object;
+            IKeywordCommandFactory keywordFactory = new Mock<IKeywordCommandFactory>().Object;
+
+            var commandParser = new CommandParser("!", commandFactory, keywordService, keywordFactory);
+            windsorContainer.Register(Component.For<ICommandParser>().Instance(commandParser));
         }
 
         #endregion

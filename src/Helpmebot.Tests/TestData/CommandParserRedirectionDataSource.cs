@@ -45,24 +45,23 @@ namespace Helpmebot.Tests.TestData
         /// </summary>
         public CommandParserRedirectionDataSource()
         {
-            const string IgnoreReason = "Long-term issue, re-enable when this starts passing.";
-
             this.testCaseData = new List<TestCaseData>
                                     {
-                                        new TestCaseData("a b c", "a b c", string.Empty), 
-                                        new TestCaseData("a", "a", string.Empty), 
-                                        new TestCaseData(">foo", string.Empty, "foo"), 
-                                        new TestCaseData("> foo", string.Empty, "foo"), 
-                                        new TestCaseData("a >b c", "a c", "b"), 
-                                        new TestCaseData("a > b c", "a c", "b").Ignore(IgnoreReason), 
-                                        new TestCaseData("a >b >c d", "a d", "b c").Ignore(IgnoreReason), 
-                                        new TestCaseData("a >b", "a", "b"), 
-                                        new TestCaseData(">a b", "b", "a"), 
-                                        new TestCaseData("a > b", "a", "b"), 
-                                        new TestCaseData("> a b", "b", "a").Ignore(IgnoreReason), 
-                                        new TestCaseData("a> b", "a> b", string.Empty), 
-                                        new TestCaseData("a >", "a >", string.Empty).Ignore(IgnoreReason), 
-                                        new TestCaseData("a b >>>", "a b >>>", string.Empty).Ignore(IgnoreReason), 
+                                        new TestCaseData("a b c", "a b c", string.Empty),
+                                        new TestCaseData("a", "a", string.Empty),
+                                        new TestCaseData(">foo", string.Empty, "foo"),
+                                        new TestCaseData("> foo", string.Empty, "foo"),
+                                        new TestCaseData("a >b c", "a c", "b"),
+                                        new TestCaseData("a > b c", "a c", "b"),
+                                        new TestCaseData("a >b >c d", "a d", "b c"),
+                                        new TestCaseData("a >b", "a", "b"),
+                                        new TestCaseData(">a b", "b", "a"),
+                                        new TestCaseData("a > b", "a", "b"),
+                                        new TestCaseData("> a b", "b", "a"),
+                                        new TestCaseData("a> b", "a> b", string.Empty),
+                                        new TestCaseData("a >", "a >", string.Empty),
+                                        new TestCaseData("a b >>>", "a b >>>", string.Empty).Ignore(
+                                            "Issue with both legacy and new parsers, plus I'm unsure if this is the correct behaviour."),
                                     };
         }
 

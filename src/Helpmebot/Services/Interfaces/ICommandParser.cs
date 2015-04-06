@@ -20,6 +20,9 @@
 
 namespace Helpmebot.Services.Interfaces
 {
+    using System.Collections.Generic;
+
+    using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
@@ -71,5 +74,16 @@ namespace Helpmebot.Services.Interfaces
         /// The <see cref="CommandMessage"/>.
         /// </returns>
         CommandMessage ParseCommandMessage(string message, string nickname);
+
+        /// <summary>
+        /// The parse redirection.
+        /// </summary>
+        /// <param name="inputArguments">
+        /// The input arguments.
+        /// </param>
+        /// <returns>
+        /// The <see cref="RedirectionResult"/>.
+        /// </returns>
+        RedirectionResult ParseRedirection(IEnumerable<string> inputArguments);
     }
 }

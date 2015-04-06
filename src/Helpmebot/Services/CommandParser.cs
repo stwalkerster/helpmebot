@@ -36,6 +36,8 @@ namespace Helpmebot.Services
     using Helpmebot.Services.Interfaces;
     using Helpmebot.TypedFactories;
 
+    using NHibernate.Mapping;
+
     /// <summary>
     /// The command parser.
     /// </summary>
@@ -177,16 +179,50 @@ namespace Helpmebot.Services
         /// <summary>
         /// The parse redirection.
         /// </summary>
-        /// <param name="arguments">
-        /// The arguments.
+        /// <param name="inputArguments">
+        /// The input arguments.
         /// </param>
         /// <returns>
         /// The <see cref="RedirectionResult"/>.
         /// </returns>
-        public RedirectionResult ParseRedirection(IEnumerable<string> arguments)
+        public RedirectionResult ParseRedirection(IEnumerable<string> inputArguments)
         {
-            // TODO: implement
-            return new RedirectionResult(arguments, null);
+            var targetList = new List<string>();
+            var parsedArguments = new List<string>();
+
+            bool redirecting = false;
+
+            foreach (var argument in inputArguments)
+            {
+                if (redirecting)
+                {
+                    redirecting = false;
+                    targetList.Add(argument);
+                    continue;
+                }
+
+                if (argument == ">")
+                {
+                    redirecting = true;
+                    continue;
+                }
+
+                if (argument.StartsWith(">"))
+                {
+                    targetList.Add(argument.Substring(1));
+                    continue;
+                }
+
+                parsedArguments.Add(argument);
+            }
+
+            // last word on line was >
+            if (redirecting)
+            {
+                parsedArguments.Add(">");
+            }
+
+            return new RedirectionResult(parsedArguments, targetList);
         }
 
         /// <summary>

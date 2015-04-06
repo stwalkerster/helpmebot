@@ -13,6 +13,9 @@
 //   You should have received a copy of the GNU General Public License
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
+// <summary>
+//   A command parser
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Legacy
 {
@@ -25,6 +28,7 @@ namespace Helpmebot.Legacy
 
     using Castle.Core.Logging;
 
+    using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Interfaces;
@@ -102,35 +106,21 @@ namespace Helpmebot.Legacy
         #region Public Methods and Operators
 
         /// <summary>
-        /// Tests against recognised message formats
+        /// Finds the redirection.
         /// </summary>
-        /// <param name="message">
-        /// the message received
-        /// </param>
-        /// <param name="overrideSilence">
-        /// ref: whether this message format overrides any imposed silence
-        /// </param>
-        /// <param name="client">
-        /// The client.
+        /// <param name="args">
+        /// The args.
         /// </param>
         /// <returns>
-        /// true if the message is in a recognised format
+        /// The <see cref="string"/>.
         /// </returns>
-        /// <remarks>
-        /// Allowed formats:
-        ///     !command
-        ///     !helpmebot command
-        ///     Helpmebot: command
-        ///     Helpmebot command
-        ///     Helpmebot, command
-        ///     Helpmebot&gt; command
-        /// </remarks>
-        public bool IsRecognisedMessage(ref string message, ref bool overrideSilence, IIrcClient client)
+        public static string FindRedirection(ref string[] args)
         {
-            return ParseRawLineForMessage(
-                ref message,
-                client.Nickname,
-                this.commandServiceHelper.ConfigurationHelper.CoreConfiguration.CommandTrigger);
+            var commandParser = ServiceLocator.Current.GetInstance<ICommandParser>();
+            RedirectionResult redirectionResult = commandParser.ParseRedirection(args);
+
+            args = redirectionResult.Arguments.ToArray();
+            return redirectionResult.Target.Implode();
         }
 
         /// <summary>
@@ -289,57 +279,41 @@ namespace Helpmebot.Legacy
             }
         }
 
+        /// <summary>
+        /// Tests against recognised message formats
+        /// </summary>
+        /// <param name="message">
+        /// the message received
+        /// </param>
+        /// <param name="overrideSilence">
+        /// ref: whether this message format overrides any imposed silence
+        /// </param>
+        /// <param name="client">
+        /// The client.
+        /// </param>
+        /// <returns>
+        /// true if the message is in a recognised format
+        /// </returns>
+        /// <remarks>
+        /// Allowed formats:
+        ///     !command
+        ///     !helpmebot command
+        ///     Helpmebot: command
+        ///     Helpmebot command
+        ///     Helpmebot, command
+        ///     Helpmebot&gt; command
+        /// </remarks>
+        public bool IsRecognisedMessage(ref string message, ref bool overrideSilence, IIrcClient client)
+        {
+            return ParseRawLineForMessage(
+                ref message, 
+                client.Nickname, 
+                this.commandServiceHelper.ConfigurationHelper.CoreConfiguration.CommandTrigger);
+        }
+
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Finds the redirection.
-        /// </summary>
-        /// <param name="args">
-        /// The args.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        public static string FindRedirection(ref string[] args)
-        {
-            string directedTo = string.Empty;
-            int a = 0;
-            foreach (string arg in args)
-            {
-                if (arg == ">")
-                {
-                    // The target comes in the next argument(s)
-                    var target = args.SubArray(a + 1, args.Length - a - 1);
-                    args = args.SubArray(0, a);
-                    directedTo = string.Join(" ", target);
-                }
-                else if (arg.StartsWith(">"))
-                {
-                    // The target nick is in the argument
-                    directedTo = arg.Substring(1);
-
-                    var count = args.Count(i => i == arg);
-
-                    var newArray = new string[args.Length - count];
-
-                    var nextAddition = 0;
-
-                    foreach (var i in args.Where(i => i != arg))
-                    {
-                        newArray[nextAddition] = i;
-                        nextAddition++;
-                    }
-
-                    args = newArray;
-                }
-
-                a++;
-            }
-
-            return directedTo;
-        }
 
         /// <summary>
         /// The parse raw line for message.
@@ -419,7 +393,9 @@ namespace Helpmebot.Legacy
 
                             break;
                         case CommandResponseDestination.ChannelDebug:
-                            irc1.SendMessage(this.commandServiceHelper.ConfigurationHelper.CoreConfiguration.DebugChannel, message);
+                            irc1.SendMessage(
+                                this.commandServiceHelper.ConfigurationHelper.CoreConfiguration.DebugChannel, 
+                                message);
                             break;
                         case CommandResponseDestination.PrivateMessage:
                             irc1.SendMessage(source.Nickname, message);
