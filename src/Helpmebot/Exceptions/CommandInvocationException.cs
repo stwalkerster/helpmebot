@@ -20,9 +20,12 @@
 
 namespace Helpmebot.Exceptions
 {
+    using System;
+
     /// <summary>
     /// The command invocation exception.
     /// </summary>
+    [Serializable]
     internal class CommandInvocationException : CommandExecutionException
     {
     }

@@ -19,9 +19,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Exceptions
 {
+    using System;
+
     /// <summary>
     /// The argument count exception.
     /// </summary>
+    [Serializable]
     internal class ArgumentCountException : CommandExecutionException
     {
         #region Constructors and Destructors

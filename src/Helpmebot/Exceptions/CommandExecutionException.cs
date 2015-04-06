@@ -24,6 +24,7 @@ namespace Helpmebot.Exceptions
     /// <summary>
     /// The command execution exception.
     /// </summary>
+    [Serializable]
     internal abstract class CommandExecutionException : Exception
     {
         #region Constructors and Destructors
