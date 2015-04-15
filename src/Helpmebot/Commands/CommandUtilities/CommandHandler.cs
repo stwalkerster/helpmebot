@@ -128,7 +128,10 @@ namespace Helpmebot.Commands.CommandUtilities
                         {
                             if (commandMessage.OverrideSilence)
                             {
+                                // TODO: do something!
                             }
+
+                            x.RedirectionTarget = command.RedirectionTarget;
 
                             string destination;
 
@@ -149,7 +152,7 @@ namespace Helpmebot.Commands.CommandUtilities
                                     break;
                             }
 
-                            client.Send(new PrivateMessage(destination, x.Message));
+                            client.Send(new PrivateMessage(destination, x.CompileMessage()));
                         });
             }
             finally

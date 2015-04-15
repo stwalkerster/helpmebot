@@ -36,8 +36,6 @@ namespace Helpmebot.Services
     using Helpmebot.Services.Interfaces;
     using Helpmebot.TypedFactories;
 
-    using NHibernate.Mapping;
-
     /// <summary>
     /// The command parser.
     /// </summary>
@@ -137,11 +135,11 @@ namespace Helpmebot.Services
                 return null;
             }
 
-            IEnumerable<string> arguments =
+            IEnumerable<string> originalArguments =
                 commandMessage.ArgumentList.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            var redirectionResult = this.ParseRedirection(arguments);
-            arguments = redirectionResult.Arguments;
+            var redirectionResult = this.ParseRedirection(originalArguments);
+            IEnumerable<string> arguments = redirectionResult.Arguments;
 
             if (this.commands.ContainsKey(commandMessage.CommandName.ToLower(CultureInfo.InvariantCulture)))
             {
@@ -154,6 +152,7 @@ namespace Helpmebot.Services
                     client);
 
                 command.RedirectionTarget = redirectionResult.Target;
+                command.OriginalArguments = originalArguments;
 
                 return command;
             }
@@ -161,16 +160,17 @@ namespace Helpmebot.Services
             var keyword = this.keywordService.Get(commandMessage.CommandName);
             if (keyword != null)
             {
-                ICommand keywordRetrieveCommand = this.keywordFactory.CreateKeyword(
+                ICommand command = this.keywordFactory.CreateKeyword(
                     destination,
                     user,
                     arguments,
                     client,
                     keyword);
 
-                keywordRetrieveCommand.RedirectionTarget = redirectionResult.Target;
+                command.RedirectionTarget = redirectionResult.Target;
+                command.OriginalArguments = originalArguments;
 
-                return keywordRetrieveCommand;
+                return command;
             }
 
             return null;

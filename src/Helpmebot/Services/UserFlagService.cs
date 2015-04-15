@@ -17,48 +17,46 @@
 //   Defines the UserFlagService type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Services
 {
     using System;
     using System.Collections.Generic;
 
-    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
-    using Helpmebot.Repositories.Interfaces;
     using Helpmebot.Services.Interfaces;
 
-    using NHibernate.Mapping;
+    using NHibernate;
 
     /// <summary>
     /// The user flag service.
     /// </summary>
     public class UserFlagService : IUserFlagService
     {
-        /// <summary>
-        /// The user repository.
-        /// </summary>
-        private readonly IUserRepository userRepository;
-
-        /// <summary>
-        /// The flag group repository.
-        /// </summary>
-        private readonly IFlagGroupRepository flagGroupRepository;
+        #region Constructors and Destructors
 
         /// <summary>
         /// Initialises a new instance of the <see cref="UserFlagService"/> class.
         /// </summary>
-        /// <param name="userRepository">
-        /// The user repository.
+        /// <param name="databaseSession">
+        /// The database Session.
         /// </param>
-        /// <param name="flagGroupRepository">
-        /// The flag group repository.
-        /// </param>
-        public UserFlagService(IUserRepository userRepository, IFlagGroupRepository flagGroupRepository)
+        public UserFlagService(ISession databaseSession)
         {
-            this.userRepository = userRepository;
-            this.flagGroupRepository = flagGroupRepository;
+            this.DatabaseSession = databaseSession;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the database session.
+        /// </summary>
+        public ISession DatabaseSession { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         /// <summary>
         /// The get flags for user.
@@ -71,22 +69,11 @@ namespace Helpmebot.Services
         /// </returns>
         public IEnumerable<string> GetFlagsForUser(IUser user)
         {
+
             return new List<string> { "D", "A" };
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// The get flag group.
-        /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <returns>
-        /// The <see cref="FlagGroup"/>.
-        /// </returns>
-        public FlagGroup GetFlagGroup(string name)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

@@ -17,37 +17,63 @@
 //   Defines the AccessLogService type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Services
 {
     using System;
     using System.Collections.Generic;
 
+    using Castle.Core.Internal;
+
+    using Helpmebot.Attributes;
+    using Helpmebot.ExtensionMethods;
+    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
+
+    using NHibernate;
 
     /// <summary>
     /// The access log service.
     /// </summary>
     public class AccessLogService : IAccessLogService
     {
+        #region Fields
+
         /// <summary>
-        /// The success.
+        /// The database session.
         /// </summary>
-        /// <param name="user">
-        /// The user.
+        private readonly ISession databaseSession;
+
+        /// <summary>
+        /// The user flag service.
+        /// </summary>
+        private readonly IUserFlagService userFlagService;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AccessLogService"/> class.
+        /// </summary>
+        /// <param name="databaseSession">
+        /// The database session.
         /// </param>
-        /// <param name="command">
-        /// The command.
+        /// <param name="userFlagService">
+        /// The user flag service.
         /// </param>
-        /// <param name="arguments">
-        /// The arguments.
-        /// </param>
-        public void Success(IUser user, Type command, IEnumerable<string> arguments)
+        public AccessLogService(ISession databaseSession, IUserFlagService userFlagService)
         {
-            return; // FIXME: implement
-            throw new NotImplementedException();
+            this.databaseSession = databaseSession;
+            this.userFlagService = userFlagService;
+
+            // override! we want to use the same database session.
+            this.userFlagService.DatabaseSession = databaseSession;
         }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         /// <summary>
         /// The failure.
@@ -61,10 +87,103 @@ namespace Helpmebot.Services
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        public void Failure(IUser user, Type command, IEnumerable<string> arguments)
+        /// <param name="destination">
+        /// The destination.
+        /// </param>
+        public void Failure(IUser user, Type command, IEnumerable<string> arguments, string destination)
         {
-            return; // FIXME: implement
-            throw new NotImplementedException();
+            this.SaveAccessLogEntry(
+                user,
+                command,
+                arguments,
+                destination,
+                false,
+                this.userFlagService.GetFlagsForUser(user).Implode(),
+                command.GetAttribute<CommandFlagAttribute>().Flag);
         }
+
+        /// <summary>
+        /// The success.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        /// <param name="arguments">
+        /// The arguments.
+        /// </param>
+        /// <param name="destination">
+        /// The destination.
+        /// </param>
+        public void Success(IUser user, Type command, IEnumerable<string> arguments, string destination)
+        {
+            this.SaveAccessLogEntry(
+                user,
+                command,
+                arguments,
+                destination,
+                true,
+                this.userFlagService.GetFlagsForUser(user).Implode(),
+                command.GetAttribute<CommandFlagAttribute>().Flag);
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The save access log entry.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="command">
+        /// The command.
+        /// </param>
+        /// <param name="arguments">
+        /// The arguments.
+        /// </param>
+        /// <param name="destination">
+        /// The destination.
+        /// </param>
+        /// <param name="executionAllowed">
+        /// The execution allowed.
+        /// </param>
+        /// <param name="userFlags">
+        /// The user flags.
+        /// </param>
+        /// <param name="requiredFlag">
+        /// The required flag.
+        /// </param>
+        private void SaveAccessLogEntry(
+            IUser user,
+            Type command,
+            IEnumerable<string> arguments,
+            string destination,
+            bool executionAllowed,
+            string userFlags,
+            string requiredFlag)
+        {
+            var userIdentifier = string.Format("{0}!{1}@{2}", user.Nickname, user.Username, user.Hostname);
+
+            var accessLogEntry = new AccessLogEntry
+                                     {
+                                         Account = user.Account,
+                                         Arguments = arguments.Implode(),
+                                         Channel = destination,
+                                         Command = command.FullName,
+                                         ExecutionAllowed = executionAllowed,
+                                         RequiredFlag = requiredFlag,
+                                         Timestamp = DateTime.Now,
+                                         UserFlags = userFlags,
+                                         UserIdentifier = userIdentifier
+                                     };
+
+            this.databaseSession.Save(accessLogEntry);
+        }
+
+        #endregion
     }
 }

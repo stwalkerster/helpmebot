@@ -29,7 +29,7 @@ namespace Helpmebot.ExtensionMethods
     using Helpmebot.TypedFactories;
 
     /// <summary>
-    /// The typed factoy extensions.
+    /// The typed factory extensions.
     /// </summary>
     public static class TypedFactoryExtensions
     {

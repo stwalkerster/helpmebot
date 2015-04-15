@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICommand.cs" company="Helpmebot Development Team">
+// <copyright file="AccessLogEntry.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,71 +14,66 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The Command interface.
+//   The access log entry.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-namespace Helpmebot.Commands.Interfaces
+namespace Helpmebot.Model
 {
-    using System.Collections.Generic;
+    using System;
 
-    using Helpmebot.Model.Interfaces;
+    using Helpmebot.Persistence;
 
     /// <summary>
-    /// The Command interface.
+    /// The access log entry.
     /// </summary>
-    public interface ICommand
+    public class AccessLogEntry : EntityBase
     {
         #region Public Properties
 
         /// <summary>
-        /// Gets the arguments to the command.
+        /// Gets or sets the account.
         /// </summary>
-        IEnumerable<string> Arguments { get; }
+        public virtual string Account { get; set; }
 
         /// <summary>
-        /// Gets the source (where the command was triggered).
+        /// Gets or sets the arguments.
         /// </summary>
-        string CommandSource { get; }
+        public virtual string Arguments { get; set; }
 
         /// <summary>
-        /// Gets the flag required to execute.
+        /// Gets or sets the channel.
         /// </summary>
-        string Flag { get; }
+        public virtual string Channel { get; set; }
 
         /// <summary>
-        /// Gets or sets the redirection target.
+        /// Gets or sets the command.
         /// </summary>
-        IEnumerable<string> RedirectionTarget { get; set; }
+        public virtual string Command { get; set; }
 
         /// <summary>
-        /// Gets the user who triggered the command.
+        /// Gets or sets a value indicating whether execution allowed.
         /// </summary>
-        IUser User { get; }
+        public virtual bool ExecutionAllowed { get; set; }
 
         /// <summary>
-        /// Gets or sets the original arguments.
+        /// Gets or sets the required flag.
         /// </summary>
-        IEnumerable<string> OriginalArguments { get; set; }
-
-        #endregion
-
-        #region Public Methods and Operators
+        public virtual string RequiredFlag { get; set; }
 
         /// <summary>
-        /// Returns true if the command can be executed.
+        /// Gets or sets the timestamp.
         /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        bool CanExecute();
+        public virtual DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// The run.
+        /// Gets or sets the user flags.
         /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        IEnumerable<CommandResponse> Run();
+        public virtual string UserFlags { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        public virtual string UserIdentifier { get; set; }
 
         #endregion
     }

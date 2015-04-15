@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PrivateMessage.cs" company="Helpmebot Development Team">
+// <copyright file="CommandResponseDestination.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,35 +14,30 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The private message.
+//   Command response destinations
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Messages
+namespace Helpmebot
 {
-    using System.Collections.Generic;
-
     /// <summary>
-    /// The private message.
+    ///     Command response destinations
     /// </summary>
-    internal class PrivateMessage : Message
+    public enum CommandResponseDestination
     {
-        #region Constructors and Destructors
+        /// <summary>
+        ///     Back to the channel from whence it came
+        /// </summary>
+        Default, 
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="PrivateMessage"/> class.
+        ///     To the debugging channel
         /// </summary>
-        /// <param name="destination">
-        /// The destination.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        public PrivateMessage(string destination, string message)
-            : base("PRIVMSG", new List<string> { destination, message })
-        {
-        }
+        ChannelDebug, 
 
-        #endregion
+        /// <summary>
+        ///     Back to the user in a private message
+        /// </summary>
+        PrivateMessage
     }
 }

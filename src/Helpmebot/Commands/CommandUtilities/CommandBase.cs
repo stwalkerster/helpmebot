@@ -141,6 +141,11 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </summary>
         public IUser User { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the original arguments.
+        /// </summary>
+        public IEnumerable<string> OriginalArguments { get; set; }
+
         #endregion
 
         #region Properties
@@ -194,7 +199,7 @@ namespace Helpmebot.Commands.CommandUtilities
 
             if (this.CanExecute())
             {
-                this.AccessLogService.Success(this.User, this.GetType(), this.Arguments);
+                this.AccessLogService.Success(this.User, this.GetType(), this.Arguments, this.CommandSource);
 
                 try
                 {
@@ -248,7 +253,7 @@ namespace Helpmebot.Commands.CommandUtilities
                 }
             }
 
-            this.AccessLogService.Failure(this.User, this.GetType(), this.Arguments);
+            this.AccessLogService.Failure(this.User, this.GetType(), this.Arguments, this.CommandSource);
 
             this.Logger.InfoFormat("Access denied for user {0}", this.User);
 

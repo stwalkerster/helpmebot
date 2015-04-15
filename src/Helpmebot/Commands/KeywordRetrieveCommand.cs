@@ -21,11 +21,14 @@
 namespace Helpmebot.Commands
 {
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
 
     using Castle.Core.Logging;
 
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
@@ -111,7 +114,32 @@ namespace Helpmebot.Commands
         /// </returns>
         protected override IEnumerable<CommandResponse> Execute()
         {
-            return new List<CommandResponse> { new CommandResponse { Message = this.keyword.Response } };
+            IDictionary<string, object> dict = new Dictionary<string, object>();
+
+            dict.Add("username", this.User.Username);
+            dict.Add("nickname", this.User.Nickname);
+            dict.Add("hostname", this.User.Hostname);
+            dict.Add("channel", this.CommandSource);
+
+            var args = this.Arguments.ToArray();
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                dict.Add(i.ToString(CultureInfo.InvariantCulture), args[i]);
+                dict.Add(i + "*", string.Join(" ", args, i, args.Length - i));
+            }
+
+            var wordResponse = this.keyword.Response.FormatWith(dict);
+
+            return new List<CommandResponse>
+                       {
+                           new CommandResponse
+                               {
+                                   Message = wordResponse,
+                                   ClientToClientProtocol =
+                                       this.keyword.Action ? "ACTION" : null
+                               }
+                       };
         }
 
         #endregion

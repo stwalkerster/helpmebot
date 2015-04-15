@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PrivateMessage.cs" company="Helpmebot Development Team">
+// <copyright file="AccessLogEntryMap.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,33 +14,39 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The private message.
+//   The access log entry map.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.IRC.Messages
+namespace Helpmebot.Persistence.Mappings
 {
-    using System.Collections.Generic;
+    using FluentNHibernate.Mapping;
+
+    using Helpmebot.Model;
 
     /// <summary>
-    /// The private message.
+    /// The access log entry map.
     /// </summary>
-    internal class PrivateMessage : Message
+    public class AccessLogEntryMap : ClassMap<AccessLogEntry>
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="PrivateMessage"/> class.
+        /// Initialises a new instance of the <see cref="AccessLogEntryMap"/> class.
         /// </summary>
-        /// <param name="destination">
-        /// The destination.
-        /// </param>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        public PrivateMessage(string destination, string message)
-            : base("PRIVMSG", new List<string> { destination, message })
+        public AccessLogEntryMap()
         {
+            this.Table("accesslog");
+            this.Id(x => x.Id, "al_id");
+            this.Map(x => x.Account, "account");
+            this.Map(x => x.Arguments, "al_args");
+            this.Map(x => x.Channel, "al_channel");
+            this.Map(x => x.Command, "al_class");
+            this.Map(x => x.ExecutionAllowed, "al_allowed");
+            this.Map(x => x.RequiredFlag, "al_reqaccesslevel");
+            this.Map(x => x.Timestamp, "al_date");
+            this.Map(x => x.UserFlags, "al_accesslevel");
+            this.Map(x => x.UserIdentifier, "al_nuh");
         }
 
         #endregion

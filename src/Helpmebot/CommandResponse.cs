@@ -13,165 +13,74 @@
 //   You should have received a copy of the GNU General Public License
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
+// <summary>
+//   The individual response
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot
 {
-    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Helpmebot.ExtensionMethods;
 
     /// <summary>
-    ///     Command response destinations
+    /// The individual response
     /// </summary>
-    public enum CommandResponseDestination
+    public class CommandResponse
     {
-        /// <summary>
-        ///     Back to the channel from whence it came
-        /// </summary>
-        Default, 
+        #region Public Properties
 
         /// <summary>
-        ///     To the debugging channel
+        /// Gets or sets the client to client protocol.
         /// </summary>
-        ChannelDebug, 
+        public string ClientToClientProtocol { get; set; }
 
         /// <summary>
-        ///     Back to the user in a private message
+        /// Gets or sets the destination.
         /// </summary>
-        PrivateMessage
-    }
-
-    /// <summary>
-    ///     The individual response
-    /// </summary>
-    public struct CommandResponse
-    {
-        #region Fields
+        public CommandResponseDestination Destination { get; set; }
 
         /// <summary>
-        /// The destination.
+        /// Gets or sets the message.
         /// </summary>
-        public CommandResponseDestination Destination;
+        public string Message { get; set; }
 
         /// <summary>
-        /// The message.
+        /// Gets or sets the directed to.
         /// </summary>
-        public string Message;
-
-        #endregion
-    }
-
-    /// <summary>
-    ///     Holds the response to a command
-    /// </summary>
-    public class CommandResponseHandler
-    {
-        #region Fields
+        public IEnumerable<string> RedirectionTarget { get; set; }
 
         /// <summary>
-        /// The _responses.
+        /// Gets or sets a value indicating whether ignore redirection.
         /// </summary>
-        private readonly ArrayList responses;
+        public bool IgnoreRedirection { get; set; }
 
         #endregion
 
-        #region Constructors and Destructors
-
         /// <summary>
-        /// Initialises a new instance of the <see cref="CommandResponseHandler"/> class. 
-        /// </summary>
-        public CommandResponseHandler()
-        {
-            this.responses = new ArrayList();
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="CommandResponseHandler"/> class. 
-        /// </summary>
-        /// <param name="message">
-        /// pre-respond with this message.
-        /// </param>
-        public CommandResponseHandler(string message)
-        {
-            this.responses = new ArrayList();
-            this.Respond(message);
-        }
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="CommandResponseHandler"/> class. 
-        /// </summary>
-        /// <param name="message">
-        /// A message.
-        /// </param>
-        /// <param name="destination">
-        /// The destination of the message.
-        /// </param>
-        public CommandResponseHandler(string message, CommandResponseDestination destination)
-        {
-            this.responses = new ArrayList();
-            this.Respond(message, destination);
-        }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        /// <summary>
-        /// Appends the specified more responses.
-        /// </summary>
-        /// <param name="moreResponses">
-        /// The more responses.
-        /// </param>
-        public void Append(CommandResponseHandler moreResponses)
-        {
-            foreach (object item in moreResponses.GetResponses())
-            {
-                this.responses.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Gets the responses.
+        /// The compile message.
         /// </summary>
         /// <returns>
-        /// The <see cref="ArrayList"/>.
+        /// The <see cref="string"/>.
         /// </returns>
-        public ArrayList GetResponses()
+        public string CompileMessage()
         {
-            return this.responses;
+            string message = this.Message;
+
+            if (this.ClientToClientProtocol != null)
+            {
+                message = message.SetupForCtcp(this.ClientToClientProtocol);
+            }
+            else
+            {
+                if (!this.IgnoreRedirection && this.RedirectionTarget != null && this.RedirectionTarget.Any())
+                {
+                    message = string.Format("{0}: {1}", this.RedirectionTarget.Implode(", "), message);
+                }
+            }
+
+            return message;
         }
-
-        /// <summary>
-        /// Adds the specified message to the response.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        public void Respond(string message)
-        {
-            CommandResponse cr;
-            cr.Destination = CommandResponseDestination.Default;
-            cr.Message = message;
-
-            this.responses.Add(cr);
-        }
-
-        /// <summary>
-        /// Adds the specified message to the response.
-        /// </summary>
-        /// <param name="message">
-        /// The message.
-        /// </param>
-        /// <param name="destination">
-        /// The destination.
-        /// </param>
-        public void Respond(string message, CommandResponseDestination destination)
-        {
-            CommandResponse cr;
-            cr.Destination = destination;
-            cr.Message = message;
-
-            this.responses.Add(cr);
-        }
-
-        #endregion
     }
 }

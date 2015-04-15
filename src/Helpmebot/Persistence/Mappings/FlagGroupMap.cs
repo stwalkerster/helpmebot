@@ -21,7 +21,6 @@
 namespace Helpmebot.Persistence.Mappings
 {
     using FluentNHibernate.Mapping;
-    using FluentNHibernate.Utils;
 
     using Helpmebot.Model;
 

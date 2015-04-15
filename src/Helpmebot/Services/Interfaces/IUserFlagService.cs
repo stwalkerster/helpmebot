@@ -22,8 +22,9 @@ namespace Helpmebot.Services.Interfaces
 {
     using System.Collections.Generic;
 
-    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
+
+    using NHibernate;
 
     /// <summary>
     /// The UserFlagService interface.
@@ -42,14 +43,8 @@ namespace Helpmebot.Services.Interfaces
         IEnumerable<string> GetFlagsForUser(IUser user);
 
         /// <summary>
-        /// The get flag group.
+        /// Gets or sets the database session.
         /// </summary>
-        /// <param name="name">
-        /// The name.
-        /// </param>
-        /// <returns>
-        /// The <see cref="FlagGroup"/>.
-        /// </returns>
-        FlagGroup GetFlagGroup(string name);
+        ISession DatabaseSession { get; set; }
     }
 }
