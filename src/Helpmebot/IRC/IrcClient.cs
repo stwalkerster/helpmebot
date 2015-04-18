@@ -330,6 +330,31 @@ namespace Helpmebot.IRC
         }
 
         /// <summary>
+        /// The lookup user.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IrcUser"/>.
+        /// </returns>
+        public IrcUser LookupUser(string prefix)
+        {
+            var parsedUser = IrcUser.FromPrefix(prefix);
+
+            lock (this.userOperationLock)
+            {
+                // attempt to load from cache
+                if (this.nickTrackingValid && this.userCache.ContainsKey(parsedUser.Nickname))
+                {
+                    parsedUser = this.userCache[parsedUser.Nickname];
+                }
+            }
+
+            return parsedUser;
+        }
+
+        /// <summary>
         /// The part channel.
         /// </summary>
         /// <param name="channel">
@@ -761,16 +786,7 @@ namespace Helpmebot.IRC
                 else
                 {
                     // parse it into something reasonable
-                    user = IrcUser.FromPrefix(e.Message.Prefix);
-
-                    lock (this.userOperationLock)
-                    {
-                        // attempt to load from cache
-                        if (this.nickTrackingValid && this.userCache.ContainsKey(user.Nickname))
-                        {
-                            user = this.userCache[user.Nickname];
-                        }
-                    }
+                    user = this.LookupUser(e.Message.Prefix);
                 }
             }
 

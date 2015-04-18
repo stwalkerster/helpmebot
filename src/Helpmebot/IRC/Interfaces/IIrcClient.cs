@@ -90,6 +90,17 @@ namespace Helpmebot.IRC.Interfaces
         void JoinChannel(string channel);
 
         /// <summary>
+        /// The lookup user.
+        /// </summary>
+        /// <param name="prefix">
+        /// The prefix.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IrcUser"/>.
+        /// </returns>
+        IrcUser LookupUser(string prefix);
+
+        /// <summary>
         /// The part channel.
         /// </summary>
         /// <param name="channel">

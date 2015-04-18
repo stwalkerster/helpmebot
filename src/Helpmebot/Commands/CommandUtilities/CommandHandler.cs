@@ -111,7 +111,7 @@ namespace Helpmebot.Commands.CommandUtilities
 
             var command = this.commandParser.GetCommand(
                 commandMessage,
-                IrcUser.FromPrefix(eventArgs.Message.Prefix),
+                client.LookupUser(eventArgs.Message.Prefix),
                 parameters[0],
                 client);
 
