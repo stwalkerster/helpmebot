@@ -45,7 +45,7 @@ namespace Helpmebot.Attributes
         #region Public Properties
 
         /// <summary>
-        /// Gets or sets the flag.
+        /// Gets or flag.
         /// </summary>
         public string Flag { get; private set; }
 

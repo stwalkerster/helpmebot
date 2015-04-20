@@ -68,6 +68,7 @@ namespace Helpmebot.Services
             this.userFlagService = userFlagService;
 
             // override! we want to use the same database session.
+            // TODO: verify this.
             this.userFlagService.DatabaseSession = databaseSession;
         }
 

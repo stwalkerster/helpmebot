@@ -17,7 +17,6 @@
 //   The flag group command tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Tests.Commands.AccessControl
 {
     using Helpmebot.Commands.AccessControl;
