@@ -20,6 +20,8 @@
 
 namespace Helpmebot.IRC.Model
 {
+    using System;
+
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
@@ -112,6 +114,45 @@ namespace Helpmebot.IRC.Model
             }
 
             return new IrcUser { Hostname = host, Username = user, Nickname = nick };
+        }
+
+        /// <summary>
+        /// The parse.
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IrcUser"/>.
+        /// </returns>
+        /// <exception cref="NotSupportedException">
+        /// Thrown when invalid input is provided
+        /// </exception>
+        public static IrcUser Parse(string data)
+        {
+            if (data.StartsWith("$"))
+            {
+                if (data.StartsWith("$~"))
+                {
+                    throw new NotSupportedException("Inverted extbans aren't supported.");
+                }
+
+                if (data.StartsWith("$a"))
+                {
+                    if (!data.StartsWith("$a:"))
+                    {
+                        throw new NotSupportedException("Account extban type must have data section.");
+                    }
+
+                    data = data.Remove(0, 3);
+
+                    return new IrcUser { Account = data };
+                }
+
+                throw new NotSupportedException("Extban type is not supported.");
+            }
+            
+            return FromPrefix(data);
         }
 
         /// <summary>

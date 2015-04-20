@@ -74,7 +74,10 @@
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="IRC\IrcClientStateTests.cs" />
     <Compile Include="IRC\Messages\MessageTests.cs" />
+    <Compile Include="TestData\IrcUserParseDataSource.cs" />
+    <Compile Include="TestData\IrcUserTestDataSource.cs" />
     <Compile Include="IRC\Model\IrcUserTests.cs" />
+    <Compile Include="Model\FlagGroupUserTests.cs" />
     <Compile Include="TestData\CommandParserRedirectionDataSource.cs" />
     <Compile Include="Legacy\LegacyCommandParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,6 +87,8 @@
     <Compile Include="Services\MessageServiceTests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="TestData\FlagGroupParseFlagsDataSource.cs" />
+    <Compile Include="TestData\FlagGroupUserWildcardDataSource.cs" />
+    <Compile Include="TestData\TestDataSourceBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpmebot\Helpmebot.csproj">

@@ -24,6 +24,7 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Database;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
 
@@ -46,6 +47,11 @@ namespace helpmebot6.Commands
         /// </summary>
         private readonly ILegacyDatabase legacyDatabase;
 
+        /// <summary>
+        /// The access log service.
+        /// </summary>
+        private readonly IAccessLogService accessLogService;
+
         #endregion
 
         #region Constructors and Destructors
@@ -58,9 +64,10 @@ namespace helpmebot6.Commands
         /// </param>
         protected GenericCommand(ICommandServiceHelper commandServiceHelper)
         {
-            // FIXME: ServiceLocator - genericlogger & legacydatabase
+            // FIXME: ServiceLocator - genericlogger, legacydatabase, accesslogservice
             this.Log = ServiceLocator.Current.GetInstance<ILogger>();
             this.legacyDatabase = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
+            this.accessLogService = ServiceLocator.Current.GetInstance<IAccessLogService>();
 
             this.CommandServiceHelper = commandServiceHelper;
         }
@@ -142,6 +149,17 @@ namespace helpmebot6.Commands
         /// </summary>
         public LegacyUser Source { get; set; }
 
+        /// <summary>
+        /// The access log service.
+        /// </summary>
+        protected IAccessLogService AccessLogService
+        {
+            get
+            {
+                return this.accessLogService;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -188,16 +206,16 @@ namespace helpmebot6.Commands
 
             response.Respond(message, CommandResponseDestination.PrivateMessage);
             this.Log.Info("Access denied to command.");
-            if (
-                !AccessLog.Instance()
-                     .Save(
-                         new AccessLog.AccessLogEntry(
-                     this.Source, 
-                     this.GetType(), 
-                     false, 
-                     this.Channel, 
-                     this.Arguments, 
-                     this.AccessLevel)))
+
+            var accessLogSaved = this.AccessLogService.SaveLegacyAccessLogEntry(
+                this.Source,
+                this.GetType(),
+                true,
+                this.Channel,
+                this.Arguments,
+                this.AccessLevel);
+
+            if (!accessLogSaved)
             {
                 response.Respond("Error adding denied entry to access log.", CommandResponseDestination.ChannelDebug);
             }
@@ -211,16 +229,15 @@ namespace helpmebot6.Commands
         /// <returns>The response to the command</returns>
         protected virtual CommandResponseHandler ReallyRunCommand()
         {
-            if (
-                !AccessLog.Instance()
-                     .Save(
-                         new AccessLog.AccessLogEntry(
-                     this.Source, 
-                     this.GetType(), 
-                     true, 
-                     this.Channel, 
-                     this.Arguments, 
-                     this.AccessLevel)))
+            var accessLogSaved = this.AccessLogService.SaveLegacyAccessLogEntry(
+                this.Source,
+                this.GetType(),
+                true,
+                this.Channel,
+                this.Arguments,
+                this.AccessLevel);
+
+            if (!accessLogSaved)
             {
                 var errorResponse = new CommandResponseHandler();
                 string message = this.CommandServiceHelper.MessageService.RetrieveMessage(

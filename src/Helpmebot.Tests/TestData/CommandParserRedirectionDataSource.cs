@@ -19,7 +19,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Tests.TestData
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     using NUnit.Framework;
@@ -27,17 +26,8 @@ namespace Helpmebot.Tests.TestData
     /// <summary>
     /// The redirection data source.
     /// </summary>
-    internal class CommandParserRedirectionDataSource : IEnumerable<TestCaseData>
+    internal class CommandParserRedirectionDataSource : TestDataSourceBase
     {
-        #region Fields
-
-        /// <summary>
-        /// The test case data.
-        /// </summary>
-        private readonly List<TestCaseData> testCaseData;
-
-        #endregion
-
         #region Constructors and Destructors
 
         /// <summary>
@@ -47,52 +37,22 @@ namespace Helpmebot.Tests.TestData
         {
             this.testCaseData = new List<TestCaseData>
                                     {
-                                        new TestCaseData("a b c", "a b c", string.Empty),
-                                        new TestCaseData("a", "a", string.Empty),
-                                        new TestCaseData(">foo", string.Empty, "foo"),
-                                        new TestCaseData("> foo", string.Empty, "foo"),
-                                        new TestCaseData("a >b c", "a c", "b"),
-                                        new TestCaseData("a > b c", "a c", "b"),
-                                        new TestCaseData("a >b >c d", "a d", "b c"),
-                                        new TestCaseData("a >b", "a", "b"),
-                                        new TestCaseData(">a b", "b", "a"),
-                                        new TestCaseData("a > b", "a", "b"),
-                                        new TestCaseData("> a b", "b", "a"),
-                                        new TestCaseData("a> b", "a> b", string.Empty),
-                                        new TestCaseData("a >", "a >", string.Empty),
+                                        new TestCaseData("a b c", "a b c", string.Empty), 
+                                        new TestCaseData("a", "a", string.Empty), 
+                                        new TestCaseData(">foo", string.Empty, "foo"), 
+                                        new TestCaseData("> foo", string.Empty, "foo"), 
+                                        new TestCaseData("a >b c", "a c", "b"), 
+                                        new TestCaseData("a > b c", "a c", "b"), 
+                                        new TestCaseData("a >b >c d", "a d", "b c"), 
+                                        new TestCaseData("a >b", "a", "b"), 
+                                        new TestCaseData(">a b", "b", "a"), 
+                                        new TestCaseData("a > b", "a", "b"), 
+                                        new TestCaseData("> a b", "b", "a"), 
+                                        new TestCaseData("a> b", "a> b", string.Empty), 
+                                        new TestCaseData("a >", "a >", string.Empty), 
                                         new TestCaseData("a b >>>", "a b >>>", string.Empty).Ignore(
-                                            "Issue with both legacy and new parsers, plus I'm unsure if this is the correct behaviour."),
+                                            "Issue with both legacy and new parsers, plus I'm unsure if this is the correct behaviour."), 
                                     };
-        }
-
-        #endregion
-
-        #region Public Methods and Operators
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        public IEnumerator<TestCaseData> GetEnumerator()
-        {
-            return this.testCaseData.GetEnumerator();
-        }
-
-        #endregion
-
-        #region Explicit Interface Methods
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
 
         #endregion

@@ -37,8 +37,10 @@ namespace Helpmebot.Persistence.Mappings
             this.Table("flaggroup");
             this.Id(x => x.Id, "id");
             this.Map(x => x.Name, "name");
+            this.Map(x => x.DenyGroup, "denygroup");
 
             this.HasMany(x => x.Flags).Inverse().Cascade.AllDeleteOrphan();
+            this.HasMany(x => x.Users).Inverse().Cascade.AllDeleteOrphan();
         }
     }
 }

@@ -71,7 +71,6 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AccessLog.cs" />
     <Compile Include="Attributes\CommandFlagAttribute.cs" />
     <Compile Include="Attributes\CommandInvocationAttribute.cs" />
     <Compile Include="Background\Interfaces\ISystemMonitoringClientService.cs" />

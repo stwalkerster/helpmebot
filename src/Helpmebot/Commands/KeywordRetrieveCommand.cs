@@ -39,7 +39,7 @@ namespace Helpmebot.Commands
     /// <summary>
     /// The keyword retrieve command.
     /// </summary> 
-    [CommandFlag(Model.Flag.Debug)]
+    [CommandFlag(Model.Flag.Standard)]
     public class KeywordRetrieveCommand : CommandBase
     {
         #region Fields

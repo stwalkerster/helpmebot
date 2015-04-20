@@ -32,9 +32,19 @@ namespace Helpmebot.Model
         #region Public Properties
 
         /// <summary>
+        /// Gets or sets a value indicating whether deny group.
+        /// </summary>
+        public virtual bool DenyGroup { get; set; }
+
+        /// <summary>
         /// Gets or sets the flags.
         /// </summary>
         public virtual IList<FlagGroupAssoc> Flags { get; set; }
+
+        /// <summary>
+        /// Gets or sets the users.
+        /// </summary>
+        public virtual IList<FlagGroupUser> Users { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -103,7 +113,7 @@ namespace Helpmebot.Model
                                       ? string.Join(", ", this.Flags.Select(x => x.Flag).ToArray())
                                       : string.Empty;
 
-            return string.Format(@"{0} {{{1}}}", this.Name, flagsInGroup);
+            return string.Format(@"{0} {2}{{{1}}}", this.Name, flagsInGroup, this.DenyGroup ? "! " : string.Empty);
         }
 
         #endregion

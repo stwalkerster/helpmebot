@@ -74,16 +74,15 @@ namespace helpmebot6.Commands
         /// </returns>
         protected override CommandResponseHandler ReallyRunCommand()
         {
-            if (
-                !AccessLog.Instance()
-                     .Save(
-                         new AccessLog.AccessLogEntry(
-                     this.Source, 
-                     this.GetType(), 
-                     true, 
-                     this.Channel, 
-                     this.Arguments, 
-                     this.AccessLevel)))
+            var accessLogSaved = this.AccessLogService.SaveLegacyAccessLogEntry(
+                this.Source,
+                this.GetType(),
+                true,
+                this.Channel,
+                this.Arguments,
+                this.AccessLevel);
+
+            if (!accessLogSaved)
             {
                 var errorResponse = new CommandResponseHandler();
                 errorResponse.Respond(

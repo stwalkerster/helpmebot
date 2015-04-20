@@ -17,7 +17,6 @@
 //   Defines the IUserFlagService type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Services.Interfaces
 {
     using System.Collections.Generic;
@@ -31,6 +30,17 @@ namespace Helpmebot.Services.Interfaces
     /// </summary>
     public interface IUserFlagService
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the database session.
+        /// </summary>
+        ISession DatabaseSession { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
         /// <summary>
         /// The get flags for user.
         /// </summary>
@@ -42,9 +52,11 @@ namespace Helpmebot.Services.Interfaces
         /// </returns>
         IEnumerable<string> GetFlagsForUser(IUser user);
 
+        #endregion
+
         /// <summary>
-        /// Gets or sets the database session.
+        /// The invalidate cache.
         /// </summary>
-        ISession DatabaseSession { get; set; }
+        void InvalidateCache();
     }
 }

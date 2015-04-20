@@ -17,10 +17,12 @@
 //   The irc user tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Tests.IRC.Model
 {
+    using System;
+
     using Helpmebot.IRC.Model;
+    using Helpmebot.Tests.TestData;
 
     using NUnit.Framework;
 
@@ -30,64 +32,24 @@ namespace Helpmebot.Tests.IRC.Model
     [TestFixture]
     public class IrcUserTests : TestBase
     {
+        #region Public Methods and Operators
+
         /// <summary>
         /// The should create from prefix.
         /// </summary>
-        [Test]
-        public void ShouldCreateFromPrefix()
+        /// <param name="input">
+        /// The input.
+        /// </param>
+        /// <param name="expected">
+        /// The expected.
+        /// </param>
+        [TestCaseSource(typeof(IrcUserTestDataSource))]
+        public void ShouldCreateFromPrefix(string input, IrcUser expected)
         {
             // arrange
-            const string Prefix = "Yetanotherx|afk!~Yetanothe@mcbouncer.com";
-            var expected = new IrcUser
-                               {
-                                   Hostname = "mcbouncer.com",
-                                   Username = "~Yetanothe",
-                                   Nickname = "Yetanotherx|afk"
-                               };
 
             // act
-            var actual = IrcUser.FromPrefix(Prefix);
-
-            // assert
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        /// <summary>
-        /// The should create from prefix 2.
-        /// </summary>
-        [Test]
-        public void ShouldCreateFromPrefix2()
-        {
-            // arrange
-            const string Prefix = "stwalkerster@foo.com";
-            var expected = new IrcUser
-            {
-                Hostname = "foo.com",
-                Nickname = "stwalkerster"
-            };
-
-            // act
-            var actual = IrcUser.FromPrefix(Prefix);
-
-            // assert
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        /// <summary>
-        /// The should create from prefix 3.
-        /// </summary>
-        [Test]
-        public void ShouldCreateFromPrefix3()
-        {
-            // arrange
-            const string Prefix = "stwalkerster";
-            var expected = new IrcUser
-            {
-                Nickname = "stwalkerster"
-            };
-
-            // act
-            var actual = IrcUser.FromPrefix(Prefix);
+            var actual = IrcUser.FromPrefix(input);
 
             // assert
             Assert.That(actual, Is.EqualTo(expected));
@@ -96,23 +58,24 @@ namespace Helpmebot.Tests.IRC.Model
         /// <summary>
         /// The should create from prefix.
         /// </summary>
-        [Test]
-        public void ShouldCreateFromPrefix4()
+        /// <param name="input">
+        /// The input.
+        /// </param>
+        /// <param name="expected">
+        /// The expected.
+        /// </param>
+        [TestCaseSource(typeof(IrcUserParseDataSource))]
+        public void ShouldParseIntoModel(string input, IrcUser expected)
         {
             // arrange
-            const string Prefix = "nick!user@host";
-            var expected = new IrcUser
-            {
-                Hostname = "host",
-                Username = "user",
-                Nickname = "nick"
-            };
 
             // act
-            var actual = IrcUser.FromPrefix(Prefix);
+            var actual = IrcUser.Parse(input);
 
             // assert
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        #endregion
     }
 }

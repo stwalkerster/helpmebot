@@ -39,7 +39,7 @@ namespace Helpmebot.Commands.AccessControl
     /// <summary>
     /// The flag group command.
     /// </summary>
-    [CommandFlag(Model.Flag.Access)]
+    [CommandFlag(Model.Flag.Owner)]
     [CommandInvocation("flaggroup")]
     public class FlagGroupCommand : CommandBase
     {
@@ -201,6 +201,11 @@ namespace Helpmebot.Commands.AccessControl
                 return this.DeleteGroup(group);
             }
 
+            if (mode == "deny")
+            {
+                return this.DenyGroup(group);
+            }
+
             throw new CommandInvocationException();
         }
 
@@ -221,6 +226,8 @@ namespace Helpmebot.Commands.AccessControl
 
             existing.Apply(item => responses.Add(new CommandResponse { Message = item.ToString() }));
             existing.Apply(this.DatabaseSession.Delete);
+
+            this.UserFlagService.InvalidateCache();
 
             return responses;
         }
@@ -275,6 +282,39 @@ namespace Helpmebot.Commands.AccessControl
             }
 
             this.DatabaseSession.SaveOrUpdate(group);
+            this.UserFlagService.InvalidateCache();
+
+            return new CommandResponse { Message = group.ToString() }.ToEnumerable();
+        }
+
+        /// <summary>
+        /// The deny group.
+        /// </summary>
+        /// <param name="flagGroup">
+        /// The flag group.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        private IEnumerable<CommandResponse> DenyGroup(string flagGroup)
+        {
+            if (this.Arguments.Count() < 3)
+            {
+                throw new ArgumentCountException(3, this.Arguments.Count());
+            }
+
+            var deny = this.Arguments.ElementAt(2).ToLowerInvariant();
+
+            bool denyGroup = deny == "yes" || deny == "true" || deny == "y";
+
+            var group = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).SingleOrDefault()
+                        ?? new FlagGroup { Flags = new List<FlagGroupAssoc>() };
+
+            group.DenyGroup = denyGroup;
+
+            this.DatabaseSession.SaveOrUpdate(group);
+            this.UserFlagService.InvalidateCache();
+
             return new CommandResponse { Message = group.ToString() }.ToEnumerable();
         }
 

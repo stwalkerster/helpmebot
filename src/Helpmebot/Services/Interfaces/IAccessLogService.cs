@@ -23,6 +23,7 @@ namespace Helpmebot.Services.Interfaces
     using System;
     using System.Collections.Generic;
 
+    using Helpmebot.Legacy.Model;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
@@ -63,5 +64,38 @@ namespace Helpmebot.Services.Interfaces
         /// The destination.
         /// </param>
         void Failure(IUser user, Type command, IEnumerable<string> arguments, string destination);
+
+        /// <summary>
+        /// The save legacy access log entry.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="class">
+        /// The command.
+        /// </param>
+        /// <param name="allowed">
+        /// The execution allowed.
+        /// </param>
+        /// <param name="channel">
+        /// The destination.
+        /// </param>
+        /// <param name="parameters">
+        /// The arguments.
+        /// </param>
+        /// <param name="requiredAccessLevel">
+        /// The required access level.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        [Obsolete("Legacy compatability layer")]
+        bool SaveLegacyAccessLogEntry(
+            ILegacyUser user,
+            Type @class,
+            bool allowed,
+            string channel,
+            string[] parameters,
+            LegacyUser.UserRights requiredAccessLevel);
     }
 }

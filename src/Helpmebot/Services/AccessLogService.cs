@@ -21,11 +21,14 @@ namespace Helpmebot.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Castle.Core.Internal;
+    using Castle.Core.Logging;
 
     using Helpmebot.Attributes;
     using Helpmebot.ExtensionMethods;
+    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
@@ -45,6 +48,11 @@ namespace Helpmebot.Services
         private readonly ISession databaseSession;
 
         /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger logger;
+
+        /// <summary>
         /// The user flag service.
         /// </summary>
         private readonly IUserFlagService userFlagService;
@@ -62,10 +70,14 @@ namespace Helpmebot.Services
         /// <param name="userFlagService">
         /// The user flag service.
         /// </param>
-        public AccessLogService(ISession databaseSession, IUserFlagService userFlagService)
+        /// <param name="logger">
+        /// The logger.
+        /// </param>
+        public AccessLogService(ISession databaseSession, IUserFlagService userFlagService, ILogger logger)
         {
             this.databaseSession = databaseSession;
             this.userFlagService = userFlagService;
+            this.logger = logger;
 
             // override! we want to use the same database session.
             // TODO: verify this.
@@ -75,6 +87,68 @@ namespace Helpmebot.Services
         #endregion
 
         #region Public Methods and Operators
+
+        /// <summary>
+        /// The save legacy access log entry.
+        /// </summary>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="class">
+        /// The command.
+        /// </param>
+        /// <param name="allowed">
+        /// The execution allowed.
+        /// </param>
+        /// <param name="channel">
+        /// The destination.
+        /// </param>
+        /// <param name="parameters">
+        /// The arguments.
+        /// </param>
+        /// <param name="requiredAccessLevel">
+        /// The required access level.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/>.
+        /// </returns>
+        public bool SaveLegacyAccessLogEntry(
+            ILegacyUser user,
+            Type @class,
+            bool allowed,
+            string channel,
+            string[] parameters,
+            LegacyUser.UserRights requiredAccessLevel)
+        {
+            this.logger.Debug("Saving legacy access log entry");
+
+            try
+            {
+                var userIdentifier = string.Format("{0}!{1}@{2}", user.Nickname, user.Username, user.Hostname);
+
+                var accessLogEntry = new AccessLogEntry
+                {
+                    Account = user.Account,
+                    Arguments = parameters.Implode(),
+                    Channel = channel,
+                    Command = @class.FullName,
+                    ExecutionAllowed = allowed,
+                    RequiredFlag = requiredAccessLevel.ToString(),
+                    Timestamp = DateTime.Now,
+                    UserFlags = user.AccessLevel.ToString(),
+                    UserIdentifier = userIdentifier
+                };
+
+                this.databaseSession.Save(accessLogEntry);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error("Error saving legacy access log entry", ex);
+                return false;
+            }
+        }
 
         /// <summary>
         /// The failure.
@@ -93,13 +167,15 @@ namespace Helpmebot.Services
         /// </param>
         public void Failure(IUser user, Type command, IEnumerable<string> arguments, string destination)
         {
+            this.logger.InfoFormat("Saving FAILED access log entry for {0} executing {1}", user, command);
+
             this.SaveAccessLogEntry(
-                user,
-                command,
-                arguments,
-                destination,
-                false,
-                this.userFlagService.GetFlagsForUser(user).Implode(),
+                user, 
+                command, 
+                arguments, 
+                destination, 
+                false, 
+                this.userFlagService.GetFlagsForUser(user).Implode(), 
                 command.GetAttribute<CommandFlagAttribute>().Flag);
         }
 
@@ -120,13 +196,15 @@ namespace Helpmebot.Services
         /// </param>
         public void Success(IUser user, Type command, IEnumerable<string> arguments, string destination)
         {
+            this.logger.InfoFormat("Saving SUCCESSFUL access log entry for {0} executing {1}", user, command);
+
             this.SaveAccessLogEntry(
-                user,
-                command,
-                arguments,
-                destination,
-                true,
-                this.userFlagService.GetFlagsForUser(user).Implode(),
+                user, 
+                command, 
+                arguments, 
+                destination, 
+                true, 
+                this.userFlagService.GetFlagsForUser(user).Implode(), 
                 command.GetAttribute<CommandFlagAttribute>().Flag);
         }
 
@@ -159,26 +237,26 @@ namespace Helpmebot.Services
         /// The required flag.
         /// </param>
         private void SaveAccessLogEntry(
-            IUser user,
-            Type command,
-            IEnumerable<string> arguments,
-            string destination,
-            bool executionAllowed,
-            string userFlags,
+            IUser user, 
+            Type command, 
+            IEnumerable<string> arguments, 
+            string destination, 
+            bool executionAllowed, 
+            string userFlags, 
             string requiredFlag)
         {
             var userIdentifier = string.Format("{0}!{1}@{2}", user.Nickname, user.Username, user.Hostname);
 
             var accessLogEntry = new AccessLogEntry
                                      {
-                                         Account = user.Account,
-                                         Arguments = arguments.Implode(),
-                                         Channel = destination,
-                                         Command = command.FullName,
-                                         ExecutionAllowed = executionAllowed,
-                                         RequiredFlag = requiredFlag,
-                                         Timestamp = DateTime.Now,
-                                         UserFlags = userFlags,
+                                         Account = user.Account, 
+                                         Arguments = arguments.Implode(), 
+                                         Channel = destination, 
+                                         Command = command.FullName, 
+                                         ExecutionAllowed = executionAllowed, 
+                                         RequiredFlag = requiredFlag, 
+                                         Timestamp = DateTime.Now, 
+                                         UserFlags = userFlags, 
                                          UserIdentifier = userIdentifier
                                      };
 

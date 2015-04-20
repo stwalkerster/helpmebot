@@ -42,7 +42,7 @@ namespace Helpmebot.Persistence.Mappings
             this.Map(x => x.Hostname, "hostname");
             this.Map(x => x.Account, "account");
 
-            this.References(x => x.FlagGroup);
+            this.References(x => x.FlagGroup, "flaggroup_id");
         }
     }
 }

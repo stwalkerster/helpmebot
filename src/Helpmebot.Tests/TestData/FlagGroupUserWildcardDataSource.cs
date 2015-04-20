@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Flag.cs" company="Helpmebot Development Team">
+// <copyright file="FlagGroupUserWildcardDataSource.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,38 +14,35 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The flag.
+//   The flag group user wildcard data source.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace Helpmebot.Model
+namespace Helpmebot.Tests.TestData
 {
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
+    using NUnit.Framework;
+
     /// <summary>
-    /// The flag.
+    /// The flag group user wildcard testCaseData source.
     /// </summary>
-    public class Flag
+    internal class FlagGroupUserWildcardDataSource : TestDataSourceBase
     {
-        #region Constants
+        #region Constructors and Destructors
 
         /// <summary>
-        /// The debug.
+        /// Initialises a new instance of the <see cref="FlagGroupUserWildcardDataSource"/> class.
         /// </summary>
-        public const string Debug = "D";
+        public FlagGroupUserWildcardDataSource()
+        {
+            this.testCaseData = new List<TestCaseData>();
 
-        /// <summary>
-        /// The access.
-        /// </summary>
-        public const string Access = "A";
-
-        /// <summary>
-        /// The owner.
-        /// </summary>
-        public const string Owner = "O";
-
-        /// <summary>
-        /// The standard.
-        /// </summary>
-        public const string Standard = ".";
+            this.testCaseData.Add(new TestCaseData("foo", new Regex("foo")));
+            this.testCaseData.Add(new TestCaseData("foo?", new Regex("foo.?")));
+            this.testCaseData.Add(new TestCaseData("fo*o", new Regex("fo.*o")));
+            this.testCaseData.Add(new TestCaseData("foo|away", new Regex(Regex.Escape("foo|away"))));
+        }
 
         #endregion
     }

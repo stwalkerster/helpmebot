@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Flag.cs" company="Helpmebot Development Team">
+// <copyright file="FlagGroupUserTests.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,38 +14,47 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The flag.
+//   The flag group user tests.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot.Model
+namespace Helpmebot.Tests.Model
 {
+    using System.Text.RegularExpressions;
+
+    using Helpmebot.Model;
+    using Helpmebot.Tests.TestData;
+
+    using NUnit.Framework;
+
     /// <summary>
-    /// The flag.
+    /// The flag group user tests.
     /// </summary>
-    public class Flag
+    [TestFixture]
+    public class FlagGroupUserTests : TestBase
     {
-        #region Constants
+        #region Public Methods and Operators
 
         /// <summary>
-        /// The debug.
+        /// The test regex escaping.
         /// </summary>
-        public const string Debug = "D";
+        /// <param name="inputData">
+        /// The input Data.
+        /// </param>
+        /// <param name="expected">
+        /// The expected.
+        /// </param>
+        [TestCaseSource(typeof(FlagGroupUserWildcardDataSource))]
+        public void TestRegexEscaping(string inputData, Regex expected)
+        {
+            // arrange
 
-        /// <summary>
-        /// The access.
-        /// </summary>
-        public const string Access = "A";
+            // act
+            var expressionForWildcards = FlagGroupUser.GetExpressionForWildcards(inputData);
 
-        /// <summary>
-        /// The owner.
-        /// </summary>
-        public const string Owner = "O";
-
-        /// <summary>
-        /// The standard.
-        /// </summary>
-        public const string Standard = ".";
+            // assert
+            Assert.That(expressionForWildcards.ToString(), Is.EqualTo(expected.ToString()));
+        }
 
         #endregion
     }
