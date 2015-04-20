@@ -38,11 +38,24 @@ namespace Helpmebot.Exceptions
         /// <param name="actualCount">
         /// The actual count.
         /// </param>
-        public ArgumentCountException(int expectedCount, int actualCount)
+        /// <param name="helpKey">
+        /// The help Key.
+        /// </param>
+        public ArgumentCountException(int expectedCount, int actualCount, string helpKey = null)
             : base(
                 string.Format("Insufficient arguments to command. Expected {0}, got {1}.", expectedCount, actualCount))
         {
+            this.HelpKey = helpKey;
         }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the help key.
+        /// </summary>
+        public string HelpKey { get; private set; }
 
         #endregion
     }

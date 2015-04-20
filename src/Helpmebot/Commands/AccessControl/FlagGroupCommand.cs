@@ -27,6 +27,8 @@ namespace Helpmebot.Commands.AccessControl
 
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.Commands.CommandUtilities.Models;
+    using Helpmebot.Configuration;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Interfaces;
@@ -75,6 +77,9 @@ namespace Helpmebot.Commands.AccessControl
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
+        /// <param name="configurationHelper">
+        /// The configuration Helper.
+        /// </param>
         public FlagGroupCommand(
             string commandSource, 
             IUser user, 
@@ -83,18 +88,20 @@ namespace Helpmebot.Commands.AccessControl
             ILogger logger, 
             IMessageService messageService, 
             IAccessLogService accessLogService, 
-            IIrcClient client, 
-            ISession databaseSession)
+            IIrcClient client,
+            ISession databaseSession,
+            IConfigurationHelper configurationHelper)
             : base(
-                commandSource, 
-                user, 
-                arguments, 
-                userFlagService, 
-                logger, 
-                messageService, 
-                accessLogService, 
-                client, 
-                databaseSession)
+                commandSource,
+                user,
+                arguments,
+                userFlagService,
+                logger,
+                messageService,
+                accessLogService,
+                client,
+                databaseSession,
+                configurationHelper)
         {
         }
 
@@ -264,7 +271,7 @@ namespace Helpmebot.Commands.AccessControl
         {
             if (this.Arguments.Count() < 3)
             {
-                throw new ArgumentCountException(3, this.Arguments.Count());
+                throw new ArgumentCountException(3, this.Arguments.Count(), "setup");
             }
 
             var flags = this.Arguments.ElementAt(2).ToUpperInvariant();
@@ -300,7 +307,7 @@ namespace Helpmebot.Commands.AccessControl
         {
             if (this.Arguments.Count() < 3)
             {
-                throw new ArgumentCountException(3, this.Arguments.Count());
+                throw new ArgumentCountException(3, this.Arguments.Count(), "deny");
             }
 
             var deny = this.Arguments.ElementAt(2).ToLowerInvariant();
@@ -316,6 +323,47 @@ namespace Helpmebot.Commands.AccessControl
             this.UserFlagService.InvalidateCache();
 
             return new CommandResponse { Message = group.ToString() }.ToEnumerable();
+        }
+
+        /// <summary>
+        /// The help.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        protected override IDictionary<string, HelpMessage> Help()
+        {
+            return new Dictionary<string, HelpMessage>
+                       {
+                           {
+                               "list",
+                               new HelpMessage(
+                               this.CommandName,
+                               string.Empty,
+                               "Lists the existing flag groups.")
+                           },
+                           {
+                               "setup",
+                               new HelpMessage(
+                               this.CommandName,
+                               "setup <GroupName> <FlagChanges>",
+                               "Creates or edits a flag group.")
+                           },
+                           {
+                               "delete",
+                               new HelpMessage(
+                               this.CommandName,
+                               "delete <GroupName>",
+                               "Deletes an existing flag group.")
+                           },
+                           {
+                               "deny",
+                               new HelpMessage(
+                               this.CommandName,
+                               "deny <GroupName> {yes|no}",
+                               "Edits the grant/revoke mode of the group.")
+                           },
+                       };
         }
 
         #endregion

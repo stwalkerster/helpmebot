@@ -28,6 +28,7 @@ namespace Helpmebot.Commands
 
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.Configuration;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
@@ -83,21 +84,35 @@ namespace Helpmebot.Commands
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
+        /// <param name="configurationHelper">
+        /// The configuration Helper.
+        /// </param>
         /// <param name="keyword">
         /// The keyword.
         /// </param>
         public KeywordRetrieveCommand(
-            string commandSource, 
-            IUser user, 
-            IEnumerable<string> arguments, 
-            IUserFlagService userFlagService, 
-            ILogger logger, 
-            IMessageService messageService, 
-            IAccessLogService accessLogService, 
+            string commandSource,
+            IUser user,
+            IEnumerable<string> arguments,
+            IUserFlagService userFlagService,
+            ILogger logger,
+            IMessageService messageService,
+            IAccessLogService accessLogService,
             IIrcClient client,
             ISession databaseSession,
+            IConfigurationHelper configurationHelper,
             Keyword keyword)
-            : base(commandSource, user, arguments, userFlagService, logger, messageService, accessLogService, client, databaseSession)
+            : base(
+                commandSource,
+                user,
+                arguments,
+                userFlagService,
+                logger,
+                messageService,
+                accessLogService,
+                client,
+                databaseSession,
+                configurationHelper)
         {
             this.keyword = keyword;
         }

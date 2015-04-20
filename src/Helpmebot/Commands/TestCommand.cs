@@ -25,6 +25,7 @@ namespace Helpmebot.Commands
 
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.Configuration;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
@@ -67,8 +68,11 @@ namespace Helpmebot.Commands
         /// <param name="client">
         /// The client.
         /// </param>
-        /// <param name="session">
-        /// The session.
+        /// <param name="databaseSession">
+        /// The database Session.
+        /// </param>
+        /// <param name="configurationHelper">
+        /// The configuration Helper.
         /// </param>
         public TestCommand(
             string commandSource, 
@@ -77,19 +81,21 @@ namespace Helpmebot.Commands
             IUserFlagService userFlagService, 
             ILogger logger, 
             IMessageService messageService, 
-            IAccessLogService accessLogService, 
-            IIrcClient client, 
-            ISession session)
+            IAccessLogService accessLogService,
+            IIrcClient client,
+            ISession databaseSession,
+            IConfigurationHelper configurationHelper)
             : base(
-                commandSource, 
-                user, 
-                arguments, 
-                userFlagService, 
-                logger, 
-                messageService, 
-                accessLogService, 
-                client, 
-                session)
+                commandSource,
+                user,
+                arguments,
+                userFlagService,
+                logger,
+                messageService,
+                accessLogService,
+                client,
+                databaseSession,
+                configurationHelper)
         {
         }
 

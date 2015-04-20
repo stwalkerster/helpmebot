@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OtherTestCommand.cs" company="Helpmebot Development Team">
+// <copyright file="AccessCommand.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,11 +14,10 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   The test command.
+//   The access command.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace Helpmebot.Commands
+namespace Helpmebot.Commands.AccessControl
 {
     using System.Collections.Generic;
 
@@ -34,14 +33,16 @@ namespace Helpmebot.Commands
     using NHibernate;
 
     /// <summary>
-    /// The test command.
+    /// The access command.
     /// </summary>
-    [CommandFlag(Model.Flag.Debug)]
-    [CommandInvocation("othertestcommand")]
-    public class OtherTestCommand : CommandBase
+    [CommandFlag(Model.Flag.Access)]
+    [CommandInvocation("accessng")]
+    public class AccessCommand : CommandBase
     {
+        #region Constructors and Destructors
+
         /// <summary>
-        /// Initialises a new instance of the <see cref="OtherTestCommand"/> class. 
+        /// Initialises a new instance of the <see cref="AccessCommand"/> class.
         /// </summary>
         /// <param name="commandSource">
         /// The command source.
@@ -73,7 +74,7 @@ namespace Helpmebot.Commands
         /// <param name="configurationHelper">
         /// The configuration Helper.
         /// </param>
-        public OtherTestCommand(
+        public AccessCommand(
             string commandSource,
             IUser user,
             IEnumerable<string> arguments,
@@ -97,7 +98,9 @@ namespace Helpmebot.Commands
                 configurationHelper)
         {
         }
-    
+
+        #endregion
+
         /// <summary>
         /// The execute.
         /// </summary>
@@ -106,14 +109,7 @@ namespace Helpmebot.Commands
         /// </returns>
         protected override IEnumerable<CommandResponse> Execute()
         {
-            return new List<CommandResponse>
-                       {
-                           new CommandResponse
-                               {
-                                   Destination = CommandResponseDestination.Default,
-                                   Message = "ohai. test command 2 here."
-                               }
-                       };
+            throw new System.NotImplementedException();
         }
     }
 }

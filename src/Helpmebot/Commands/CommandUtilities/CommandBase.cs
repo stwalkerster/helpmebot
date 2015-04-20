@@ -27,7 +27,9 @@ namespace Helpmebot.Commands.CommandUtilities
     using Castle.Core.Logging;
 
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
+    using Helpmebot.Configuration;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Interfaces;
@@ -42,6 +44,11 @@ namespace Helpmebot.Commands.CommandUtilities
     /// </summary>
     public abstract class CommandBase : ICommand
     {
+        /// <summary>
+        /// The configuration helper.
+        /// </summary>
+        private readonly IConfigurationHelper configurationHelper;
+
         #region Constructors and Destructors
 
         /// <summary>
@@ -74,6 +81,9 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
+        /// <param name="configurationHelper">
+        /// The configuration Helper.
+        /// </param>
         protected CommandBase(
             string commandSource, 
             IUser user, 
@@ -83,8 +93,10 @@ namespace Helpmebot.Commands.CommandUtilities
             IMessageService messageService, 
             IAccessLogService accessLogService, 
             IIrcClient client, 
-            ISession databaseSession)
+            ISession databaseSession,
+            IConfigurationHelper configurationHelper)
         {
+            this.configurationHelper = configurationHelper;
             this.DatabaseSession = databaseSession;
             this.Client = client;
             this.AccessLogService = accessLogService;
@@ -132,6 +144,11 @@ namespace Helpmebot.Commands.CommandUtilities
         }
 
         /// <summary>
+        /// Gets or sets the original arguments.
+        /// </summary>
+        public IEnumerable<string> OriginalArguments { get; set; }
+
+        /// <summary>
         /// Gets or sets the redirection target.
         /// </summary>
         public IEnumerable<string> RedirectionTarget { get; set; }
@@ -142,9 +159,21 @@ namespace Helpmebot.Commands.CommandUtilities
         public IUser User { get; private set; }
 
         /// <summary>
-        /// Gets or sets the original arguments.
+        /// Gets the command name.
         /// </summary>
-        public IEnumerable<string> OriginalArguments { get; set; }
+        public string CommandName
+        {
+            get
+            {
+                var customAttributes = this.GetType().GetCustomAttributes(typeof(CommandInvocationAttribute), false);
+                if (customAttributes.Length > 0)
+                {
+                    return ((CommandInvocationAttribute)customAttributes.First()).CommandName;
+                }
+
+                return null;
+            }
+        }
 
         #endregion
 
@@ -213,9 +242,44 @@ namespace Helpmebot.Commands.CommandUtilities
 
                     return commandResponses.Concat(completedResponses);
                 }
+                catch (CommandInvocationException e)
+                {
+                    this.Logger.Info("Command encountered an issue from invocation.");
+
+                    if (transaction.IsActive)
+                    {
+                        transaction.Rollback();
+                    }
+
+                    return this.HelpMessage(e.HelpKey);
+                }
+                catch (ArgumentCountException e)
+                {
+                    this.Logger.Info("Command executed with missing arguments.");
+
+                    var responses = new List<CommandResponse>
+                                        {
+                                            new CommandResponse
+                                                {
+                                                    Destination =
+                                                        CommandResponseDestination
+                                                        .Default,
+                                                    Message = e.Message
+                                                }
+                                        };
+
+                    responses.AddRange(this.HelpMessage(e.HelpKey));
+
+                    if (transaction.IsActive)
+                    {
+                        transaction.Rollback();
+                    }
+
+                    return responses;
+                }
                 catch (CommandExecutionException e)
                 {
-                    this.Logger.Info("Command encountered an issue during execution.", e);
+                    this.Logger.Warn("Command encountered an issue during execution.", e);
 
                     if (transaction.IsActive)
                     {
@@ -285,19 +349,9 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <returns>
         /// The <see cref="IEnumerable{CommandResponse}"/>.
         /// </returns>
-        protected virtual IEnumerable<CommandResponse> Help()
+        protected virtual IDictionary<string, HelpMessage> Help()
         {
-            var response = new CommandResponse
-                               {
-                                   Destination = CommandResponseDestination.PrivateMessage, 
-                                   Message =
-                                       this.MessageService.RetrieveMessage(
-                                           Messages.NoHelpAvailable, 
-                                           this.CommandSource, 
-                                           null)
-                               };
-
-            return response.ToEnumerable();
+            return null;
         }
 
         /// <summary>
@@ -330,6 +384,42 @@ namespace Helpmebot.Commands.CommandUtilities
         protected virtual IEnumerable<CommandResponse> OnCompleted()
         {
             return null;
+        }
+
+        /// <summary>
+        /// The help message.
+        /// </summary>
+        /// <param name="helpKey">
+        /// The help Key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        private IEnumerable<CommandResponse> HelpMessage(string helpKey = null)
+        {
+            var helpMessages = this.Help();
+
+            var commandTrigger = this.configurationHelper.CoreConfiguration.CommandTrigger;
+
+            if (helpMessages == null)
+            {
+                return
+                    new HelpMessage(string.Empty, string.Empty, "No help is available for this command.")
+                        .ToCommandResponses(commandTrigger);
+            }
+
+            if (helpKey != null && helpMessages.ContainsKey(helpKey))
+            {
+                return helpMessages[helpKey].ToCommandResponses(commandTrigger);
+            }
+
+            var help = new List<CommandResponse>();
+            foreach (var helpMessage in helpMessages)
+            {
+                help.AddRange(helpMessage.Value.ToCommandResponses(commandTrigger));
+            }
+
+            return help;
         }
 
         #endregion

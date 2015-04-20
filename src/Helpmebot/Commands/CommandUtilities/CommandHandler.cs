@@ -30,7 +30,6 @@ namespace Helpmebot.Commands.CommandUtilities
     using Helpmebot.IRC.Events;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.IRC.Messages;
-    using Helpmebot.IRC.Model;
     using Helpmebot.Services.Interfaces;
 
     /// <summary>
