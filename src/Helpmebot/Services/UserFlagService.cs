@@ -82,28 +82,31 @@ namespace Helpmebot.Services
         #region Public Methods and Operators
 
         /// <summary>
-        /// The get flag groups for user.
+        /// The flags for user.
         /// </summary>
-        /// <param name="user">
-        /// The user.
+        /// <param name="flagGroups">
+        /// The flag groups.
         /// </param>
         /// <returns>
-        /// The <see cref="IEnumerable{FlagGroup}"/>.
+        /// The <see cref="IEnumerable{String}"/>.
         /// </returns>
-        public virtual IEnumerable<FlagGroup> GetFlagGroupsForUser(IUser user)
+        public static IEnumerable<string> FlagsForUser(IEnumerable<FlagGroup> flagGroups)
         {
-            if (this.flagGroupUsers == null)
+            var flags = new HashSet<string>();
+
+            var flagGroupList = flagGroups.ToList();
+
+            foreach (var flag in flagGroupList.Where(x => !x.DenyGroup))
             {
-                this.flagGroupUsers = this.DatabaseSession.QueryOver<FlagGroupUser>().List();
+                flag.Flags.Select(x => x.Flag).ForEach(x => flags.Add(x));
             }
 
-            return from flagGroupUser in this.flagGroupUsers
-                   where
-                       flagGroupUser.AccountRegex.Match(user.Account).Success
-                       && flagGroupUser.NicknameRegex.Match(user.Nickname).Success
-                       && flagGroupUser.UsernameRegex.Match(user.Username).Success
-                       && flagGroupUser.HostnameRegex.Match(user.Hostname).Success
-                   select flagGroupUser.FlagGroup;
+            foreach (var flag in flagGroupList.Where(x => x.DenyGroup))
+            {
+                flag.Flags.Select(x => x.Flag).ForEach(x => flags.Remove(x));
+            }
+
+            return flags;
         }
 
         /// <summary>
@@ -117,27 +120,26 @@ namespace Helpmebot.Services
         /// </returns>
         public IEnumerable<string> GetFlagsForUser(IUser user)
         {
-            var flagGroups = this.GetFlagGroupsForUser(user).ToList();
+            if (this.flagGroupUsers == null)
+            {
+                this.flagGroupUsers = this.DatabaseSession.QueryOver<FlagGroupUser>().List();
+            }
+
+            var flagGroups = (from flagGroupUser in this.flagGroupUsers
+                              where
+                                  flagGroupUser.AccountRegex.Match(user.Account).Success
+                                  && flagGroupUser.NicknameRegex.Match(user.Nickname).Success
+                                  && flagGroupUser.UsernameRegex.Match(user.Username).Success
+                                  && flagGroupUser.HostnameRegex.Match(user.Hostname).Success
+                              select flagGroupUser.FlagGroup).ToList();
 
             this.logger.DebugFormat("Retrieved {0} flag groups for user {1}", flagGroups.Count, user);
 
-            var flags = new HashSet<string>();
+            var flagsForUser = FlagsForUser(flagGroups).ToList();
 
-            foreach (var flag in flagGroups.Where(x => !x.DenyGroup))
-            {
-                flag.Flags.Select(x => x.Flag).ForEach(x => flags.Add(x));
-            }
-
-            this.logger.DebugFormat("Flag groups contain these allow flags: {0}", flags.Implode());
-
-            foreach (var flag in flagGroups.Where(x => x.DenyGroup))
-            {
-                flag.Flags.Select(x => x.Flag).ForEach(x => flags.Remove(x));
-            }
-
-            this.logger.InfoFormat("Found flags for user {1}: {0}", flags.Implode(), user);
-
-            return flags;
+            this.logger.InfoFormat("Found flags for user {1}: {0}", flagsForUser.Implode(), user);
+            
+            return flagsForUser;
         }
 
         /// <summary>

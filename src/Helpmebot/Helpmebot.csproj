@@ -101,6 +101,7 @@
     <Compile Include="Configuration\XmlSections\Interfaces\IPrivateConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\Interfaces\IIrcConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\IrcConfiguration.cs" />
+    <Compile Include="Exceptions\CommandErrorException.cs" />
     <Compile Include="Exceptions\CommandExecutionException.cs" />
     <Compile Include="Exceptions\CommandInvocationException.cs" />
     <Compile Include="ExtensionMethods\EnumerableExtensions.cs" />

@@ -74,6 +74,7 @@
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="IRC\IrcClientStateTests.cs" />
     <Compile Include="IRC\Messages\MessageTests.cs" />
+    <Compile Include="Services\UserFlagServiceTests.cs" />
     <Compile Include="TestData\IrcUserParseDataSource.cs" />
     <Compile Include="TestData\IrcUserTestDataSource.cs" />
     <Compile Include="IRC\Model\IrcUserTests.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="TestData\FlagGroupParseFlagsDataSource.cs" />
     <Compile Include="TestData\FlagGroupUserWildcardDataSource.cs" />
     <Compile Include="TestData\TestDataSourceBase.cs" />
+    <Compile Include="TestData\UserFlagServiceDataSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Helpmebot\Helpmebot.csproj">

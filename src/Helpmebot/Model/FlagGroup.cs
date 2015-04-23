@@ -41,6 +41,8 @@ namespace Helpmebot.Model
         /// </summary>
         public virtual IList<FlagGroupAssoc> Flags { get; set; }
 
+        public virtual bool IsProtected { get; set; }
+
         /// <summary>
         /// Gets or sets the users.
         /// </summary>

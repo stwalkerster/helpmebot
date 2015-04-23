@@ -88,19 +88,19 @@ namespace Helpmebot.Commands.AccessControl
             ILogger logger, 
             IMessageService messageService, 
             IAccessLogService accessLogService, 
-            IIrcClient client,
-            ISession databaseSession,
+            IIrcClient client, 
+            ISession databaseSession, 
             IConfigurationHelper configurationHelper)
             : base(
-                commandSource,
-                user,
-                arguments,
-                userFlagService,
-                logger,
-                messageService,
-                accessLogService,
-                client,
-                databaseSession,
+                commandSource, 
+                user, 
+                arguments, 
+                userFlagService, 
+                logger, 
+                messageService, 
+                accessLogService, 
+                client, 
+                databaseSession, 
                 configurationHelper)
         {
         }
@@ -217,6 +217,47 @@ namespace Helpmebot.Commands.AccessControl
         }
 
         /// <summary>
+        /// The help.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        protected override IDictionary<string, HelpMessage> Help()
+        {
+            return new Dictionary<string, HelpMessage>
+                       {
+                           {
+                               "list", 
+                               new HelpMessage(
+                               this.CommandName, 
+                               string.Empty, 
+                               "Lists the existing flag groups.")
+                           }, 
+                           {
+                               "setup", 
+                               new HelpMessage(
+                               this.CommandName, 
+                               "setup <GroupName> <FlagChanges>", 
+                               "Creates or edits a flag group.")
+                           }, 
+                           {
+                               "delete", 
+                               new HelpMessage(
+                               this.CommandName, 
+                               "delete <GroupName>", 
+                               "Deletes an existing flag group.")
+                           }, 
+                           {
+                               "deny", 
+                               new HelpMessage(
+                               this.CommandName, 
+                               "deny <GroupName> {yes|no}", 
+                               "Edits the grant/revoke mode of the group.")
+                           }, 
+                       };
+        }
+
+        /// <summary>
         /// The delete group.
         /// </summary>
         /// <param name="flagGroup">
@@ -231,12 +272,53 @@ namespace Helpmebot.Commands.AccessControl
 
             var existing = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).List();
 
+            if (existing.Any(x => x.IsProtected))
+            {
+                throw new CommandErrorException("This group is protected, and cannot be deleted.");
+            }
+
             existing.Apply(item => responses.Add(new CommandResponse { Message = item.ToString() }));
             existing.Apply(this.DatabaseSession.Delete);
 
             this.UserFlagService.InvalidateCache();
 
             return responses;
+        }
+
+        /// <summary>
+        /// The deny group.
+        /// </summary>
+        /// <param name="flagGroup">
+        /// The flag group.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        private IEnumerable<CommandResponse> DenyGroup(string flagGroup)
+        {
+            if (this.Arguments.Count() < 3)
+            {
+                throw new ArgumentCountException(3, this.Arguments.Count(), "deny");
+            }
+
+            var deny = this.Arguments.ElementAt(2).ToLowerInvariant();
+
+            bool denyGroup = deny == "yes" || deny == "true" || deny == "y";
+
+            var group = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).SingleOrDefault()
+                        ?? new FlagGroup { Flags = new List<FlagGroupAssoc>() };
+
+            if (group.IsProtected)
+            {
+                throw new CommandErrorException("This group is protected, and cannot be modified.");
+            }
+
+            group.DenyGroup = denyGroup;
+
+            this.DatabaseSession.SaveOrUpdate(group);
+            this.UserFlagService.InvalidateCache();
+
+            return new CommandResponse { Message = group.ToString() }.ToEnumerable();
         }
 
         /// <summary>
@@ -279,6 +361,11 @@ namespace Helpmebot.Commands.AccessControl
             var group = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).SingleOrDefault()
                         ?? new FlagGroup { Flags = new List<FlagGroupAssoc>() };
 
+            if (group.IsProtected)
+            {
+                throw new CommandErrorException("This group is protected, and cannot be modified.");
+            }
+
             group.Name = flagGroup;
 
             ParseFlags(flags, group);
@@ -292,78 +379,6 @@ namespace Helpmebot.Commands.AccessControl
             this.UserFlagService.InvalidateCache();
 
             return new CommandResponse { Message = group.ToString() }.ToEnumerable();
-        }
-
-        /// <summary>
-        /// The deny group.
-        /// </summary>
-        /// <param name="flagGroup">
-        /// The flag group.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IEnumerable{CommandResponse}"/>.
-        /// </returns>
-        private IEnumerable<CommandResponse> DenyGroup(string flagGroup)
-        {
-            if (this.Arguments.Count() < 3)
-            {
-                throw new ArgumentCountException(3, this.Arguments.Count(), "deny");
-            }
-
-            var deny = this.Arguments.ElementAt(2).ToLowerInvariant();
-
-            bool denyGroup = deny == "yes" || deny == "true" || deny == "y";
-
-            var group = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).SingleOrDefault()
-                        ?? new FlagGroup { Flags = new List<FlagGroupAssoc>() };
-
-            group.DenyGroup = denyGroup;
-
-            this.DatabaseSession.SaveOrUpdate(group);
-            this.UserFlagService.InvalidateCache();
-
-            return new CommandResponse { Message = group.ToString() }.ToEnumerable();
-        }
-
-        /// <summary>
-        /// The help.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IEnumerable{CommandResponse}"/>.
-        /// </returns>
-        protected override IDictionary<string, HelpMessage> Help()
-        {
-            return new Dictionary<string, HelpMessage>
-                       {
-                           {
-                               "list",
-                               new HelpMessage(
-                               this.CommandName,
-                               string.Empty,
-                               "Lists the existing flag groups.")
-                           },
-                           {
-                               "setup",
-                               new HelpMessage(
-                               this.CommandName,
-                               "setup <GroupName> <FlagChanges>",
-                               "Creates or edits a flag group.")
-                           },
-                           {
-                               "delete",
-                               new HelpMessage(
-                               this.CommandName,
-                               "delete <GroupName>",
-                               "Deletes an existing flag group.")
-                           },
-                           {
-                               "deny",
-                               new HelpMessage(
-                               this.CommandName,
-                               "deny <GroupName> {yes|no}",
-                               "Edits the grant/revoke mode of the group.")
-                           },
-                       };
         }
 
         #endregion
