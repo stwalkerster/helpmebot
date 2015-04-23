@@ -19,9 +19,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Exceptions
 {
+    using System;
+
     /// <summary>
     /// The command error exception.
     /// </summary>
+    [Serializable]
     internal class CommandErrorException : CommandExecutionException
     {
         #region Constructors and Destructors

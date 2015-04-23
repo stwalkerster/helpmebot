@@ -17,7 +17,6 @@
 //   The flag.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Model
 {
     /// <summary>
@@ -28,14 +27,39 @@ namespace Helpmebot.Model
         #region Constants
 
         /// <summary>
+        /// The access.
+        /// </summary>
+        public const string Access = "A";
+
+        /// <summary>
         /// The debug.
         /// </summary>
         public const string Debug = "D";
 
         /// <summary>
-        /// The access.
+        /// The legacy advanced.
         /// </summary>
-        public const string Access = "A";
+        public const string LegacyAdvanced = "+";
+
+        /// <summary>
+        /// The legacy developer.
+        /// </summary>
+        public const string LegacyDeveloper = "*";
+
+        /// <summary>
+        /// The legacy normal.
+        /// </summary>
+        public const string LegacyNormal = ".";
+
+        /// <summary>
+        /// The legacy semi-ignored.
+        /// </summary>
+        public const string LegacySemiignored = "#";
+
+        /// <summary>
+        /// The legacy superuser.
+        /// </summary>
+        public const string LegacySuperuser = "@";
 
         /// <summary>
         /// The owner.
