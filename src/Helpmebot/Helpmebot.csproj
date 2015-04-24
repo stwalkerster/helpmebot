@@ -94,8 +94,6 @@
     <Compile Include="Commands\Interfaces\ICommandServiceHelper.cs" />
     <Compile Include="Commands\Interfaces\ICommand.cs" />
     <Compile Include="Commands\KeywordRetrieveCommand.cs" />
-    <Compile Include="Commands\OtherTestCommand.cs" />
-    <Compile Include="Commands\TestCommand.cs" />
     <Compile Include="Configuration\IConfigurationHelper.cs" />
     <Compile Include="Configuration\XmlSections\CoreConfiguration.cs" />
     <Compile Include="Configuration\XmlSections\Interfaces\ICoreConfiguration.cs" />
