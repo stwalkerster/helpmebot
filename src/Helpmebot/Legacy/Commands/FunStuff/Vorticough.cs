@@ -23,12 +23,16 @@ namespace helpmebot6.Commands
     using System.Diagnostics.CodeAnalysis;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// The vorticough.
     /// </summary>
+    [CommandInvocation("vorticough")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     internal class Vorticough : FunStuff.FunCommand
     {

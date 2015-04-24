@@ -21,13 +21,17 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Retrieves a link to block a user.
     /// </summary>
+    [CommandInvocation("blockuser")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Blockuser : GenericCommand
     {
         /// <summary>

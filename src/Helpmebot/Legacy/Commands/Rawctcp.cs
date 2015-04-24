@@ -21,13 +21,17 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Sends a raw client-to-client protocol command
     /// </summary>
+    [CommandInvocation("rawctcp")]
+    [CommandFlag(Flag.LegacyDeveloper)]
     internal class Rawctcp : GenericCommand
     {
         /// <summary>

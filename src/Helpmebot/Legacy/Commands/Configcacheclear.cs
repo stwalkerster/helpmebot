@@ -17,6 +17,7 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
@@ -25,6 +26,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     The configuration cache clear command.
     /// </summary>
+    [CommandInvocation("configcacheclear")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Configcacheclear : GenericCommand
     {
         #region Constructors and Destructors

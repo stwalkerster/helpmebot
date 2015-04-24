@@ -24,6 +24,7 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
@@ -38,6 +39,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Controls the newbie welcomer
     /// </summary>
+    [CommandInvocation("welcomer")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Welcomer : GenericCommand
     {
         /// <summary>

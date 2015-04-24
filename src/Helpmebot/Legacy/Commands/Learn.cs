@@ -25,6 +25,7 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
@@ -36,6 +37,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///   Learns a keyword
     /// </summary>
+    [CommandInvocation("learn")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Learn : GenericCommand
     {
         /// <summary>

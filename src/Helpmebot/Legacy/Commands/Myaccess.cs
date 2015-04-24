@@ -17,13 +17,17 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     /// <summary>
     ///     Retrieves the bot access level of the user who called the command
     /// </summary>
+    [CommandInvocation("myaccess")]
+    [CommandFlag(Flag.LegacySemiignored)]
     internal class Myaccess : GenericCommand
     {
         #region Constructors and Destructors

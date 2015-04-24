@@ -24,6 +24,7 @@ namespace helpmebot6.Commands
     using System.Globalization;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
@@ -34,6 +35,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///   Forgets a keyword
     /// </summary>
+    [CommandInvocation("forget")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Forget : GenericCommand
     {
         /// <summary>

@@ -20,13 +20,17 @@ namespace helpmebot6.Commands
     using System.Xml.XPath;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     ///     The status of ACC.
     /// </summary>
+    [CommandInvocation("accstatus")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Accstatus : GenericCommand
     {
         #region Constructors and Destructors

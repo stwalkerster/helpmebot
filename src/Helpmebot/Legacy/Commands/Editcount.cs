@@ -22,6 +22,7 @@ namespace helpmebot6.Commands
     using System.Xml.XPath;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -36,6 +37,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Returns the edit count of a Wikipedian
     /// </summary>
+    [CommandInvocation("editcount")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Editcount : GenericCommand
     {
         #region Constructors and Destructors

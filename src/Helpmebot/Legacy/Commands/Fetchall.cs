@@ -24,13 +24,17 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Monitoring;
 
     /// <summary>
     /// Retrieve information about all registered category codes
     /// </summary>
+    [CommandInvocation("fetchall")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Fetchall : GenericCommand
     {
         /// <summary>

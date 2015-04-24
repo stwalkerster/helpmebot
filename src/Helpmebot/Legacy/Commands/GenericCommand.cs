@@ -18,12 +18,15 @@ namespace helpmebot6.Commands
 {
     using System;
 
+    using Castle.Core.Internal;
     using Castle.Core.Logging;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Database;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -111,6 +114,28 @@ namespace helpmebot6.Commands
         {
             get
             {
+                var commandFlagAttribute = this.GetType().GetAttribute<CommandFlagAttribute>();
+                if (commandFlagAttribute != null)
+                {
+                    switch (commandFlagAttribute.Flag)
+                    {
+                        case Flag.LegacySuperuser:
+                            return LegacyUser.UserRights.Superuser;
+                        case Flag.LegacyDeveloper:
+                            return LegacyUser.UserRights.Developer;
+                        case Flag.LegacyAdvanced:
+                            return LegacyUser.UserRights.Advanced;
+                        case Flag.LegacyNormal:
+                            return LegacyUser.UserRights.Normal;
+                        case Flag.LegacySemiignored:
+                            return LegacyUser.UserRights.Semiignored;
+                        default:
+                            return LegacyUser.UserRights.Developer;
+                    }
+                }
+
+                this.Log.Error("This command is NOT using the new flag access. Doing legacy db lookup...");
+
                 string command = this.GetType().ToString();
 
                 var cmd = new MySqlCommand("SELECT accesslevel FROM `command` WHERE typename = @command LIMIT 1;");

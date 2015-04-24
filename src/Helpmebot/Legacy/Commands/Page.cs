@@ -27,13 +27,17 @@ namespace helpmebot6.Commands
     using System.Xml;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Retrieves information on a specific page
     /// </summary>
+    [CommandInvocation("page")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Page : GenericCommand
     {
         /// <summary>

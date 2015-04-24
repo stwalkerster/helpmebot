@@ -287,7 +287,6 @@
     <Compile Include="Legacy\Commands\Page.cs" />
     <Compile Include="Legacy\Commands\Part.cs" />
     <Compile Include="Legacy\Commands\Ping.cs" />
-    <Compile Include="Legacy\Commands\ProtectedCommand.cs" />
     <Compile Include="Legacy\Commands\Raw.cs" />
     <Compile Include="Legacy\Commands\Rawctcp.cs" />
     <Compile Include="Legacy\Commands\Registration.cs" />

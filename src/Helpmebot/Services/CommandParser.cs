@@ -29,6 +29,7 @@ namespace Helpmebot.Services
     using Castle.Core.Logging;
 
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
@@ -114,12 +115,20 @@ namespace Helpmebot.Services
             this.commands = new Dictionary<string, Type>();
             foreach (var type in types)
             {
+                if (!type.IsSubclassOf(typeof(CommandBase)))
+                {
+                    // Not a new command class;
+                    continue;
+                }
+
                 var customAttributes = type.GetCustomAttributes(typeof(CommandInvocationAttribute), false);
                 if (customAttributes.Length > 0)
                 {
                     this.commands.Add(((CommandInvocationAttribute)customAttributes.First()).CommandName, type);
                 }
             }
+
+            this.logger.InfoFormat("Initialised Command Parser with {0} commands.", this.commands.Count);
         }
 
         #endregion

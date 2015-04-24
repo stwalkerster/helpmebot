@@ -23,12 +23,16 @@ namespace helpmebot6.Commands
     using System.Collections.Generic;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// The notify.
     /// </summary>
+    [CommandInvocation("notify")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Notify : GenericCommand
     {
         /// <summary>

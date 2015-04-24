@@ -21,11 +21,16 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
-    /// Returns the number of articles currently waiting at Good article nominees awaiting review    /// </summary>
+    /// Returns the number of articles currently waiting at Good article nominees awaiting review    
+    /// </summary>
+    [CommandInvocation("gancount")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Gancount : Categorysize
     {
         /// <summary>

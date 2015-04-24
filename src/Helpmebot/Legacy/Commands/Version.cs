@@ -30,12 +30,16 @@ namespace helpmebot6.Commands
     using System.Reflection;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     ///   Returns the current version of the bot.
     /// </summary>
+    [CommandInvocation("version")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Version : GenericCommand
     {
         /// <summary>

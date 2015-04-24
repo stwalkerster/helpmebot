@@ -21,12 +21,16 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Returns the number of articles currently waiting at Articles for Creation
     /// </summary>
+    [CommandInvocation("afccount")]
+    [CommandFlag(Flag.LegacySemiignored)]
     internal class Afccount : Categorysize
     {
         /// <summary>

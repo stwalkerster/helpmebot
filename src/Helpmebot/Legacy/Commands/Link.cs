@@ -24,14 +24,18 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Triggers the link parser
     /// </summary>
+    [CommandInvocation("link")]
+    [CommandFlag(Flag.LegacySemiignored)]
     internal class Link : GenericCommand
     {
         /// <summary>

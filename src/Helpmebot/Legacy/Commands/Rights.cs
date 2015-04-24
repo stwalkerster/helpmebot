@@ -20,6 +20,7 @@ namespace helpmebot6.Commands
     using System.Xml;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -32,6 +33,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Returns the user rights of a wikipedian
     /// </summary>
+    [CommandInvocation("rights")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Rights : GenericCommand
     {
         #region Constructors and Destructors

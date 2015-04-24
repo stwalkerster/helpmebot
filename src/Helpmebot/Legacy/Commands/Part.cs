@@ -21,6 +21,7 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
@@ -29,6 +30,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Leave an IRC channel
     /// </summary>
+    [CommandInvocation("part")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Part : GenericCommand
     {
         /// <summary>

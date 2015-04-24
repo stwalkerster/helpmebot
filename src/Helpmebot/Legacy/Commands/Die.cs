@@ -17,17 +17,22 @@
 //   Kills the bot.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace helpmebot6.Commands
 {
+    using System.Linq;
+
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     ///   Kills the bot.
     /// </summary>
-    internal class Die : ProtectedCommand
+    [CommandInvocation("die")]
+    [CommandFlag(Flag.LegacySuperuser)]
+    internal class Die : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Die"/> class.
@@ -55,18 +60,12 @@ namespace helpmebot6.Commands
         /// <returns>null - the bot should be shutting down</returns>
         protected override CommandResponseHandler ExecuteCommand()
         {
-            Helpmebot6.Stop();
-            return null;
-        }
-
-        /// <summary>
-        /// The not confirmed.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="CommandResponseHandler"/>.
-        /// </returns>
-        protected override CommandResponseHandler NotConfirmed()
-        {
+            if (this.Arguments.Contains("@confirm"))
+            {            
+                Helpmebot6.Stop();
+                return null;
+            }
+            
             return new CommandResponseHandler(this.CommandServiceHelper.MessageService.RetrieveMessage("Die-unconfirmed", this.Channel, null));
         }
     }

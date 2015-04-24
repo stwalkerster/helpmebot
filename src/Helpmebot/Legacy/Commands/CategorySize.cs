@@ -24,6 +24,7 @@ namespace helpmebot6.Commands
     using System.Globalization;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -33,6 +34,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Count how many articles are in a category.
     /// </summary>
+    [CommandInvocation("categorysize")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Categorysize : GenericCommand
     {
         /// <summary>

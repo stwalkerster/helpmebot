@@ -17,13 +17,17 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     /// <summary>
     ///     The ping command
     /// </summary>
+    [CommandInvocation("ping")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Ping : GenericCommand
     {
         #region Constructors and Destructors

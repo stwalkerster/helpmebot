@@ -20,13 +20,17 @@
 
 namespace helpmebot6.Commands
 {
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// The salmon.
     /// </summary>
+    [CommandInvocation("salmon")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Salmon : ProtectedTargetedFunCommand
     {
         /// <summary>

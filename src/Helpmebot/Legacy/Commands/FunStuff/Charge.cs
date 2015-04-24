@@ -23,13 +23,17 @@ namespace helpmebot6.Commands
     using System;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// The charge.
     /// </summary>
+    [CommandInvocation("charge")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Charge : ProtectedTargetedFunCommand
     {
         /// <summary>

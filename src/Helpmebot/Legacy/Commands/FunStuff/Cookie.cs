@@ -20,13 +20,17 @@
 
 namespace helpmebot6.Commands
 {
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// Gives a user a cookie.
     /// </summary>
+    [CommandInvocation("cookie")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Cookie : TargetedFunCommand
     {
         /// <summary>

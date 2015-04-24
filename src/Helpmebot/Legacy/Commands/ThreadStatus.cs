@@ -17,13 +17,17 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Threading;
 
     /// <summary>
     ///     Retrieve the internal status of the bot's subsystems
     /// </summary>
+    [CommandInvocation("threadstatus")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Threadstatus : GenericCommand
     {
         #region Constructors and Destructors

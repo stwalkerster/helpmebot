@@ -20,13 +20,17 @@ namespace helpmebot6.Commands
     using System.Globalization;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     /// <summary>
     ///     Returns the age of a wikipedian
     /// </summary>
+    [CommandInvocation("age")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Age : GenericCommand
     {
         #region Constructors and Destructors

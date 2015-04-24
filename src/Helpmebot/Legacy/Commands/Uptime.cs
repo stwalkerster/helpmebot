@@ -17,12 +17,16 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     ///     Gets the uptime of the bot
     /// </summary>
+    [CommandInvocation("uptime")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Uptime : GenericCommand
     {
         #region Constructors and Destructors

@@ -17,6 +17,7 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
@@ -26,6 +27,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Controls the bots silencer
     /// </summary>
+    [CommandInvocation("silence")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Silence : GenericCommand
     {
         #region Constructors and Destructors

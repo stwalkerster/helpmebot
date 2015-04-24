@@ -17,14 +17,18 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     using helpmebot6.Commands.FunStuff;
 
     /// <summary>
     ///     The exorcise.
     /// </summary>
+    [CommandInvocation("exorcise")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Exorcise : FunCommand
     {
         #region Constructors and Destructors

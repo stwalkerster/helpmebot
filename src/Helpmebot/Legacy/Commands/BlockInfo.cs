@@ -19,6 +19,7 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -28,6 +29,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Returns the block information of a wikipedian
     /// </summary>
+    [CommandInvocation("blockinfo")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Blockinfo : GenericCommand
     {
         #region Constructors and Destructors

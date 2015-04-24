@@ -26,6 +26,7 @@ namespace helpmebot6.Commands
     using System.Text.RegularExpressions;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
@@ -33,6 +34,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Decodes a hex-encoded IP address
     /// </summary>
+    [CommandInvocation("decode")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Decode : GenericCommand
     {
         /// <summary>

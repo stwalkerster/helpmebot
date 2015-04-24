@@ -21,6 +21,7 @@
 namespace helpmebot6.Commands
 {
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
@@ -30,6 +31,8 @@ namespace helpmebot6.Commands
     /// Uncurl command to set the bot's hedgehog status to false.
     /// </summary>
     /// <remarks>This is a fun command, but because FunCommand checks hedgehog is false, that base class can't be used.</remarks>
+    [CommandInvocation("uncurl")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Uncurl : GenericCommand
     {
         /// <summary>

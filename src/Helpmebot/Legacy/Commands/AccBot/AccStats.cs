@@ -25,15 +25,19 @@ namespace helpmebot6.Commands
     using System.Xml.XPath;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     using HttpRequest = Helpmebot.HttpRequest;
 
     /// <summary>
     /// The stats of the account creation interface.
     /// </summary>
+    [CommandInvocation("accstats")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Accstats : GenericCommand
     {
         /// <summary>

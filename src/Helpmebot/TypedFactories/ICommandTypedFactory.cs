@@ -22,8 +22,6 @@ namespace Helpmebot.TypedFactories
 {
     using System.Collections.Generic;
 
-    using Castle.MicroKernel.ModelBuilder.Descriptors;
-
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model.Interfaces;

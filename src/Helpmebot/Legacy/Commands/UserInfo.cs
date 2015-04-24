@@ -28,6 +28,7 @@ namespace helpmebot6.Commands
     using Castle.Core.Logging;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -55,6 +56,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///   Returns the user information about a specified user
     /// </summary>
+    [CommandInvocation("userinfo")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Userinfo : GenericCommand
     {
         /// <summary>

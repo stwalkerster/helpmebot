@@ -20,12 +20,16 @@
 
 namespace helpmebot6.Commands
 {
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     ///   Returns the current date/time. Alias for Time.
     /// </summary>
+    [CommandInvocation("date")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Date : Time
     {
         /// <summary>

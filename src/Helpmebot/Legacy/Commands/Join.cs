@@ -23,6 +23,7 @@ namespace helpmebot6.Commands
     using System.Globalization;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Legacy.Model;
@@ -34,6 +35,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///   Joins an IRC channel
     /// </summary>
+    [CommandInvocation("join")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Join : GenericCommand
     {
         /// <summary>

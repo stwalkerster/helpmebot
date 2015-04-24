@@ -20,13 +20,17 @@
 
 namespace helpmebot6.Commands
 {
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
 
     /// <summary>
     /// hits a user with a clue bat
     /// </summary>
+    [CommandInvocation("cluebat")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Cluebat : ProtectedTargetedFunCommand
     {
         /// <summary>

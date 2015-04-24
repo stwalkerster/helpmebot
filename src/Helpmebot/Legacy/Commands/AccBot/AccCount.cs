@@ -21,9 +21,11 @@ namespace helpmebot6.Commands
     using System.Xml.XPath;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     using HttpRequest = Helpmebot.HttpRequest;
@@ -31,6 +33,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     The ACC count.
     /// </summary>
+    [CommandInvocation("acccount")]
+    [CommandFlag(Flag.LegacyAdvanced)] 
     internal class Acccount : GenericCommand
     {
         #region Constructors and Destructors

@@ -19,6 +19,7 @@ namespace helpmebot6.Commands
     using System.Xml;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -28,6 +29,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Returns the maximum replication lag on the wiki
     /// </summary>
+    [CommandInvocation("maxlag")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Maxlag : GenericCommand
     {
         #region Constructors and Destructors

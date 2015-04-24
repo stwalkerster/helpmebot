@@ -25,6 +25,7 @@ namespace helpmebot6.Commands
     using System.Net.Sockets;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
@@ -32,6 +33,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Perform a reverse DNS lookup on an IP address.
     /// </summary>
+    [CommandInvocation("resolve")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Resolve : GenericCommand
     {
         /// <summary>

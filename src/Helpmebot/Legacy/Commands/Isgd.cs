@@ -24,6 +24,7 @@ namespace helpmebot6.Commands
     using System.Linq;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
@@ -32,6 +33,8 @@ namespace helpmebot6.Commands
     /// <summary>
     /// Shortens a URL
     /// </summary>
+    [CommandInvocation("isgd")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Isgd : GenericCommand
     {
         /// <summary>

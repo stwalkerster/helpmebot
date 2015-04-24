@@ -21,9 +21,11 @@ namespace helpmebot6.Commands
     using Castle.Core.Logging;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Database;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -33,6 +35,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Modifies the bot's access list
     /// </summary>
+    [CommandInvocation("access")]
+    [CommandFlag(Flag.LegacySuperuser)]
     internal class Access : GenericCommand
     {
         #region Fields

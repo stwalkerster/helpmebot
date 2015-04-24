@@ -22,6 +22,7 @@ namespace helpmebot6.Commands
     using System.Xml;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -34,6 +35,8 @@ namespace helpmebot6.Commands
     /// <summary>
     ///     Returns the registration date of a wikipedian
     /// </summary>
+    [CommandInvocation("registration")]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Registration : GenericCommand
     {
         #region Static Fields

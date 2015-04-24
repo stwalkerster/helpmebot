@@ -24,16 +24,17 @@ namespace helpmebot6.Commands
     using System.Net;
 
     using Helpmebot;
+    using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
 
-    using NHibernate.Param;
-
     /// <summary>
     /// Discovers the location of an IP address
     /// </summary>
+    [CommandInvocation("geolocate")]
+    [CommandFlag(Flag.LegacyAdvanced)]
     internal class Geolocate : GenericCommand
     {
         /// <summary>
