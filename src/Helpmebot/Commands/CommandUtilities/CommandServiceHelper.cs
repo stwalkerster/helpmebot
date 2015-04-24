@@ -13,6 +13,9 @@
 //   You should have received a copy of the GNU General Public License
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
+// <summary>
+//   The command service helper.
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Commands.CommandUtilities
 {
@@ -28,6 +31,11 @@ namespace Helpmebot.Commands.CommandUtilities
     public class CommandServiceHelper : ICommandServiceHelper
     {
         #region Fields
+
+        /// <summary>
+        /// The access log service.
+        /// </summary>
+        private readonly IAccessLogService accessLogService;
 
         /// <summary>
         /// The channel repository.
@@ -64,6 +72,11 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </summary>
         private readonly IUrlShorteningService urlShorteningService;
 
+        /// <summary>
+        /// The user flag service.
+        /// </summary>
+        private readonly IUserFlagService userFlagService;
+
         #endregion
 
         #region Constructors and Destructors
@@ -92,6 +105,12 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <param name="channelRepository">
         /// The channel Repository.
         /// </param>
+        /// <param name="userFlagService">
+        /// The user Flag Service.
+        /// </param>
+        /// <param name="accessLogService">
+        /// The access Log Service.
+        /// </param>
         public CommandServiceHelper(
             IIrcClient client, 
             IMessageService messageService, 
@@ -99,8 +118,12 @@ namespace Helpmebot.Commands.CommandUtilities
             IConfigurationHelper configurationHelper, 
             IMediaWikiSiteRepository mediaWikiSiteRepository, 
             IInterwikiPrefixRepository interwikiPrefixRepository, 
-            IChannelRepository channelRepository)
+            IChannelRepository channelRepository, 
+            IUserFlagService userFlagService, 
+            IAccessLogService accessLogService)
         {
+            this.userFlagService = userFlagService;
+            this.accessLogService = accessLogService;
             this.client = client;
             this.messageService = messageService;
             this.urlShorteningService = urlShorteningService;
@@ -113,6 +136,17 @@ namespace Helpmebot.Commands.CommandUtilities
         #endregion
 
         #region Public Properties
+
+        /// <summary>
+        /// Gets the access log service.
+        /// </summary>
+        public IAccessLogService AccessLogService
+        {
+            get
+            {
+                return this.accessLogService;
+            }
+        }
 
         /// <summary>
         /// Gets the channel repository.
@@ -188,6 +222,17 @@ namespace Helpmebot.Commands.CommandUtilities
             get
             {
                 return this.urlShorteningService;
+            }
+        }
+
+        /// <summary>
+        /// Gets the user flag service.
+        /// </summary>
+        public IUserFlagService UserFlagService
+        {
+            get
+            {
+                return this.userFlagService;
             }
         }
 

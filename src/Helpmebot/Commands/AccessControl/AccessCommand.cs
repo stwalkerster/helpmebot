@@ -28,14 +28,12 @@ namespace Helpmebot.Commands.AccessControl
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
-    using Helpmebot.Configuration;
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.IRC.Model;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
-    using Helpmebot.Services.Interfaces;
 
     using NHibernate;
 
@@ -60,49 +58,23 @@ namespace Helpmebot.Commands.AccessControl
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="userFlagService">
-        /// The user Flag Service.
-        /// </param>
         /// <param name="logger">
         /// The logger.
-        /// </param>
-        /// <param name="messageService">
-        /// The message Service.
-        /// </param>
-        /// <param name="accessLogService">
-        /// The access Log Service.
-        /// </param>
-        /// <param name="client">
-        /// The client.
         /// </param>
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
-        /// <param name="configurationHelper">
-        /// The configuration Helper.
+        /// <param name="commandServiceHelper">
+        /// The command Service Helper.
         /// </param>
         public AccessCommand(
             string commandSource, 
             IUser user, 
             IEnumerable<string> arguments, 
-            IUserFlagService userFlagService, 
             ILogger logger, 
-            IMessageService messageService, 
-            IAccessLogService accessLogService, 
-            IIrcClient client, 
             ISession databaseSession, 
-            IConfigurationHelper configurationHelper)
-            : base(
-                commandSource, 
-                user, 
-                arguments, 
-                userFlagService, 
-                logger, 
-                messageService, 
-                accessLogService, 
-                client, 
-                databaseSession, 
-                configurationHelper)
+            ICommandServiceHelper commandServiceHelper)
+            : base(commandSource, user, arguments, logger, databaseSession, commandServiceHelper)
         {
         }
 
@@ -211,7 +183,7 @@ namespace Helpmebot.Commands.AccessControl
 
             this.DatabaseSession.Save(flagGroupUser);
 
-            this.UserFlagService.InvalidateCache();
+            this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
             var response = new CommandResponse { Message = string.Format("Added to user mask {0}", flagGroupUser) };
             return response.ToEnumerable();
@@ -256,8 +228,7 @@ namespace Helpmebot.Commands.AccessControl
                         x.Account == (user.Account ?? "*") && x.Nickname == (user.Nickname ?? "*")
                         && x.Username == (user.Username ?? "*") && x.Hostname == (user.Hostname ?? "*")
                         // ReSharper disable once PossibleUnintendedReferenceComparison
-                        && x.FlagGroup == group)
-                    .SingleOrDefault();
+                        && x.FlagGroup == group).SingleOrDefault();
 
             if (flagGroupUser.Protected)
             {
@@ -266,7 +237,7 @@ namespace Helpmebot.Commands.AccessControl
 
             this.DatabaseSession.Delete(flagGroupUser);
 
-            this.UserFlagService.InvalidateCache();
+            this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
             var response = new CommandResponse { Message = string.Format("Deleted from user mask {0}", flagGroupUser) };
             return response.ToEnumerable();

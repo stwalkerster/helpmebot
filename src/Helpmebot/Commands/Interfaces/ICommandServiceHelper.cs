@@ -64,6 +64,16 @@ namespace Helpmebot.Commands.Interfaces
         /// </summary>
         IChannelRepository ChannelRepository { get; }
 
+        /// <summary>
+        /// Gets the access log service.
+        /// </summary>
+        IAccessLogService AccessLogService { get; }
+
+        /// <summary>
+        /// Gets the user flag service.
+        /// </summary>
+        IUserFlagService UserFlagService { get; }
+
         #endregion
     }
 }

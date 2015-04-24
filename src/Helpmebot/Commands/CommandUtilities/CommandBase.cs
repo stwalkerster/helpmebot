@@ -33,13 +33,10 @@ namespace Helpmebot.Commands.CommandUtilities
     using Helpmebot.Configuration;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
-    using Helpmebot.Services.Interfaces;
 
     using NHibernate;
-    using NHibernate.Mapping;
 
     /// <summary>
     /// The command base.
@@ -47,6 +44,11 @@ namespace Helpmebot.Commands.CommandUtilities
     public abstract class CommandBase : ICommand
     {
         #region Fields
+
+        /// <summary>
+        /// The command service helper.
+        /// </summary>
+        private readonly ICommandServiceHelper commandServiceHelper;
 
         /// <summary>
         /// The configuration helper.
@@ -69,49 +71,30 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="userFlagService">
-        /// The user Flag Service.
-        /// </param>
         /// <param name="logger">
         /// The logger.
-        /// </param>
-        /// <param name="messageService">
-        /// The message Service.
-        /// </param>
-        /// <param name="accessLogService">
-        /// The access Log Service.
-        /// </param>
-        /// <param name="client">
-        /// The client.
         /// </param>
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
-        /// <param name="configurationHelper">
-        /// The configuration Helper.
+        /// <param name="commandServiceHelper">
+        /// The command Service Helper.
         /// </param>
         protected CommandBase(
             string commandSource, 
             IUser user, 
             IEnumerable<string> arguments, 
-            IUserFlagService userFlagService, 
             ILogger logger, 
-            IMessageService messageService, 
-            IAccessLogService accessLogService, 
-            IIrcClient client, 
             ISession databaseSession, 
-            IConfigurationHelper configurationHelper)
+            ICommandServiceHelper commandServiceHelper)
         {
-            this.configurationHelper = configurationHelper;
+            this.commandServiceHelper = commandServiceHelper;
+            this.configurationHelper = commandServiceHelper.ConfigurationHelper;
             this.DatabaseSession = databaseSession;
-            this.Client = client;
-            this.AccessLogService = accessLogService;
-            this.MessageService = messageService;
             this.Logger = logger;
             this.CommandSource = commandSource;
             this.User = user;
             this.Arguments = arguments;
-            this.UserFlagService = userFlagService;
         }
 
         #endregion
@@ -122,11 +105,6 @@ namespace Helpmebot.Commands.CommandUtilities
         /// Gets the arguments to the command.
         /// </summary>
         public IEnumerable<string> Arguments { get; private set; }
-
-        /// <summary>
-        /// Gets the client.
-        /// </summary>
-        public IIrcClient Client { get; private set; }
 
         /// <summary>
         /// Gets the command name.
@@ -142,6 +120,17 @@ namespace Helpmebot.Commands.CommandUtilities
                 }
 
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the command service helper.
+        /// </summary>
+        public ICommandServiceHelper CommandServiceHelper
+        {
+            get
+            {
+                return this.commandServiceHelper;
             }
         }
 
@@ -186,24 +175,9 @@ namespace Helpmebot.Commands.CommandUtilities
         #region Properties
 
         /// <summary>
-        /// Gets the access log service.
-        /// </summary>
-        protected IAccessLogService AccessLogService { get; private set; }
-
-        /// <summary>
         /// Gets the logger.
         /// </summary>
         protected ILogger Logger { get; private set; }
-
-        /// <summary>
-        /// Gets the message service.
-        /// </summary>
-        protected IMessageService MessageService { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the user flag service.
-        /// </summary>
-        protected IUserFlagService UserFlagService { get; set; }
 
         #endregion
 
@@ -217,7 +191,7 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </returns>
         public virtual bool CanExecute()
         {
-            return this.UserFlagService.GetFlagsForUser(this.User).Contains(this.Flag);
+            return this.CommandServiceHelper.UserFlagService.GetFlagsForUser(this.User).Contains(this.Flag);
         }
 
         /// <summary>
@@ -268,7 +242,11 @@ namespace Helpmebot.Commands.CommandUtilities
 
             if (this.CanExecute())
             {
-                this.AccessLogService.Success(this.User, this.GetType(), this.Arguments, this.CommandSource);
+                this.CommandServiceHelper.AccessLogService.Success(
+                    this.User, 
+                    this.GetType(), 
+                    this.Arguments, 
+                    this.CommandSource);
 
                 try
                 {
@@ -376,7 +354,11 @@ namespace Helpmebot.Commands.CommandUtilities
                 }
             }
 
-            this.AccessLogService.Failure(this.User, this.GetType(), this.Arguments, this.CommandSource);
+            this.CommandServiceHelper.AccessLogService.Failure(
+                this.User, 
+                this.GetType(), 
+                this.Arguments, 
+                this.CommandSource);
 
             this.Logger.InfoFormat("Access denied for user {0}", this.User);
 
@@ -413,10 +395,10 @@ namespace Helpmebot.Commands.CommandUtilities
             return new Dictionary<string, HelpMessage>
                        {
                            {
-                               string.Empty,
+                               string.Empty, 
                                new HelpMessage(
-                               this.CommandName,
-                               string.Empty,
+                               this.CommandName, 
+                               string.Empty, 
                                "No help is available for this command.")
                            }
                        };
@@ -434,7 +416,7 @@ namespace Helpmebot.Commands.CommandUtilities
                                {
                                    Destination = CommandResponseDestination.PrivateMessage, 
                                    Message =
-                                       this.MessageService.RetrieveMessage(
+                                       this.CommandServiceHelper.MessageService.RetrieveMessage(
                                            Messages.OnAccessDenied, 
                                            this.CommandSource, 
                                            null)

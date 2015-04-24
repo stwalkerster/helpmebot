@@ -17,7 +17,6 @@
 //   The help command.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Helpmebot.Commands
 {
     using System.Collections.Generic;
@@ -28,10 +27,9 @@ namespace Helpmebot.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
-    using Helpmebot.Configuration;
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
@@ -57,8 +55,7 @@ namespace Helpmebot.Commands
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="HelpCommand"/> class. 
-        /// Initialises a new instance of the <see cref="CommandBase"/> class.
+        /// Initialises a new instance of the <see cref="HelpCommand"/> class.
         /// </summary>
         /// <param name="commandSource">
         /// The command source.
@@ -69,26 +66,14 @@ namespace Helpmebot.Commands
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="userFlagService">
-        /// The user Flag Service.
-        /// </param>
         /// <param name="logger">
         /// The logger.
-        /// </param>
-        /// <param name="messageService">
-        /// The message Service.
-        /// </param>
-        /// <param name="accessLogService">
-        /// The access Log Service.
-        /// </param>
-        /// <param name="client">
-        /// The client.
         /// </param>
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
-        /// <param name="configurationHelper">
-        /// The configuration Helper.
+        /// <param name="commandServiceHelper">
+        /// The command Service Helper.
         /// </param>
         /// <param name="commandParser">
         /// The command Parser.
@@ -97,25 +82,11 @@ namespace Helpmebot.Commands
             string commandSource, 
             IUser user, 
             IEnumerable<string> arguments, 
-            IUserFlagService userFlagService, 
             ILogger logger, 
-            IMessageService messageService, 
-            IAccessLogService accessLogService, 
-            IIrcClient client, 
             ISession databaseSession, 
-            IConfigurationHelper configurationHelper, 
+            ICommandServiceHelper commandServiceHelper, 
             ICommandParser commandParser)
-            : base(
-                commandSource, 
-                user, 
-                arguments, 
-                userFlagService, 
-                logger, 
-                messageService, 
-                accessLogService, 
-                client, 
-                databaseSession, 
-                configurationHelper)
+            : base(commandSource, user, arguments, logger, databaseSession, commandServiceHelper)
         {
             this.commandParser = commandParser;
         }
@@ -144,20 +115,20 @@ namespace Helpmebot.Commands
                 new CommandMessage { CommandName = commandName }, 
                 this.User, 
                 this.CommandSource, 
-                this.Client);
+                this.CommandServiceHelper.Client);
 
             if (command == null)
             {
                 return
                     new CommandResponse
                         {
-                            Message = "The specified command could not be found.",
+                            Message = "The specified command could not be found.", 
                             Destination = CommandResponseDestination.PrivateMessage
                         }.ToEnumerable();
             }
 
             var helpResponses = command.HelpMessage(key).ToList();
-            
+
             return helpResponses;
         }
 
@@ -172,17 +143,17 @@ namespace Helpmebot.Commands
             return new Dictionary<string, HelpMessage>
                        {
                            {
-                               string.Empty,
+                               string.Empty, 
                                new HelpMessage(
-                               this.CommandName,
-                               "<Command>",
+                               this.CommandName, 
+                               "<Command>", 
                                "Returns all available help for the specified command.")
-                           },
+                           }, 
                            {
-                               "command",
+                               "command", 
                                new HelpMessage(
-                               this.CommandName,
-                               "<Command> <SubCommand>",
+                               this.CommandName, 
+                               "<Command> <SubCommand>", 
                                "Returns the help for the specified subcommand.")
                            }
                        };

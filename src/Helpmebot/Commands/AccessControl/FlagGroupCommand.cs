@@ -28,13 +28,11 @@ namespace Helpmebot.Commands.AccessControl
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
-    using Helpmebot.Configuration;
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.Exceptions;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
-    using Helpmebot.Services.Interfaces;
 
     using NHibernate;
 
@@ -59,49 +57,23 @@ namespace Helpmebot.Commands.AccessControl
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="userFlagService">
-        /// The user Flag Service.
-        /// </param>
         /// <param name="logger">
         /// The logger.
-        /// </param>
-        /// <param name="messageService">
-        /// The message Service.
-        /// </param>
-        /// <param name="accessLogService">
-        /// The access Log Service.
-        /// </param>
-        /// <param name="client">
-        /// The client.
         /// </param>
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
-        /// <param name="configurationHelper">
-        /// The configuration Helper.
+        /// <param name="commandServiceHelper">
+        /// The command Service Helper.
         /// </param>
         public FlagGroupCommand(
             string commandSource, 
             IUser user, 
             IEnumerable<string> arguments, 
-            IUserFlagService userFlagService, 
             ILogger logger, 
-            IMessageService messageService, 
-            IAccessLogService accessLogService, 
-            IIrcClient client, 
             ISession databaseSession, 
-            IConfigurationHelper configurationHelper)
-            : base(
-                commandSource, 
-                user, 
-                arguments, 
-                userFlagService, 
-                logger, 
-                messageService, 
-                accessLogService, 
-                client, 
-                databaseSession, 
-                configurationHelper)
+            ICommandServiceHelper commandServiceHelper)
+            : base(commandSource, user, arguments, logger, databaseSession, commandServiceHelper)
         {
         }
 
@@ -280,7 +252,7 @@ namespace Helpmebot.Commands.AccessControl
             existing.Apply(item => responses.Add(new CommandResponse { Message = item.ToString() }));
             existing.Apply(this.DatabaseSession.Delete);
 
-            this.UserFlagService.InvalidateCache();
+            this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
             return responses;
         }
@@ -316,7 +288,7 @@ namespace Helpmebot.Commands.AccessControl
             group.DenyGroup = denyGroup;
 
             this.DatabaseSession.SaveOrUpdate(group);
-            this.UserFlagService.InvalidateCache();
+            this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
             return new CommandResponse { Message = group.ToString() }.ToEnumerable();
         }
@@ -376,7 +348,7 @@ namespace Helpmebot.Commands.AccessControl
             }
 
             this.DatabaseSession.SaveOrUpdate(group);
-            this.UserFlagService.InvalidateCache();
+            this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
             return new CommandResponse { Message = group.ToString() }.ToEnumerable();
         }

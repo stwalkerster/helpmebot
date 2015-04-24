@@ -36,7 +36,7 @@ namespace Helpmebot.Tests.Services
     /// The command parser tests.
     /// </summary>
     [TestFixture]
-    public class CommandParserTests
+    public class CommandParserTests : TestBase
     {
         #region Fields
 
@@ -70,10 +70,9 @@ namespace Helpmebot.Tests.Services
         #region Public Methods and Operators
 
         /// <summary>
-        /// The setup.
+        /// The local setup.
         /// </summary>
-        [TestFixtureSetUp]
-        public void Setup()
+        public override void LocalSetup()
         {
             this.ircClient.SetupProperty(client => client.Nickname, "BotNickname");
         }
@@ -198,7 +197,8 @@ namespace Helpmebot.Tests.Services
                 "~", 
                 this.factory.Object, 
                 this.keywordService.Object, 
-                this.keywordFactory.Object);
+                this.keywordFactory.Object, 
+                this.Logger.Object);
             const string Test = "~command arg one two three";
             var message = new CommandMessage
                               {
@@ -651,7 +651,8 @@ namespace Helpmebot.Tests.Services
                 "!", 
                 this.factory.Object, 
                 this.keywordService.Object, 
-                this.keywordFactory.Object);
+                this.keywordFactory.Object, 
+                this.Logger.Object);
         }
 
         #endregion

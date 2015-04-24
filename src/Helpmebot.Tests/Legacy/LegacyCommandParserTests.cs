@@ -112,7 +112,12 @@ namespace Helpmebot.Tests.Legacy
             IKeywordService keywordService = new Mock<IKeywordService>().Object;
             IKeywordCommandFactory keywordFactory = new Mock<IKeywordCommandFactory>().Object;
 
-            var commandParser = new CommandParser("!", commandFactory, keywordService, keywordFactory);
+            var commandParser = new CommandParser(
+                "!",
+                commandFactory,
+                keywordService,
+                keywordFactory,
+                this.Logger.Object);
             windsorContainer.Register(Component.For<ICommandParser>().Instance(commandParser));
         }
 

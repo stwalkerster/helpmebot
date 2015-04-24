@@ -28,12 +28,10 @@ namespace Helpmebot.Commands
 
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
-    using Helpmebot.Configuration;
+    using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
-    using Helpmebot.Services.Interfaces;
 
     using NHibernate;
 
@@ -66,53 +64,27 @@ namespace Helpmebot.Commands
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="userFlagService">
-        /// The user Flag Service.
-        /// </param>
         /// <param name="logger">
         /// The logger.
-        /// </param>
-        /// <param name="messageService">
-        /// The message Service.
-        /// </param>
-        /// <param name="accessLogService">
-        /// The access Log Service.
-        /// </param>
-        /// <param name="client">
-        /// The client.
         /// </param>
         /// <param name="databaseSession">
         /// The database Session.
         /// </param>
-        /// <param name="configurationHelper">
-        /// The configuration Helper.
+        /// <param name="commandServiceHelper">
+        /// The command Service Helper.
         /// </param>
         /// <param name="keyword">
         /// The keyword.
         /// </param>
         public KeywordRetrieveCommand(
-            string commandSource,
-            IUser user,
-            IEnumerable<string> arguments,
-            IUserFlagService userFlagService,
-            ILogger logger,
-            IMessageService messageService,
-            IAccessLogService accessLogService,
-            IIrcClient client,
-            ISession databaseSession,
-            IConfigurationHelper configurationHelper,
+            string commandSource, 
+            IUser user, 
+            IEnumerable<string> arguments, 
+            ILogger logger, 
+            ISession databaseSession, 
+            ICommandServiceHelper commandServiceHelper,
             Keyword keyword)
-            : base(
-                commandSource,
-                user,
-                arguments,
-                userFlagService,
-                logger,
-                messageService,
-                accessLogService,
-                client,
-                databaseSession,
-                configurationHelper)
+            : base(commandSource, user, arguments, logger, databaseSession, commandServiceHelper)
         {
             this.keyword = keyword;
         }
