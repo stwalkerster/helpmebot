@@ -255,7 +255,8 @@ namespace Helpmebot.Commands.AccessControl
                         x =>
                         x.Account == (user.Account ?? "*") && x.Nickname == (user.Nickname ?? "*")
                         && x.Username == (user.Username ?? "*") && x.Hostname == (user.Hostname ?? "*")
-                        && x.FlagGroup == @group)
+                        // ReSharper disable once PossibleUnintendedReferenceComparison
+                        && x.FlagGroup == group)
                     .SingleOrDefault();
 
             if (flagGroupUser.Protected)
