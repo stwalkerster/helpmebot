@@ -85,6 +85,7 @@
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
     <Compile Include="Commands\CommandUtilities\Models\RedirectionResult.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Exceptions\ArgumentCountException.cs" />
     <Compile Include="Commands\AccessControl\FlagGroupCommand.cs" />
     <Compile Include="Commands\CommandUtilities\CommandBase.cs" />

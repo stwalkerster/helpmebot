@@ -19,6 +19,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Commands.CommandUtilities
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
@@ -38,16 +39,21 @@ namespace Helpmebot.Commands.CommandUtilities
     using Helpmebot.Services.Interfaces;
 
     using NHibernate;
+    using NHibernate.Mapping;
 
     /// <summary>
     /// The command base.
     /// </summary>
     public abstract class CommandBase : ICommand
     {
+        #region Fields
+
         /// <summary>
         /// The configuration helper.
         /// </summary>
         private readonly IConfigurationHelper configurationHelper;
+
+        #endregion
 
         #region Constructors and Destructors
 
@@ -93,7 +99,7 @@ namespace Helpmebot.Commands.CommandUtilities
             IMessageService messageService, 
             IAccessLogService accessLogService, 
             IIrcClient client, 
-            ISession databaseSession,
+            ISession databaseSession, 
             IConfigurationHelper configurationHelper)
         {
             this.configurationHelper = configurationHelper;
@@ -121,6 +127,23 @@ namespace Helpmebot.Commands.CommandUtilities
         /// Gets the client.
         /// </summary>
         public IIrcClient Client { get; private set; }
+
+        /// <summary>
+        /// Gets the command name.
+        /// </summary>
+        public string CommandName
+        {
+            get
+            {
+                var customAttributes = this.GetType().GetCustomAttributes(typeof(CommandInvocationAttribute), false);
+                if (customAttributes.Length > 0)
+                {
+                    return ((CommandInvocationAttribute)customAttributes.First()).CommandName;
+                }
+
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets the source (where the command was triggered).
@@ -157,23 +180,6 @@ namespace Helpmebot.Commands.CommandUtilities
         /// Gets the user who triggered the command.
         /// </summary>
         public IUser User { get; private set; }
-
-        /// <summary>
-        /// Gets the command name.
-        /// </summary>
-        public string CommandName
-        {
-            get
-            {
-                var customAttributes = this.GetType().GetCustomAttributes(typeof(CommandInvocationAttribute), false);
-                if (customAttributes.Length > 0)
-                {
-                    return ((CommandInvocationAttribute)customAttributes.First()).CommandName;
-                }
-
-                return null;
-            }
-        }
 
         #endregion
 
@@ -212,6 +218,40 @@ namespace Helpmebot.Commands.CommandUtilities
         public virtual bool CanExecute()
         {
             return this.UserFlagService.GetFlagsForUser(this.User).Contains(this.Flag);
+        }
+
+        /// <summary>
+        /// The help message.
+        /// </summary>
+        /// <param name="helpKey">
+        /// The help Key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        public IEnumerable<CommandResponse> HelpMessage(string helpKey = null)
+        {
+            var helpMessages = this.Help();
+
+            var commandTrigger = this.configurationHelper.CoreConfiguration.CommandTrigger;
+
+            if (helpMessages == null)
+            {
+                return new List<CommandResponse>();
+            }
+
+            if (helpKey != null && helpMessages.ContainsKey(helpKey))
+            {
+                return helpMessages[helpKey].ToCommandResponses(commandTrigger);
+            }
+
+            var help = new List<CommandResponse>();
+            foreach (var helpMessage in helpMessages)
+            {
+                help.AddRange(helpMessage.Value.ToCommandResponses(commandTrigger));
+            }
+
+            return help;
         }
 
         /// <summary>
@@ -263,7 +303,7 @@ namespace Helpmebot.Commands.CommandUtilities
                                                 {
                                                     Destination =
                                                         CommandResponseDestination
-                                                        .Default,
+                                                        .Default, 
                                                     Message = e.Message
                                                 }
                                         };
@@ -297,6 +337,25 @@ namespace Helpmebot.Commands.CommandUtilities
                                };
                 }
                 catch (ADOException e)
+                {
+                    this.Logger.Error("Command encountered an issue during execution.", e);
+
+                    if (transaction.IsActive)
+                    {
+                        transaction.Rollback();
+                    }
+
+                    return new List<CommandResponse>
+                               {
+                                   new CommandResponse
+                                       {
+                                           Destination =
+                                               CommandResponseDestination.Default, 
+                                           Message = e.Message
+                                       }
+                               };
+                }
+                catch (Exception e)
                 {
                     this.Logger.Error("Command encountered an issue during execution.", e);
 
@@ -351,7 +410,16 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </returns>
         protected virtual IDictionary<string, HelpMessage> Help()
         {
-            return null;
+            return new Dictionary<string, HelpMessage>
+                       {
+                           {
+                               string.Empty,
+                               new HelpMessage(
+                               this.CommandName,
+                               string.Empty,
+                               "No help is available for this command.")
+                           }
+                       };
         }
 
         /// <summary>
@@ -384,42 +452,6 @@ namespace Helpmebot.Commands.CommandUtilities
         protected virtual IEnumerable<CommandResponse> OnCompleted()
         {
             return null;
-        }
-
-        /// <summary>
-        /// The help message.
-        /// </summary>
-        /// <param name="helpKey">
-        /// The help Key.
-        /// </param>
-        /// <returns>
-        /// The <see cref="IEnumerable{CommandResponse}"/>.
-        /// </returns>
-        private IEnumerable<CommandResponse> HelpMessage(string helpKey = null)
-        {
-            var helpMessages = this.Help();
-
-            var commandTrigger = this.configurationHelper.CoreConfiguration.CommandTrigger;
-
-            if (helpMessages == null)
-            {
-                return
-                    new HelpMessage(string.Empty, string.Empty, "No help is available for this command.")
-                        .ToCommandResponses(commandTrigger);
-            }
-
-            if (helpKey != null && helpMessages.ContainsKey(helpKey))
-            {
-                return helpMessages[helpKey].ToCommandResponses(commandTrigger);
-            }
-
-            var help = new List<CommandResponse>();
-            foreach (var helpMessage in helpMessages)
-            {
-                help.AddRange(helpMessage.Value.ToCommandResponses(commandTrigger));
-            }
-
-            return help;
         }
 
         #endregion

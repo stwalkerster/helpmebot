@@ -46,6 +46,11 @@ namespace Helpmebot.Commands.Interfaces
         string Flag { get; }
 
         /// <summary>
+        /// Gets or sets the original arguments.
+        /// </summary>
+        IEnumerable<string> OriginalArguments { get; set; }
+
+        /// <summary>
         /// Gets or sets the redirection target.
         /// </summary>
         IEnumerable<string> RedirectionTarget { get; set; }
@@ -54,11 +59,6 @@ namespace Helpmebot.Commands.Interfaces
         /// Gets the user who triggered the command.
         /// </summary>
         IUser User { get; }
-
-        /// <summary>
-        /// Gets or sets the original arguments.
-        /// </summary>
-        IEnumerable<string> OriginalArguments { get; set; }
 
         #endregion
 
@@ -71,6 +71,17 @@ namespace Helpmebot.Commands.Interfaces
         /// The <see cref="bool"/>.
         /// </returns>
         bool CanExecute();
+
+        /// <summary>
+        /// The help message.
+        /// </summary>
+        /// <param name="helpKey">
+        /// The help Key.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        IEnumerable<CommandResponse> HelpMessage(string helpKey = null);
 
         /// <summary>
         /// The run.

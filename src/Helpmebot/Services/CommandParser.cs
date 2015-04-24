@@ -26,6 +26,8 @@ namespace Helpmebot.Services
     using System.Reflection;
     using System.Text.RegularExpressions;
 
+    using Castle.Core.Logging;
+
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
@@ -68,6 +70,11 @@ namespace Helpmebot.Services
         /// </summary>
         private readonly IKeywordCommandFactory keywordFactory;
 
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors and Destructors
@@ -87,12 +94,21 @@ namespace Helpmebot.Services
         /// <param name="keywordFactory">
         /// The keyword Factory.
         /// </param>
-        public CommandParser(string commandTrigger, ICommandTypedFactory commandFactory, IKeywordService keywordService, IKeywordCommandFactory keywordFactory)
+        /// <param name="logger">
+        /// The logger.
+        /// </param>
+        public CommandParser(
+            string commandTrigger,
+            ICommandTypedFactory commandFactory,
+            IKeywordService keywordService,
+            IKeywordCommandFactory keywordFactory,
+            ILogger logger)
         {
             this.commandTrigger = commandTrigger;
             this.commandFactory = commandFactory;
             this.keywordService = keywordService;
             this.keywordFactory = keywordFactory;
+            this.logger = logger;
             var types = Assembly.GetExecutingAssembly().GetTypes();
 
             this.commands = new Dictionary<string, Type>();
@@ -130,13 +146,19 @@ namespace Helpmebot.Services
         /// </returns>
         public ICommand GetCommand(CommandMessage commandMessage, IUser user, string destination, IIrcClient client)
         {
-            if (commandMessage == null)
+            if (commandMessage == null || commandMessage.CommandName == null)
             {
+                this.logger.Debug("Returning early from GetCommand - null message!");
                 return null;
             }
 
-            IEnumerable<string> originalArguments =
-                commandMessage.ArgumentList.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            IEnumerable<string> originalArguments = new List<string>();
+
+            if (commandMessage.ArgumentList != null)
+            {
+                originalArguments =
+                    commandMessage.ArgumentList.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
 
             var redirectionResult = this.ParseRedirection(originalArguments);
             IEnumerable<string> arguments = redirectionResult.Arguments;
@@ -144,6 +166,9 @@ namespace Helpmebot.Services
             if (this.commands.ContainsKey(commandMessage.CommandName.ToLower(CultureInfo.InvariantCulture)))
             {
                 Type commandType = this.commands[commandMessage.CommandName.ToLower(CultureInfo.InvariantCulture)];
+                
+                this.logger.InfoFormat("Creating command object of type {0}", commandType);
+
                 ICommand command = this.commandFactory.CreateType(
                     commandType, 
                     destination, 
@@ -160,6 +185,8 @@ namespace Helpmebot.Services
             var keyword = this.keywordService.Get(commandMessage.CommandName);
             if (keyword != null)
             {
+                this.logger.InfoFormat("Creating keyword command object for {0}", commandMessage.CommandName);
+
                 ICommand command = this.keywordFactory.CreateKeyword(
                     destination,
                     user,

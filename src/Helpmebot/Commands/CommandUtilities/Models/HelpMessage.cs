@@ -20,6 +20,9 @@
 namespace Helpmebot.Commands.CommandUtilities.Models
 {
     using System.Collections.Generic;
+    using System.Linq;
+
+    using Helpmebot.ExtensionMethods;
 
     /// <summary>
     /// The help message.
@@ -41,6 +44,57 @@ namespace Helpmebot.Commands.CommandUtilities.Models
         /// The text.
         /// </param>
         public HelpMessage(string commandName, string syntax, string text)
+            : this(commandName, syntax.ToEnumerable(), text.ToEnumerable())
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HelpMessage"/> class.
+        /// </summary>
+        /// <param name="commandName">
+        /// The command name.
+        /// </param>
+        /// <param name="syntax">
+        /// The syntax.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        public HelpMessage(string commandName, IEnumerable<string> syntax, string text)
+            : this(commandName, syntax, text.ToEnumerable())
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HelpMessage"/> class.
+        /// </summary>
+        /// <param name="commandName">
+        /// The command name.
+        /// </param>
+        /// <param name="syntax">
+        /// The syntax.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        public HelpMessage(string commandName, string syntax, IEnumerable<string> text)
+            : this(commandName, syntax.ToEnumerable(), text)
+        {
+        }
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="HelpMessage"/> class.
+        /// </summary>
+        /// <param name="commandName">
+        /// The command name.
+        /// </param>
+        /// <param name="syntax">
+        /// The syntax.
+        /// </param>
+        /// <param name="text">
+        /// The text.
+        /// </param>
+        public HelpMessage(string commandName, IEnumerable<string> syntax, IEnumerable<string> text)
         {
             this.CommandName = commandName;
             this.Syntax = syntax;
@@ -59,12 +113,12 @@ namespace Helpmebot.Commands.CommandUtilities.Models
         /// <summary>
         /// Gets the syntax.
         /// </summary>
-        public string Syntax { get; private set; }
+        public IEnumerable<string> Syntax { get; private set; }
 
         /// <summary>
         /// Gets the text.
         /// </summary>
-        public string Text { get; private set; }
+        public IEnumerable<string> Text { get; private set; }
 
         #endregion
 
@@ -81,23 +135,28 @@ namespace Helpmebot.Commands.CommandUtilities.Models
         /// </returns>
         public IEnumerable<CommandResponse> ToCommandResponses(string commandTrigger)
         {
-            var initialLine = string.Format("{2}{0} {1}", this.CommandName, this.Syntax, commandTrigger);
-            var secondLine = string.Format("   {0}", this.Text);
-            return new List<CommandResponse>
-                       {
-                           new CommandResponse
-                               {
-                                   Message = initialLine, 
-                                   Destination =
-                                       CommandResponseDestination.PrivateMessage
-                               }, 
-                           new CommandResponse
-                               {
-                                   Message = secondLine, 
-                                   Destination =
-                                       CommandResponseDestination.PrivateMessage
-                               }, 
-                       };
+            var messages = new List<CommandResponse>();
+
+            messages.AddRange(
+                this.Syntax.Select(
+                    syntax =>
+                    new CommandResponse
+                        {
+                            Message =
+                                string.Format("{2}{0} {1}", this.CommandName, syntax, commandTrigger), 
+                            Destination = CommandResponseDestination.PrivateMessage
+                        }));
+
+            messages.AddRange(
+                this.Text.Select(
+                    helpText =>
+                    new CommandResponse
+                        {
+                            Message = string.Format("   {0}", helpText), 
+                            Destination = CommandResponseDestination.PrivateMessage
+                        }));
+
+            return messages;
         }
 
         #endregion
