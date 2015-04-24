@@ -41,6 +41,20 @@ namespace Helpmebot.Exceptions
         }
 
         /// <summary>
+        /// Initialises a new instance of the <see cref="CommandExecutionException"/> class.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="innerException">
+        /// The inner exception.
+        /// </param>
+        protected CommandExecutionException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="CommandExecutionException"/> class. 
         /// </summary>
         protected CommandExecutionException()

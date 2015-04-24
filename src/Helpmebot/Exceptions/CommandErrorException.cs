@@ -40,6 +40,20 @@ namespace Helpmebot.Exceptions
         {
         }
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="CommandErrorException"/> class.
+        /// </summary>
+        /// <param name="message">
+        /// The message.
+        /// </param>
+        /// <param name="innerException">
+        /// The inner exception.
+        /// </param>
+        public CommandErrorException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
         #endregion
     }
 }

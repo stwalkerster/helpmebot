@@ -108,6 +108,11 @@ namespace Helpmebot.Model
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether protected.
+        /// </summary>
+        public virtual bool Protected { get; set; }
+
+        /// <summary>
         /// Gets or sets the username.
         /// </summary>
         public virtual string Username { get; set; }

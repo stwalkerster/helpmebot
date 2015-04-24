@@ -41,6 +41,7 @@ namespace Helpmebot.Persistence.Mappings
             this.Map(x => x.Username, "username");
             this.Map(x => x.Hostname, "hostname");
             this.Map(x => x.Account, "account");
+            this.Map(x => x.Protected, "protected");
 
             this.References(x => x.FlagGroup, "flaggroup_id");
         }
