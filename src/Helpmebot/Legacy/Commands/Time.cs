@@ -28,7 +28,7 @@ namespace helpmebot6.Commands
     ///     Returns the current date/time
     /// </summary>
     [CommandInvocation("time")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Time : GenericCommand
     {
         #region Constructors and Destructors

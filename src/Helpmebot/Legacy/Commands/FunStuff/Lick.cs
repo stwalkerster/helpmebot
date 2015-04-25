@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The lick.
     /// </summary>
     [CommandInvocation("lick")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Lick : TargetedFunCommand
     {
         /// <summary>

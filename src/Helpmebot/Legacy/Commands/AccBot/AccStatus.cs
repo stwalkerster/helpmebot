@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     ///     The status of ACC.
     /// </summary>
     [CommandInvocation("accstatus")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Accstatus : GenericCommand
     {
         #region Constructors and Destructors

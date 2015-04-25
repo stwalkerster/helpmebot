@@ -28,7 +28,7 @@ namespace helpmebot6.Commands
     ///     Says hi to a user
     /// </summary>
     [CommandInvocation("sayhi")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Sayhi : FunCommand
     {
         #region Constructors and Destructors

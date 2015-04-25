@@ -28,7 +28,7 @@ namespace helpmebot6.Commands
     ///     Enables or disables automatic parsing of wiki links
     /// </summary>
     [CommandInvocation("autolink")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Autolink : GenericCommand
     {
         #region Constructors and Destructors

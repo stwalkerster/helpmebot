@@ -31,7 +31,7 @@ namespace helpmebot6.Commands
     ///   Kills the bot.
     /// </summary>
     [CommandInvocation("die")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Die : GenericCommand
     {
         /// <summary>

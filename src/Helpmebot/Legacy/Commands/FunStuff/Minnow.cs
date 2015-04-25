@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The minnow.
     /// </summary>
     [CommandInvocation("minnow")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Minnow : ProtectedTargetedFunCommand
     {
         /// <summary>

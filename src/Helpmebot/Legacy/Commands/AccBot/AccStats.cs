@@ -37,7 +37,7 @@ namespace helpmebot6.Commands
     /// The stats of the account creation interface.
     /// </summary>
     [CommandInvocation("accstats")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Accstats : GenericCommand
     {
         /// <summary>

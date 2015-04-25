@@ -32,7 +32,7 @@ namespace helpmebot6.Commands
     /// </summary>
     /// <remarks>This is a fun command, but because FunCommand checks hedgehog is false, that base class can't be used.</remarks>
     [CommandInvocation("uncurl")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Uncurl : GenericCommand
     {
         /// <summary>

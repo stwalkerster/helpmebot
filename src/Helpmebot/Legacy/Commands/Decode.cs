@@ -35,7 +35,7 @@ namespace helpmebot6.Commands
     /// Decodes a hex-encoded IP address
     /// </summary>
     [CommandInvocation("decode")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Decode : GenericCommand
     {
         /// <summary>

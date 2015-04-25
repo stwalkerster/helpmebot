@@ -40,7 +40,7 @@ namespace helpmebot6.Commands
     /// Controls the newbie welcomer
     /// </summary>
     [CommandInvocation("welcomer")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Welcomer : GenericCommand
     {
         /// <summary>
@@ -109,7 +109,7 @@ namespace helpmebot6.Commands
                 case "Delete":
                 case "remove":
 
-                    this.Log.Debug("Getting list of welcomeusers ready for deletion!");
+                    this.Logger.Debug("Getting list of welcomeusers ready for deletion!");
 
                     // TODO: move to repository.
                     var criteria = Restrictions.And(
@@ -118,11 +118,11 @@ namespace helpmebot6.Commands
 
                     var welcomeUsers = repository.Get(criteria);
 
-                    this.Log.Debug("Got list of WelcomeUsers, proceeding to Delete...");
+                    this.Logger.Debug("Got list of WelcomeUsers, proceeding to Delete...");
 
                     repository.Delete(welcomeUsers);
 
-                    this.Log.Debug("All done, cleaning up and sending message to IRC");
+                    this.Logger.Debug("All done, cleaning up and sending message to IRC");
 
                     response.Respond(messageService.Done(this.Channel));
                     break;

@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// Returns the number of articles currently waiting at Good article nominees awaiting review    
     /// </summary>
     [CommandInvocation("gancount")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Gancount : Categorysize
     {
         /// <summary>

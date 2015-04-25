@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     ///     Returns the maximum replication lag on the wiki
     /// </summary>
     [CommandInvocation("maxlag")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Maxlag : GenericCommand
     {
         #region Constructors and Destructors

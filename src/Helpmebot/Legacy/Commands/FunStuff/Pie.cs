@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The pie.
     /// </summary>
     [CommandInvocation("pie")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Pie : ProtectedTargetedFunCommand
     {
         /// <summary>

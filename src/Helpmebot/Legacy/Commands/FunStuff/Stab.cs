@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The stab.
     /// </summary>
     [CommandInvocation("stab")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Stab : ProtectedTargetedFunCommand
     {
         /// <summary>

@@ -36,7 +36,7 @@ namespace helpmebot6.Commands
     ///     Returns the registration date of a wikipedian
     /// </summary>
     [CommandInvocation("registration")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Registration : GenericCommand
     {
         #region Static Fields

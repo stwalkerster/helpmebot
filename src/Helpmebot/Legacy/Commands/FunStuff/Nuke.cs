@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The nuke.
     /// </summary>
     [CommandInvocation("nuke")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Nuke : ProtectedTargetedFunCommand
     {
         /// <summary>

@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     ///     The curl.
     /// </summary>
     [CommandInvocation("curl")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     public class Curl : FunCommand
     {
         #region Constructors and Destructors

@@ -57,7 +57,7 @@ namespace helpmebot6.Commands
     ///   Returns the user information about a specified user
     /// </summary>
     [CommandInvocation("userinfo")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Userinfo : GenericCommand
     {
         /// <summary>

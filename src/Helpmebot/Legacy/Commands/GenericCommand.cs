@@ -13,67 +13,32 @@
 //   You should have received a copy of the GNU General Public License
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
+// <summary>
+//   Generic bot command abstract class
+// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace helpmebot6.Commands
 {
-    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    using Castle.Core.Internal;
     using Castle.Core.Logging;
 
     using Helpmebot;
-    using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Database;
     using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
-    using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
 
-    using MySql.Data.MySqlClient;
+    using NHibernate;
 
     /// <summary>
     ///     Generic bot command abstract class
     /// </summary>
-    public abstract class GenericCommand
+    public abstract class GenericCommand : CommandBase
     {
-        #region Fields
-
-        /// <summary>
-        /// The command service helper.
-        /// </summary>
-        protected readonly ICommandServiceHelper CommandServiceHelper;
-
-        /// <summary>
-        /// The legacy database.
-        /// </summary>
-        private readonly ILegacyDatabase legacyDatabase;
-
-        /// <summary>
-        /// The access log service.
-        /// </summary>
-        private readonly IAccessLogService accessLogService;
-
-        #endregion
-
         #region Constructors and Destructors
-
-        /// <summary>
-        /// Initialises a new instance of the <see cref="GenericCommand"/> class.
-        /// </summary>
-        /// <param name="commandServiceHelper">
-        /// The command Service Helper.
-        /// </param>
-        protected GenericCommand(ICommandServiceHelper commandServiceHelper)
-        {
-            // FIXME: ServiceLocator - genericlogger, legacydatabase, accesslogservice
-            this.Log = ServiceLocator.Current.GetInstance<ILogger>();
-            this.legacyDatabase = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
-            this.accessLogService = ServiceLocator.Current.GetInstance<IAccessLogService>();
-
-            this.CommandServiceHelper = commandServiceHelper;
-        }
 
         /// <summary>
         /// Initialises a new instance of the <see cref="GenericCommand"/> class.
@@ -95,11 +60,15 @@ namespace helpmebot6.Commands
             string channel, 
             string[] args, 
             ICommandServiceHelper commandServiceHelper)
-            : this(commandServiceHelper)
+            : base(
+                channel, 
+                source, 
+                args, 
+                ServiceLocator.Current.GetInstance<ILogger>(), 
+                ServiceLocator.Current.GetInstance<ISession>(), 
+                commandServiceHelper)
         {
             this.Source = source;
-            this.Channel = channel;
-            this.Arguments = args;
         }
 
         #endregion
@@ -107,121 +76,54 @@ namespace helpmebot6.Commands
         #region Public Properties
 
         /// <summary>
-        ///     Gets the access level of the command
+        /// Gets or sets the arguments.
         /// </summary>
-        /// <value>The access level.</value>
-        public LegacyUser.UserRights AccessLevel
+        public new string[] Arguments
         {
             get
             {
-                var commandFlagAttribute = this.GetType().GetAttribute<CommandFlagAttribute>();
-                if (commandFlagAttribute != null)
-                {
-                    switch (commandFlagAttribute.Flag)
-                    {
-                        case Flag.LegacySuperuser:
-                            return LegacyUser.UserRights.Superuser;
-                        case Flag.LegacyDeveloper:
-                            return LegacyUser.UserRights.Developer;
-                        case Flag.LegacyAdvanced:
-                            return LegacyUser.UserRights.Advanced;
-                        case Flag.LegacyNormal:
-                            return LegacyUser.UserRights.Normal;
-                        default:
-                            return LegacyUser.UserRights.Developer;
-                    }
-                }
-
-                this.Log.Error("This command is NOT using the new flag access. Doing legacy db lookup...");
-
-                string command = this.GetType().ToString();
-
-                var cmd = new MySqlCommand("SELECT accesslevel FROM `command` WHERE typename = @command LIMIT 1;");
-                cmd.Parameters.AddWithValue("@command", command);
-
-                string al = this.legacyDatabase.ExecuteScalarSelect(cmd);
-                try
-                {
-                    return (LegacyUser.UserRights)Enum.Parse(typeof(LegacyUser.UserRights), al, true);
-                }
-                catch (ArgumentException)
-                {
-                    this.Log.Warn("Warning: " + command + " not found in access list.");
-                    return LegacyUser.UserRights.Developer;
-                }
+                return base.Arguments.ToArray();
             }
         }
 
         /// <summary>
-        /// Gets the next gen parser flag.
+        /// Gets or sets the channel.
         /// </summary>
-        public string NextGenParserFlag
+        public string Channel
         {
             get
             {
-                var commandFlagAttribute = this.GetType().GetAttribute<CommandFlagAttribute>();
-                if (commandFlagAttribute != null)
-                {
-                    return commandFlagAttribute.Flag;
-                }
-
-                return null;
+                return this.CommandSource;
             }
         }
-
-        /// <summary>
-        ///     Gets or sets the arguments.
-        /// </summary>
-        public string[] Arguments { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the channel.
-        /// </summary>
-        public string Channel { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the Castle.Windsor Logger
-        /// </summary>
-        public ILogger Log { get; set; }
 
         /// <summary>
         ///     Gets or sets the source.
         /// </summary>
         public LegacyUser Source { get; set; }
 
-        /// <summary>
-        /// The access log service.
-        /// </summary>
-        protected IAccessLogService AccessLogService
-        {
-            get
-            {
-                return this.accessLogService;
-            }
-        }
-
         #endregion
 
         #region Public Methods and Operators
 
-        /// <summary>
-        ///     The run command.
-        /// </summary>
-        /// <returns>
-        ///     The <see cref="CommandResponseHandler" />.
-        /// </returns>
-        public CommandResponseHandler RunCommand()
-        {
-            string command = this.GetType().ToString();
-
-            this.Log.Info("Running command: " + command);
-
-            return this.TestAccess() ? this.ReallyRunCommand() : this.OnAccessDenied();
-        }
-
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// The execute.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        protected override IEnumerable<CommandResponse> Execute()
+        {
+            var commandResponseHandler = this.ExecuteCommand();
+
+            return commandResponseHandler == null
+                       ? new List<CommandResponse>()
+                       : commandResponseHandler.GetResponses().OfType<CommandResponse>();
+        }
 
         /// <summary>
         ///     The execute command.
@@ -235,86 +137,37 @@ namespace helpmebot6.Commands
         }
 
         /// <summary>
+        /// The on access denied.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        protected override IEnumerable<CommandResponse> OnAccessDenied()
+        {
+            var commandResponseHandler = this.OnLegacyAccessDenied();
+
+            return commandResponseHandler == null
+                       ? new List<CommandResponse>()
+                       : commandResponseHandler.GetResponses().OfType<CommandResponse>();
+        }
+
+        /// <summary>
         ///     Access denied to command, decide what to do
         /// </summary>
         /// <returns>A response to the command if access to the command was denied</returns>
-        protected virtual CommandResponseHandler OnAccessDenied()
+        protected virtual CommandResponseHandler OnLegacyAccessDenied()
         {
             var response = new CommandResponseHandler();
 
-            string message = this.CommandServiceHelper.MessageService.RetrieveMessage("AccessDenied", this.Channel, null);
+            string message = this.CommandServiceHelper.MessageService.RetrieveMessage(
+                "AccessDenied", 
+                this.Channel, 
+                null);
 
             response.Respond(message, CommandResponseDestination.PrivateMessage);
-            this.Log.Info("Access denied to command.");
-
-            var accessLogSaved = this.AccessLogService.SaveLegacyAccessLogEntry(
-                this.Source,
-                this.GetType(),
-                true,
-                this.Channel,
-                this.Arguments,
-                this.AccessLevel);
-
-            if (!accessLogSaved)
-            {
-                response.Respond("Error adding denied entry to access log.", CommandResponseDestination.ChannelDebug);
-            }
+            this.Logger.Info("Access denied to command.");
 
             return response;
-        }
-
-        /// <summary>
-        ///     Access granted to command, decide what to do
-        /// </summary>
-        /// <returns>The response to the command</returns>
-        protected virtual CommandResponseHandler ReallyRunCommand()
-        {
-            var accessLogSaved = this.AccessLogService.SaveLegacyAccessLogEntry(
-                this.Source,
-                this.GetType(),
-                true,
-                this.Channel,
-                this.Arguments,
-                this.AccessLevel);
-
-            if (!accessLogSaved)
-            {
-                var errorResponse = new CommandResponseHandler();
-                string message = this.CommandServiceHelper.MessageService.RetrieveMessage(
-                    "AccessDeniedAccessListFailure", 
-                    this.Channel, 
-                    null);
-                errorResponse.Respond(
-                    "Error adding to access log - command aborted.", 
-                    CommandResponseDestination.ChannelDebug);
-                errorResponse.Respond(message, CommandResponseDestination.Default);
-                return errorResponse;
-            }
-
-            this.Log.Info("Starting command execution...");
-            CommandResponseHandler crh;
-            try
-            {
-                crh = this.ExecuteCommand();
-            }
-            catch (Exception ex)
-            {
-                this.Log.Error(ex.Message, ex);
-                crh = new CommandResponseHandler(ex.Message);
-            }
-
-            this.Log.Info("Command execution complete.");
-            return crh;
-        }
-
-        /// <summary>
-        ///     Check the access level and then decide what to do.
-        /// </summary>
-        /// <returns>True if the command is allowed to Execute</returns>
-        protected virtual bool TestAccess()
-        {
-            // check the access level
-            return this.Source.AccessLevel >= this.AccessLevel;
         }
 
         #endregion

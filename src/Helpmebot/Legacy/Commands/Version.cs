@@ -39,7 +39,7 @@ namespace helpmebot6.Commands
     ///   Returns the current version of the bot.
     /// </summary>
     [CommandInvocation("version")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Version : GenericCommand
     {
         /// <summary>

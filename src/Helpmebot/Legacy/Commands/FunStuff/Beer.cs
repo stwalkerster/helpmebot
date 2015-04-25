@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The beer.
     /// </summary>
     [CommandInvocation("beer")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Beer : TargetedFunCommand
     {
         /// <summary>

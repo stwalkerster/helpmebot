@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     Sets a global config option.
     /// </summary>
     [CommandInvocation("set")]
-    [CommandFlag(Flag.LegacyDeveloper)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
     internal class Set : GenericCommand
     {
         #region Constructors and Destructors

@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The pat.
     /// </summary>
     [CommandInvocation("pat")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Pat : TargetedFunCommand
     {
         /// <summary>

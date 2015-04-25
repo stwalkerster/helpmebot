@@ -63,14 +63,14 @@ namespace helpmebot6.Commands.FunStuff
         /// <returns>
         ///     The <see cref="CommandResponseHandler" />.
         /// </returns>
-        protected override CommandResponseHandler OnAccessDenied()
+        protected override CommandResponseHandler OnLegacyAccessDenied()
         {
             string message = this.CommandServiceHelper.MessageService.RetrieveMessage(
                 Messages.HedgehogAccessDenied, 
                 this.Channel, 
                 null);
             return LegacyConfig.Singleton()["hedgehog", this.Channel] == "false"
-                       ? base.OnAccessDenied()
+                       ? base.OnLegacyAccessDenied()
                        : new CommandResponseHandler(message, CommandResponseDestination.PrivateMessage);
         }
 
@@ -80,9 +80,9 @@ namespace helpmebot6.Commands.FunStuff
         /// <returns>
         ///     The <see cref="bool" />.
         /// </returns>
-        protected override bool TestAccess()
+        public override bool CanExecute()
         {
-            return LegacyConfig.Singleton()["hedgehog", this.Channel] == "false" && base.TestAccess();
+            return LegacyConfig.Singleton()["hedgehog", this.Channel] == "false" && base.CanExecute();
         }
 
         #endregion

@@ -38,7 +38,7 @@ namespace helpmebot6.Commands
     ///     Returns the edit count of a Wikipedian
     /// </summary>
     [CommandInvocation("editcount")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Editcount : GenericCommand
     {
         #region Constructors and Destructors

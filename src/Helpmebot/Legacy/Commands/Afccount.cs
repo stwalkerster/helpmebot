@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// Returns the number of articles currently waiting at Articles for Creation
     /// </summary>
     [CommandInvocation("afccount")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Afccount : Categorysize
     {
         /// <summary>

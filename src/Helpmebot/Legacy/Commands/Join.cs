@@ -36,7 +36,7 @@ namespace helpmebot6.Commands
     ///   Joins an IRC channel
     /// </summary>
     [CommandInvocation("join")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Join : GenericCommand
     {
         /// <summary>
@@ -65,14 +65,11 @@ namespace helpmebot6.Commands
         /// <param name="channelName">
         /// The channelName.
         /// </param>
-        /// <param name="network">
-        /// The network.
-        /// </param>
         /// <returns>
         /// The <see cref="CommandResponseHandler"/>.
         /// </returns>
         /// TODO: this should probably be elsewhere
-        public static CommandResponseHandler JoinChannel(string channelName, uint network)
+        public static CommandResponseHandler JoinChannel(string channelName)
         {
             // FIXME: ServiceLocator - channelrepo & Ircclient
             var channelRepo = ServiceLocator.Current.GetInstance<IChannelRepository>();
@@ -108,7 +105,7 @@ namespace helpmebot6.Commands
         {
             if (this.Arguments.Length >= 1)
             {
-                return JoinChannel(this.Arguments[0], this.Source.Network);
+                return JoinChannel(this.Arguments[0]);
             }
 
             string[] messageParameters = { "join", "1", this.Arguments.Length.ToString(CultureInfo.InvariantCulture) };
@@ -121,9 +118,9 @@ namespace helpmebot6.Commands
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        protected override bool TestAccess()
+        public override bool CanExecute()
         {
-            if (!base.TestAccess())
+            if (!base.CanExecute())
             {
                 return false;
             }

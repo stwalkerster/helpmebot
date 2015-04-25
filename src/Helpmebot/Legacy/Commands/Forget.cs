@@ -36,7 +36,7 @@ namespace helpmebot6.Commands
     ///   Forgets a keyword
     /// </summary>
     [CommandInvocation("forget")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Forget : GenericCommand
     {
         /// <summary>
@@ -87,7 +87,7 @@ namespace helpmebot6.Commands
                 }
                 catch (Exception ex)
                 {
-                    this.Log.Error("Error forgetting keyword", ex);
+                    this.Logger.Error("Error forgetting keyword", ex);
                     forgottenMessage = messageService.RetrieveMessage("cmdForgetError", this.Channel, null);
                 }
                 

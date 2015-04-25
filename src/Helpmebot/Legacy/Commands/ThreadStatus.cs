@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     Retrieve the internal status of the bot's subsystems
     /// </summary>
     [CommandInvocation("threadstatus")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Threadstatus : GenericCommand
     {
         #region Constructors and Destructors

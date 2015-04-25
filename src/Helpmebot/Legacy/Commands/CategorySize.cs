@@ -35,7 +35,7 @@ namespace helpmebot6.Commands
     /// Count how many articles are in a category.
     /// </summary>
     [CommandInvocation("categorysize")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Categorysize : GenericCommand
     {
         /// <summary>

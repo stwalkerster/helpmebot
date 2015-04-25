@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// Hits a user with a trout.
     /// </summary>
     [CommandInvocation("trout")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Trout : ProtectedTargetedFunCommand
     {
         /// <summary>

@@ -38,7 +38,7 @@ namespace helpmebot6.Commands
     ///   Learns a keyword
     /// </summary>
     [CommandInvocation("learn")]
-    [CommandFlag(Flag.LegacySuperuser)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
     internal class Learn : GenericCommand
     {
         /// <summary>
@@ -97,7 +97,7 @@ namespace helpmebot6.Commands
                 catch (Exception ex)
                 {
                     message = messageService.RetrieveMessage("cmdLearnError", this.Channel, null);
-                    this.Log.Error("Error learning command", ex);
+                    this.Logger.Error("Error learning command", ex);
                 }
 
                 this.CommandServiceHelper.Client.SendNotice(this.Source.Nickname, message);

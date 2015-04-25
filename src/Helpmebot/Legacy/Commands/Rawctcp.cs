@@ -31,7 +31,7 @@ namespace helpmebot6.Commands
     /// Sends a raw client-to-client protocol command
     /// </summary>
     [CommandInvocation("rawctcp")]
-    [CommandFlag(Flag.LegacyDeveloper)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
     internal class Rawctcp : GenericCommand
     {
         /// <summary>

@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The pillow.
     /// </summary>
     [CommandInvocation("pillow")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Pillow : ProtectedTargetedFunCommand
     {
         /// <summary>

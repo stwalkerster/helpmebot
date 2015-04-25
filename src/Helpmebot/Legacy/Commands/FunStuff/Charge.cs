@@ -33,7 +33,7 @@ namespace helpmebot6.Commands
     /// The charge.
     /// </summary>
     [CommandInvocation("charge")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Charge : ProtectedTargetedFunCommand
     {
         /// <summary>

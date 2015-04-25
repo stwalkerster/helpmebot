@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     /// Retrieve information about all registered category codes
     /// </summary>
     [CommandInvocation("fetchall")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Fetchall : GenericCommand
     {
         /// <summary>

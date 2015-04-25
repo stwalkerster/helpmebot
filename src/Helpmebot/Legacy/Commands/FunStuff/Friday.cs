@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// The friday.
     /// </summary>
     [CommandInvocation("friday")]
-    [CommandFlag(Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     internal class Friday : TargetedFunCommand
     {
         /// <summary>

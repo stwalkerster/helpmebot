@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     Retrieves the bot access level of the user who called the command
     /// </summary>
     [CommandInvocation("myaccess")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Myaccess : GenericCommand
     {
         #region Constructors and Destructors

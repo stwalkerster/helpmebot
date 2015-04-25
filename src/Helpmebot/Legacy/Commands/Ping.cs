@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     The ping command
     /// </summary>
     [CommandInvocation("ping")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Ping : GenericCommand
     {
         #region Constructors and Destructors

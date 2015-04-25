@@ -26,7 +26,7 @@ namespace helpmebot6.Commands
     ///     Gets the uptime of the bot
     /// </summary>
     [CommandInvocation("uptime")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Uptime : GenericCommand
     {
         #region Constructors and Destructors

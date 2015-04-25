@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     ///   Returns the registration date of a wikipedian. Alias for Registration
     /// </summary>
     [CommandInvocation("reg")]
-    [CommandFlag(Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
     internal class Reg : Registration
     {
         /// <summary>
