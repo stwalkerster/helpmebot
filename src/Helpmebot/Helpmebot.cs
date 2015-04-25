@@ -37,6 +37,7 @@ namespace Helpmebot
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Database;
     using Helpmebot.Legacy.Model;
+    using Helpmebot.Monitoring;
     using Helpmebot.Repositories.Interfaces;
     using Helpmebot.Services.Interfaces;
     using Helpmebot.Startup;
@@ -197,6 +198,8 @@ namespace Helpmebot
 
             // initialise the deferred installers.
             container.Install(FromAssembly.This(new DeferredWindsorBootstrap()));
+
+            WatcherController.Instance();
         }
 
         /// <summary>

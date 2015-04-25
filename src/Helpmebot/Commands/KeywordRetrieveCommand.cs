@@ -108,6 +108,12 @@ namespace Helpmebot.Commands
             dict.Add("hostname", this.User.Hostname);
             dict.Add("channel", this.CommandSource);
 
+            var flagsForUser = this.CommandServiceHelper.UserFlagService.GetFlagsForUser(this.User)
+                .Implode(string.Empty);
+
+            dict.Add("flags", flagsForUser);
+            dict.Add("accessLevel", flagsForUser);
+
             var args = this.Arguments.ToArray();
 
             for (int i = 0; i < args.Length; i++)

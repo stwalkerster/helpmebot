@@ -20,10 +20,7 @@
 namespace Helpmebot.Legacy
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using System.Text.RegularExpressions;
 
     using Castle.Core.Logging;
@@ -34,7 +31,6 @@ namespace Helpmebot.Legacy
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
     using Helpmebot.Services.Interfaces;
 
     using helpmebot6.Commands;
@@ -183,69 +179,6 @@ namespace Helpmebot.Legacy
                      Activator.CreateInstance(commandHandler, source, destination, args, this.commandServiceHelper))
                         .RunCommand();
                 this.HandleCommandResponseHandler(source, destination, directedTo, response);
-                return;
-            }
-
-            /*
-             * Check for a learned word
-             */
-            {
-                // FIXME: ServiceLocator - keywordservice
-                var keywordService = ServiceLocator.Current.GetInstance<IKeywordService>();
-
-                Keyword keyword = keywordService.Get(command);
-
-                var crh = new CommandResponseHandler();
-                string directedTo = string.Empty;
-                if (keyword != null)
-                {
-                    if (source.AccessLevel < LegacyUser.UserRights.Normal)
-                    {
-                        this.Log.InfoFormat("Access denied for keyword retrieval for {0}", source);
-
-                        var messageService1 = this.commandServiceHelper.MessageService;
-                        crh.Respond(
-                            messageService1.RetrieveMessage(Messages.OnAccessDenied, destination, null), 
-                            CommandResponseDestination.PrivateMessage);
-
-                        string[] accessDeniedArguments = { source.ToString(), MethodBase.GetCurrentMethod().Name };
-                        crh.Respond(
-                            messageService1.RetrieveMessage("accessDeniedDebug", destination, accessDeniedArguments), 
-                            CommandResponseDestination.ChannelDebug);
-                    }
-                    else
-                    {
-                        string wordResponse = keyword.Response;
-
-                        IDictionary<string, object> dict = new Dictionary<string, object>();
-
-                        dict.Add("username", source.Username);
-                        dict.Add("nickname", source.Nickname);
-                        dict.Add("hostname", source.Hostname);
-                        dict.Add("AccessLevel", source.AccessLevel);
-                        dict.Add("channel", destination);
-
-                        for (int i = 0; i < args.Length; i++)
-                        {
-                            dict.Add(i.ToString(CultureInfo.InvariantCulture), args[i]);
-                            dict.Add(i + "*", string.Join(" ", args, i, args.Length - i));
-                        }
-
-                        wordResponse = wordResponse.FormatWith(dict);
-
-                        if (keyword.Action)
-                        {
-                            crh.Respond(wordResponse.SetupForCtcp("ACTION"));
-                        }
-                        else
-                        {
-                            directedTo = FindRedirection(ref args);
-                            crh.Respond(wordResponse);
-                        }
-
-                        this.HandleCommandResponseHandler(source, destination, directedTo, crh);
-                    }
-                }
             }
         }
 

@@ -235,7 +235,6 @@
     <Compile Include="PageProtection.cs" />
     <Compile Include="Model\BlockInformation.cs" />
     <Compile Include="Legacy\Commands\Blockuser.cs" />
-    <Compile Include="Legacy\Commands\CategoryWatcher.cs" />
     <Compile Include="Legacy\Commands\Autolink.cs" />
     <Compile Include="Legacy\Commands\Configcacheclear.cs" />
     <Compile Include="Legacy\Commands\Commandaccess.cs" />
@@ -423,7 +422,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Legacy\Commands\CategoryWatcherCommand\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
