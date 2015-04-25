@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     Send a raw line to IRC
     /// </summary>
     [CommandInvocation("raw")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
+    [CommandFlag(Helpmebot.Model.Flag.Debug)]
     public class Raw : GenericCommand
     {
         #region Constructors and Destructors

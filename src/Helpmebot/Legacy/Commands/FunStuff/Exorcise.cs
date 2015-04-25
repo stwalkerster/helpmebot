@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     The exorcise.
     /// </summary>
     [CommandInvocation("exorcise")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Exorcise : FunCommand
     {
         #region Constructors and Destructors

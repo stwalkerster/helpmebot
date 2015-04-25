@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     /// Shortens a URL
     /// </summary>
     [CommandInvocation("isgd")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Isgd : GenericCommand
     {
         /// <summary>

@@ -28,7 +28,6 @@ namespace Helpmebot.Commands.AccessControl
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Exceptions;
-    using Helpmebot.ExtensionMethods;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;

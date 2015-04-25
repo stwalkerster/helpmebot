@@ -31,7 +31,7 @@ namespace helpmebot6.Commands
     /// The vorticough.
     /// </summary>
     [CommandInvocation("vorticough")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
     public class Vorticough : FunStuff.FunCommand
     {

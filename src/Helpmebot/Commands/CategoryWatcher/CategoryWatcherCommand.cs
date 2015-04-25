@@ -40,7 +40,7 @@ namespace Helpmebot.Commands.CategoryWatcher
     /// <summary>
     /// The category watcher configuration command.
     /// </summary>
-    [CommandFlag(Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Model.Flag.Configuration)]
     [CommandInvocation("categorywatcher")]
     public class CategoryWatcherCommand : CommandBase
     {

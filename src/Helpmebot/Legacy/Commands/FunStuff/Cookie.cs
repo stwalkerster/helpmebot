@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// Gives a user a cookie.
     /// </summary>
     [CommandInvocation("cookie")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Cookie : TargetedFunCommand
     {
         /// <summary>

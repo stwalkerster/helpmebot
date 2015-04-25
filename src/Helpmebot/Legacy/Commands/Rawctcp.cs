@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// Sends a raw client-to-client protocol command
     /// </summary>
     [CommandInvocation("rawctcp")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
+    [CommandFlag(Helpmebot.Model.Flag.Debug)]
     public class Rawctcp : GenericCommand
     {
         /// <summary>

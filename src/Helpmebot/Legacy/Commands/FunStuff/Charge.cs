@@ -32,7 +32,7 @@ namespace helpmebot6.Commands
     /// The charge.
     /// </summary>
     [CommandInvocation("charge")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Charge : ProtectedTargetedFunCommand
     {
         /// <summary>

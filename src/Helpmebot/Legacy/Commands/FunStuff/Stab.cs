@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The stab.
     /// </summary>
     [CommandInvocation("stab")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Stab : ProtectedTargetedFunCommand
     {
         /// <summary>

@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The tea.
     /// </summary>
     [CommandInvocation("tea")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Tea : TargetedFunCommand
     {
         /// <summary>

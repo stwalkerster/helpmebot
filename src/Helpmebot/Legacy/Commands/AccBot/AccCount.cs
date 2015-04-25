@@ -33,7 +33,7 @@ namespace helpmebot6.Commands
     ///     The ACC count.
     /// </summary>
     [CommandInvocation("acccount")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Acccount : GenericCommand
     {
         #region Constructors and Destructors

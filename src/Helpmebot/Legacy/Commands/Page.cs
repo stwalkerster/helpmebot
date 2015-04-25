@@ -36,7 +36,7 @@ namespace helpmebot6.Commands
     /// Retrieves information on a specific page
     /// </summary>
     [CommandInvocation("page")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Page : GenericCommand
     {
         /// <summary>

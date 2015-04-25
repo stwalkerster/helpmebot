@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     ///     Returns the block information of a wikipedian
     /// </summary>
     [CommandInvocation("blockinfo")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Blockinfo : GenericCommand
     {
         #region Constructors and Destructors

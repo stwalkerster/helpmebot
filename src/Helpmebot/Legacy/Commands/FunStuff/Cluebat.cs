@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// hits a user with a clue bat
     /// </summary>
     [CommandInvocation("cluebat")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Cluebat : ProtectedTargetedFunCommand
     {
         /// <summary>

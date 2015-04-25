@@ -28,7 +28,7 @@ namespace helpmebot6.Commands
     ///   Returns the current date/time. Alias for Time.
     /// </summary>
     [CommandInvocation("date")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Date : Time
     {
         /// <summary>

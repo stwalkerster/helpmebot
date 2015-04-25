@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     ///     Returns the user rights of a wikipedian
     /// </summary>
     [CommandInvocation("rights")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Rights : GenericCommand
     {
         #region Constructors and Destructors

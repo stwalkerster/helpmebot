@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The pat.
     /// </summary>
     [CommandInvocation("pat")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Pat : TargetedFunCommand
     {
         /// <summary>

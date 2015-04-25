@@ -25,7 +25,7 @@ namespace helpmebot6.Commands
     ///     Triggers an inter-channel alert
     /// </summary>
     [CommandInvocation("helper")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Helper : GenericCommand
     {
         #region Constructors and Destructors

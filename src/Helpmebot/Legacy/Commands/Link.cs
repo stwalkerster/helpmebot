@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     /// Triggers the link parser
     /// </summary>
     [CommandInvocation("link")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Link : GenericCommand
     {
         /// <summary>

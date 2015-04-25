@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The electrocute.
     /// </summary>
     [CommandInvocation("electrocute")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Electrocute : ProtectedTargetedFunCommand
     {
         /// <summary>

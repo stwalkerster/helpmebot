@@ -85,6 +85,7 @@
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
     <Compile Include="Commands\AccessControl\CommandAccessCommand.cs" />
     <Compile Include="Commands\AccessControl\MyFlagsCommand.cs" />
+    <Compile Include="Commands\BotManagement\Version.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherCommand.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherForceCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
@@ -294,7 +295,6 @@
     <Compile Include="Legacy\Commands\Time.cs" />
     <Compile Include="Legacy\Commands\Uptime.cs" />
     <Compile Include="Legacy\Commands\UserInfo.cs" />
-    <Compile Include="Legacy\Commands\Version.cs" />
     <Compile Include="Legacy\Commands\Welcomer.cs" />
     <Compile Include="ExtensionMethods\FormatWithExtension.cs" />
     <Compile Include="HttpRequest.cs" />

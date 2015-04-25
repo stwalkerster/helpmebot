@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The whale.
     /// </summary>
     [CommandInvocation("whale")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Whale : ProtectedTargetedFunCommand
     {
         /// <summary>

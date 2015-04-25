@@ -30,7 +30,7 @@ namespace helpmebot6.Commands
     /// Retrieves a link to block a user.
     /// </summary>
     [CommandInvocation("blockuser")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Blockuser : GenericCommand
     {
         /// <summary>

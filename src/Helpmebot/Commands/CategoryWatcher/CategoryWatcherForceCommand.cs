@@ -38,7 +38,7 @@ namespace Helpmebot.Commands.CategoryWatcher
     /// <remarks>
     /// This is registered with the command parser from elsewhere, thus doesn't have an invocation attribute.
     /// </remarks>
-    [CommandFlag(Model.Flag.LegacyNormal)]
+    [CommandFlag(Model.Flag.Standard)]
     public class CategoryWatcherForceCommand : CommandBase
     {
         #region Constructors and Destructors

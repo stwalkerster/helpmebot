@@ -28,7 +28,7 @@ namespace helpmebot6.Commands
     ///     The curl.
     /// </summary>
     [CommandInvocation("curl")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Curl : FunCommand
     {
         #region Constructors and Destructors

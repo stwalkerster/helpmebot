@@ -39,22 +39,12 @@ namespace Helpmebot.Model
         /// <summary>
         /// The legacy advanced.
         /// </summary>
-        public const string LegacyAdvanced = "+";
-
-        /// <summary>
-        /// The legacy developer.
-        /// </summary>
-        public const string LegacyDeveloper = "*";
-
-        /// <summary>
-        /// The legacy normal.
-        /// </summary>
-        public const string LegacyNormal = ".";
+        public const string Protected = "P";
 
         /// <summary>
         /// The legacy superuser.
         /// </summary>
-        public const string LegacySuperuser = "@";
+        public const string LegacySuperuser = "S";
 
         /// <summary>
         /// The owner.
@@ -64,7 +54,12 @@ namespace Helpmebot.Model
         /// <summary>
         /// The standard.
         /// </summary>
-        public const string Standard = ".";
+        public const string Standard = "B";
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        public const string Configuration = "C";
 
         #endregion
     }

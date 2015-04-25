@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     ///     The configuration cache clear command.
     /// </summary>
     [CommandInvocation("configcacheclear")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Configcacheclear : GenericCommand
     {
         #region Constructors and Destructors

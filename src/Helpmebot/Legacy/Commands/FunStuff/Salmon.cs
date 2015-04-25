@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     /// The salmon.
     /// </summary>
     [CommandInvocation("salmon")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Salmon : ProtectedTargetedFunCommand
     {
         /// <summary>

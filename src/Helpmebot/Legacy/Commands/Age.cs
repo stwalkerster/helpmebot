@@ -29,7 +29,7 @@ namespace helpmebot6.Commands
     ///     Returns the age of a wikipedian
     /// </summary>
     [CommandInvocation("age")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Age : GenericCommand
     {
         #region Constructors and Destructors

@@ -38,7 +38,7 @@ namespace helpmebot6.Commands
     /// Controls the newbie welcomer
     /// </summary>
     [CommandInvocation("welcomer")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Welcomer : GenericCommand
     {
         /// <summary>

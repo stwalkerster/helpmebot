@@ -37,12 +37,11 @@ namespace Helpmebot.Commands.BotManagement
     using Helpmebot.ExtensionMethods;
 #endif
     
-
     /// <summary>
     ///   Returns the current version of the bot.
     /// </summary>
     [CommandInvocation("version")]
-    [CommandFlag(Model.Flag.LegacyNormal)]
+    [CommandFlag(Model.Flag.Standard)]
     public class Version : CommandBase
     {
         /// <summary>

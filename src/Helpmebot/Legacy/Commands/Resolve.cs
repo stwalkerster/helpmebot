@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     /// Perform a reverse DNS lookup on an IP address.
     /// </summary>
     [CommandInvocation("resolve")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
+    [CommandFlag(Helpmebot.Model.Flag.Standard)]
     public class Resolve : GenericCommand
     {
         /// <summary>

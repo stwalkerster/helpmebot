@@ -37,7 +37,7 @@ namespace helpmebot6.Commands
     /// The deploy ACC command.
     /// </summary>
     [CommandInvocation("accdeploy")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Accdeploy : GenericCommand
     {
         /// <summary>

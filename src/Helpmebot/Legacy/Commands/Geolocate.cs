@@ -34,7 +34,7 @@ namespace helpmebot6.Commands
     /// Discovers the location of an IP address
     /// </summary>
     [CommandInvocation("geolocate")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Geolocate : GenericCommand
     {
         /// <summary>

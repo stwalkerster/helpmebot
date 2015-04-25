@@ -31,7 +31,7 @@ namespace helpmebot6.Commands
     /// The notify.
     /// </summary>
     [CommandInvocation("notify")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    [CommandFlag(Helpmebot.Model.Flag.Protected)]
     public class Notify : GenericCommand
     {
         /// <summary>
