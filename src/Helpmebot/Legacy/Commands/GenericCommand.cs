@@ -27,7 +27,7 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
+    using Helpmebot.Model.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
 
@@ -56,7 +56,7 @@ namespace helpmebot6.Commands
         /// The command Service Helper.
         /// </param>
         protected GenericCommand(
-            LegacyUser source, 
+            IUser source, 
             string channel, 
             string[] args, 
             ICommandServiceHelper commandServiceHelper)
@@ -100,7 +100,7 @@ namespace helpmebot6.Commands
         /// <summary>
         ///     Gets or sets the source.
         /// </summary>
-        public LegacyUser Source { get; set; }
+        public IUser Source { get; set; }
 
         #endregion
 

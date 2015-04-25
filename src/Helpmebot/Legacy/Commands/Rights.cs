@@ -24,8 +24,8 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Repositories.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -35,7 +35,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("rights")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Rights : GenericCommand
+    public class Rights : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -54,7 +54,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Rights(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Rights(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

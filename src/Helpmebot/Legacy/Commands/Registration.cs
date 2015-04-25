@@ -26,8 +26,8 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Repositories.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -37,7 +37,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("registration")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Registration : GenericCommand
+    public class Registration : GenericCommand
     {
         #region Static Fields
 
@@ -65,7 +65,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Registration(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Registration(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

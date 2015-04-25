@@ -24,15 +24,14 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///   Kills the bot.
     /// </summary>
     [CommandInvocation("die")]
     [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
-    internal class Die : GenericCommand
+    public class Die : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Die"/> class.
@@ -49,7 +48,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Die(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Die(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

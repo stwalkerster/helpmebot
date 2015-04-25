@@ -535,6 +535,8 @@ namespace Helpmebot.Monitoring
             if (items.Any())
             {
                 string listString = string.Empty;
+                var listSeparator = this.messageService.RetrieveMessage("listSeparator", destination, null);
+
                 foreach (string item in items)
                 {
                     // Display [[]]'ied name of the page which requests help
@@ -586,7 +588,7 @@ namespace Helpmebot.Monitoring
                     }
 
                     // trailing space added as a hack because MediaWiki doesn't preserve the trailing space :(
-                    listString += this.messageService.RetrieveMessage("listSeparator", destination, null) + " ";
+                    listString += listSeparator + " ";
                 }
 
                 listString = listString.TrimEnd(' ', ',');

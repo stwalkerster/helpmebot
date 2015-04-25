@@ -26,8 +26,7 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Monitoring;
 
     /// <summary>
@@ -35,7 +34,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("fetchall")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Fetchall : GenericCommand
+    public class Fetchall : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Fetchall"/> class.
@@ -52,7 +51,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Fetchall(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Fetchall(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

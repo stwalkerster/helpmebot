@@ -28,6 +28,8 @@ namespace Helpmebot.Services
 
     using Castle.Core.Logging;
 
+    using FluentNHibernate.Utils;
+
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
@@ -124,7 +126,15 @@ namespace Helpmebot.Services
                 var customAttributes = type.GetCustomAttributes(typeof(CommandInvocationAttribute), false);
                 if (customAttributes.Length > 0)
                 {
-                    this.commands.Add(((CommandInvocationAttribute)customAttributes.First()).CommandName, type);
+                    foreach (var attribute in customAttributes)
+                    {
+                        var commandName = ((CommandInvocationAttribute)attribute).CommandName;
+
+                        if (commandName != string.Empty)
+                        {
+                            this.commands.Add(commandName, type);
+                        }
+                    }
                 }
             }
 
@@ -170,7 +180,7 @@ namespace Helpmebot.Services
             }
 
             var redirectionResult = this.ParseRedirection(originalArguments);
-            IEnumerable<string> arguments = redirectionResult.Arguments;
+            IEnumerable<string> arguments = redirectionResult.Arguments.ToList();
 
             if (this.commands.ContainsKey(commandMessage.CommandName.ToLower(CultureInfo.InvariantCulture)))
             {
@@ -178,18 +188,25 @@ namespace Helpmebot.Services
                 
                 this.logger.InfoFormat("Creating command object of type {0}", commandType);
 
-                ICommand command = this.commandFactory.CreateType(
-                    commandType, 
-                    destination, 
-                    user, 
-                    arguments, 
-                    client);
+                try
+                {
+                    ICommand command = this.commandFactory.CreateType(
+                        commandType, 
+                        destination, 
+                        user, 
+                        arguments);
 
-                command.RedirectionTarget = redirectionResult.Target;
-                command.OriginalArguments = originalArguments;
-                command.CommandMessage = commandMessage;
+                    command.RedirectionTarget = redirectionResult.Target;
+                    command.OriginalArguments = originalArguments;
+                    command.CommandMessage = commandMessage;
 
-                return command;
+                    return command;
+                }
+                catch (TargetInvocationException e)
+                {
+                    this.logger.Error("Unable to create instance of command.", e.InnerException);
+                    client.SendMessage("##helpmebot", e.InnerException.Message.Replace("\r\n", " "));
+                }
             }
 
             var keyword = this.keywordService.Get(commandMessage.CommandName);

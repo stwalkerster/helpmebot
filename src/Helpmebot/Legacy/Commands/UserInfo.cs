@@ -32,8 +32,8 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Repositories.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -58,7 +58,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("userinfo")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Userinfo : GenericCommand
+    public class Userinfo : GenericCommand
     {
         /// <summary>
         /// The response.
@@ -80,7 +80,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Userinfo(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Userinfo(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

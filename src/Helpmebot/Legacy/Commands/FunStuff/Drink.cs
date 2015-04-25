@@ -23,15 +23,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// Gives a user a drink.
     /// </summary>
     [CommandInvocation("drink")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
-    internal class Drink : TargetedFunCommand
+    public class Drink : TargetedFunCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Drink"/> class.
@@ -48,7 +47,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Drink(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Drink(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

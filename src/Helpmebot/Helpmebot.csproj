@@ -83,6 +83,8 @@
     <Compile Include="CommandResponseDestination.cs" />
     <Compile Include="CommandResponseHandler.cs" />
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
+    <Compile Include="Commands\AccessControl\CommandAccessCommand.cs" />
+    <Compile Include="Commands\AccessControl\MyFlagsCommand.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherCommand.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherForceCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
@@ -142,7 +144,6 @@
     <Compile Include="ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Legacy\Database\ILegacyDatabase.cs" />
-    <Compile Include="Legacy\Model\ILegacyUser.cs" />
     <Compile Include="Model\AccessLogEntry.cs" />
     <Compile Include="Model\CommandMessage.cs" />
     <Compile Include="Model\Flag.cs" />
@@ -237,7 +238,6 @@
     <Compile Include="Legacy\Commands\Blockuser.cs" />
     <Compile Include="Legacy\Commands\Autolink.cs" />
     <Compile Include="Legacy\Commands\Configcacheclear.cs" />
-    <Compile Include="Legacy\Commands\Commandaccess.cs" />
     <Compile Include="Legacy\Commands\CategorySize.cs" />
     <Compile Include="Legacy\Commands\FunStuff\Beer.cs" />
     <Compile Include="Legacy\Commands\FunStuff\Coffee.cs" />
@@ -279,7 +279,6 @@
     <Compile Include="Legacy\Commands\Learn.cs" />
     <Compile Include="Legacy\Commands\Link.cs" />
     <Compile Include="Legacy\Commands\MaxLag.cs" />
-    <Compile Include="Legacy\Commands\Myaccess.cs" />
     <Compile Include="Legacy\Commands\Page.cs" />
     <Compile Include="Legacy\Commands\Part.cs" />
     <Compile Include="Legacy\Commands\Ping.cs" />
@@ -302,7 +301,6 @@
     <Compile Include="Services\UrlShorteningService.cs" />
     <Compile Include="Linker.cs" />
     <Compile Include="Monitoring\CategoryWatcher.cs" />
-    <Compile Include="Legacy\LegacyCommandParser.cs" />
     <Compile Include="Legacy\Configuration\LegacyConfig.cs" />
     <Compile Include="Legacy\Configuration\ConfigurationSetting.cs" />
     <Compile Include="Legacy\Database\LegacyDatabase.cs" />
@@ -320,7 +318,6 @@
     <Compile Include="Startup\WindsorBootstrap.cs" />
     <Compile Include="Threading\IThreadedSystem.cs" />
     <Compile Include="Threading\ThreadList.cs" />
-    <Compile Include="Legacy\Model\LegacyUser.cs" />
     <Compile Include="Startup\WindsorServiceLocator.cs" />
     <Compile Include="TypedFactories\ICommandTypedFactory.cs" />
     <Compile Include="TypedFactories\IKeywordCommandFactory.cs" />

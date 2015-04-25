@@ -20,15 +20,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     Sets a global config option.
     /// </summary>
     [CommandInvocation("set")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
-    internal class Set : GenericCommand
+    public class Set : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -47,7 +46,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Set(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Set(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

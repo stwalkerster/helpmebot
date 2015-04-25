@@ -32,15 +32,14 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///   Returns the current version of the bot.
     /// </summary>
     [CommandInvocation("version")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Version : GenericCommand
+    public class Version : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Version"/> class.
@@ -57,7 +56,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Version(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Version(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

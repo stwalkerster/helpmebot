@@ -21,7 +21,6 @@
 namespace Helpmebot
 {
     using System;
-    using System.Linq;
 
     using Castle.Core.Logging;
     using Castle.MicroKernel.Registration;
@@ -33,10 +32,9 @@ namespace Helpmebot
     using Helpmebot.IRC;
     using Helpmebot.IRC.Events;
     using Helpmebot.IRC.Interfaces;
-    using Helpmebot.Legacy;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Database;
-    using Helpmebot.Legacy.Model;
+    using Helpmebot.Model;
     using Helpmebot.Monitoring;
     using Helpmebot.Repositories.Interfaces;
     using Helpmebot.Services.Interfaces;
@@ -211,8 +209,6 @@ namespace Helpmebot
 
             newIrc.JoinReceivedEvent += NotifyOnJoinEvent;
 
-            newIrc.ReceivedMessage += ReceivedMessage;
-
             newIrc.ReceivedMessage += commandHandler.OnMessageReceived;
 
             newIrc.InviteReceivedEvent += IrcInviteEvent;
@@ -229,19 +225,14 @@ namespace Helpmebot
         /// </param>
         private static void IrcInviteEvent(object sender, InviteEventArgs e)
         {
-            var legacyUser = LegacyUser.NewFromOtherUser(e.User);
+            // FIXME: servicelocator (commandparser)
+            var commandParser = ServiceLocator.Current.GetInstance<ICommandParser>();
 
-            if (legacyUser == null)
-            {
-                throw new NullReferenceException(string.Format("Legacy user creation failed from user {0}", e.User));
-            }
-
-            // FIXME: ServiceLocator - CSH
-            new Join(
-                legacyUser,
-                e.Nickname,
-                new[] { e.Channel },
-                ServiceLocator.Current.GetInstance<ICommandServiceHelper>()).RunCommand();
+            commandParser.GetCommand(
+                new CommandMessage { CommandName = "join", ArgumentList = e.Channel },
+                e.User,
+                e.Channel,
+                e.Client).Run();
         }
 
         /// <summary>
@@ -278,66 +269,23 @@ namespace Helpmebot
         {
             try
             {
-                // FIXME: ServiceLocator - CSH
-                var commandServiceHelper = ServiceLocator.Current.GetInstance<ICommandServiceHelper>();
+                // FIXME: ServiceLocator - commandparser
+                var commandParser = ServiceLocator.Current.GetInstance<ICommandParser>();
 
-                var legacyUser = LegacyUser.NewFromOtherUser(e.User);
-                if (legacyUser == null)
+                var command = commandParser.GetCommand(
+                    new CommandMessage { CommandName = "notify" },
+                    e.User,
+                    e.Channel,
+                    e.Client) as Notify;
+
+                if (command != null)
                 {
-                    throw new NullReferenceException(string.Format("Legacy user creation failed from user {0}", e.User));
+                    command.NotifyJoin(e.User, e.Channel);
                 }
-
-                new Notify(legacyUser, e.Channel, new string[0], commandServiceHelper).NotifyJoin(legacyUser, e.Channel);
             }
             catch (Exception exception)
             {
                 Log.Error("Exception encountered in NotifyOnJoinEvent", exception);
-            }
-        }
-
-        /// <summary>
-        /// The received message.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="ea">
-        /// The new event args.
-        /// </param>
-        /// <remarks>
-        /// TODO: upgrade this, get rid of PMEA call.
-        /// </remarks>
-        private static void ReceivedMessage(object sender, MessageReceivedEventArgs ea)
-        {
-            if (ea.Message.Command != "PRIVMSG")
-            {
-                return;
-            }
-
-            var parameters = ea.Message.Parameters.ToList();
-
-            string message = parameters[1];
-
-            var cmd = new LegacyCommandParser(
-                ServiceLocator.Current.GetInstance<ICommandServiceHelper>(),
-                Log.CreateChildLogger("LegacyCommandParser"));
-            try
-            {
-                bool overrideSilence = cmd.OverrideBotSilence;
-                if (cmd.IsRecognisedMessage(ref message, ref overrideSilence, ea.Client))
-                {
-                    cmd.OverrideBotSilence = overrideSilence;
-                    string[] messageWords = message.Split(' ');
-                    string command = messageWords[0];
-                    string joinedargs = string.Join(" ", messageWords, 1, messageWords.Length - 1);
-                    string[] commandArgs = joinedargs == string.Empty ? new string[0] : joinedargs.Split(' ');
-
-                    cmd.HandleCommand(LegacyUser.NewFromString(ea.Message.Prefix), parameters[0], command, commandArgs);
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex.Message, ex);
             }
         }
 

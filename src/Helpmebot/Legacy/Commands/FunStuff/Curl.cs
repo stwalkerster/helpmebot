@@ -20,8 +20,7 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     using helpmebot6.Commands.FunStuff;
 
@@ -49,7 +48,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Curl(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Curl(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

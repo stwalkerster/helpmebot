@@ -23,15 +23,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.FunStuff;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// The lick.
     /// </summary>
     [CommandInvocation("lick")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
-    internal class Lick : TargetedFunCommand
+    public class Lick : TargetedFunCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Lick"/> class.
@@ -48,7 +47,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Lick(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Lick(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

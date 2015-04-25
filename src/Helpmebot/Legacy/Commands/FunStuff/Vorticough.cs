@@ -25,8 +25,7 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// The vorticough.
@@ -34,7 +33,7 @@ namespace helpmebot6.Commands
     [CommandInvocation("vorticough")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Reviewed. Suppression is OK here.")]
-    internal class Vorticough : FunStuff.FunCommand
+    public class Vorticough : FunStuff.FunCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Vorticough"/> class.
@@ -51,7 +50,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Vorticough(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Vorticough(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

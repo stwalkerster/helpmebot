@@ -26,6 +26,8 @@ namespace Helpmebot.TypedFactories
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model.Interfaces;
 
+    using helpmebot6.Commands;
+
     /// <summary>
     /// The CommandTypedFactory interface.
     /// </summary>
@@ -45,17 +47,35 @@ namespace Helpmebot.TypedFactories
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="client">
-        /// The client.
-        /// </param>5
         /// <typeparam name="T">
         /// The command type
         /// </typeparam>
         /// <returns>
         /// The <see cref="ICommand"/>.
         /// </returns>
-        T Create<T>(string commandSource, IUser user, IEnumerable<string> arguments, IIrcClient client)
+        T Create<T>(string commandSource, IUser user, IEnumerable<string> arguments)
             where T : ICommand;
+
+        /// <summary>
+        /// The create legacy.
+        /// </summary>
+        /// <param name="source">
+        /// The source.
+        /// </param>
+        /// <param name="channel">
+        /// The channel.
+        /// </param>
+        /// <param name="args">
+        /// The arguments.
+        /// </param>
+        /// <typeparam name="T">
+        /// The type of command to return.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="GenericCommand"/>.
+        /// </returns>
+        T CreateLegacy<T>(IUser source, string channel, string[] args)
+            where T : GenericCommand;
 
         /// <summary>
         /// The release.

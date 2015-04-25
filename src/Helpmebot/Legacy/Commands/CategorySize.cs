@@ -28,15 +28,15 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// Count how many articles are in a category.
     /// </summary>
     [CommandInvocation("categorysize")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Categorysize : GenericCommand
+    public class Categorysize : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Categorysize"/> class.
@@ -53,7 +53,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Categorysize(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Categorysize(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

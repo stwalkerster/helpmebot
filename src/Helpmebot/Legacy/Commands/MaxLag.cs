@@ -23,15 +23,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     Returns the maximum replication lag on the wiki
     /// </summary>
     [CommandInvocation("maxlag")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Maxlag : GenericCommand
+    public class Maxlag : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -50,7 +49,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Maxlag(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Maxlag(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

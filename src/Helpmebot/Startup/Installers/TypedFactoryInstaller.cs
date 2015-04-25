@@ -28,6 +28,8 @@ namespace Helpmebot.Startup.Installers
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.TypedFactories;
 
+    using helpmebot6.Commands;
+
     /// <summary>
     /// The typed factory facility.
     /// </summary>
@@ -45,7 +47,16 @@ namespace Helpmebot.Startup.Installers
             container.Register(
                 Component.For<ICommandTypedFactory>().AsFactory(),
                 Component.For<IKeywordCommandFactory>().AsFactory(),
-                Classes.FromThisAssembly().BasedOn<ICommand>().WithServiceSelf().WithServices(typeof(ICommand)).LifestyleTransient());
+                Classes.FromThisAssembly()
+                    .BasedOn<ICommand>()
+                    .WithServiceSelf()
+                    .WithServices(typeof(ICommand))
+                    .LifestyleTransient(),
+                Classes.FromThisAssembly()
+                    .BasedOn<GenericCommand>()
+                    .WithServiceSelf()
+                    .WithServices(typeof(ICommand))
+                    .LifestyleTransient());
         }
     }
 }

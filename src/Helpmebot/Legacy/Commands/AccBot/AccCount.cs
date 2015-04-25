@@ -24,8 +24,7 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
 
     using HttpRequest = Helpmebot.HttpRequest;
@@ -34,8 +33,8 @@ namespace helpmebot6.Commands
     ///     The ACC count.
     /// </summary>
     [CommandInvocation("acccount")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)] 
-    internal class Acccount : GenericCommand
+    [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
+    public class Acccount : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -54,7 +53,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Acccount(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Acccount(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

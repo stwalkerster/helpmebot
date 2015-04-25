@@ -25,20 +25,19 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// The notify.
     /// </summary>
     [CommandInvocation("notify")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
-    internal class Notify : GenericCommand
+    public class Notify : GenericCommand
     {
         /// <summary>
         /// The requested notifications.
         /// </summary>
-        private static readonly Dictionary<string, List<LegacyUser>> RequestedNotifications = new Dictionary<string, List<LegacyUser>>();
+        private static readonly Dictionary<string, List<IUser>> RequestedNotifications = new Dictionary<string, List<IUser>>();
 
         /// <summary>
         /// The lock for the requested notifications dictionary.
@@ -60,7 +59,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Notify(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Notify(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }
@@ -74,9 +73,9 @@ namespace helpmebot6.Commands
         /// <param name="channel">
         /// The channel.
         /// </param>
-        internal void NotifyJoin(LegacyUser source, string channel)
+        internal void NotifyJoin(IUser source, string channel)
         {
-            List<LegacyUser> toNotify;
+            List<IUser> toNotify;
             lock (NotificationsDictionaryLock)
             {
                 if (RequestedNotifications.TryGetValue(source.Nickname.ToUpperInvariant(), out toNotify))
@@ -114,12 +113,12 @@ namespace helpmebot6.Commands
             string trigger;
             lock (NotificationsDictionaryLock)
             {
-                LegacyUser toNotify = this.Source;
+                IUser toNotify = this.Source;
                 trigger = this.Arguments[0];
                 string triggerUpper = trigger.ToUpperInvariant();
                 if (!RequestedNotifications.ContainsKey(trigger))
                 {
-                    RequestedNotifications.Add(triggerUpper, new List<LegacyUser>());
+                    RequestedNotifications.Add(triggerUpper, new List<IUser>());
                 }
 
                 RequestedNotifications[triggerUpper].Add(toNotify);

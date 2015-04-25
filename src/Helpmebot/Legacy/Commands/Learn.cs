@@ -28,8 +28,8 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -39,7 +39,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("learn")]
     [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
-    internal class Learn : GenericCommand
+    public class Learn : GenericCommand
     {
         /// <summary>
         /// The keyword service.
@@ -61,7 +61,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Learn(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Learn(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
             // FIXME: ServiceLocator - keywordservice

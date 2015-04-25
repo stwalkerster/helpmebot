@@ -22,11 +22,13 @@ namespace Helpmebot.ExtensionMethods
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.TypedFactories;
+
+    using helpmebot6.Commands;
 
     /// <summary>
     /// The typed factory extensions.
@@ -53,19 +55,64 @@ namespace Helpmebot.ExtensionMethods
         /// <param name="arguments">
         /// The arguments.
         /// </param>
-        /// <param name="client">
-        /// The client.
-        /// </param>
         /// <returns>
         /// The <see cref="object"/>.
         /// </returns>
-        public static ICommand CreateType(this ICommandTypedFactory factory, Type commandType, string commandSource, IUser user, IEnumerable<string> arguments, IIrcClient client)
+        public static ICommand CreateType(
+            this ICommandTypedFactory factory,
+            Type commandType,
+            string commandSource,
+            IUser user,
+            IEnumerable<string> arguments)
         {
+            if (commandType.Namespace != null && commandType.Namespace.StartsWith("helpmebot6."))
+            {
+                // Yay! Legacy command.
+                return factory.CreateLegacyType(commandType, commandSource, user, arguments);
+            }
+
             return
                 (ICommand)
                 typeof(ICommandTypedFactory).GetMethod("Create")
                     .MakeGenericMethod(commandType)
-                    .Invoke(factory, new object[] { commandSource, user, arguments, client });
+                    .Invoke(factory, new object[] { commandSource, user, arguments });
+        }
+
+        /// <summary>
+        /// The create legacy type.
+        /// </summary>
+        /// <param name="factory">
+        /// The factory.
+        /// </param>
+        /// <param name="commandType">
+        /// The command type.
+        /// </param>
+        /// <param name="commandSource">
+        /// The command source.
+        /// </param>
+        /// <param name="user">
+        /// The user.
+        /// </param>
+        /// <param name="arguments">
+        /// The arguments.
+        /// </param>
+        /// <returns>
+        /// The <see cref="GenericCommand"/>.
+        /// </returns>
+        public static GenericCommand CreateLegacyType(
+            this ICommandTypedFactory factory,
+            Type commandType,
+            string commandSource,
+            IUser user,
+            IEnumerable<string> arguments)
+        {
+            string[] strings = arguments.ToArray();
+
+            return
+                (GenericCommand)
+                typeof(ICommandTypedFactory).GetMethod("CreateLegacy")
+                    .MakeGenericMethod(commandType)
+                    .Invoke(factory, new object[] { user, commandSource, strings });
         }
 
         #endregion

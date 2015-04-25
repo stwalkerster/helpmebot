@@ -29,8 +29,7 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     using HttpRequest = Helpmebot.HttpRequest;
 
@@ -39,7 +38,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("accdeploy")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
-    internal class Accdeploy : GenericCommand
+    public class Accdeploy : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Accdeploy"/> class.
@@ -56,7 +55,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Accdeploy(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Accdeploy(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

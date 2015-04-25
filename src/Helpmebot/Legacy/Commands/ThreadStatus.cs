@@ -19,8 +19,7 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Threading;
 
     /// <summary>
@@ -28,7 +27,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("threadstatus")]
     [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
-    internal class Threadstatus : GenericCommand
+    public class Threadstatus : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -48,7 +47,7 @@ namespace helpmebot6.Commands
         /// The message Service.
         /// </param>
         public Threadstatus(
-            LegacyUser source, 
+            IUser source, 
             string channel, 
             string[] args, 
             ICommandServiceHelper commandServiceHelper)

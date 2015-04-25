@@ -20,8 +20,6 @@
 
 namespace Helpmebot.Startup.Installers
 {
-    using System;
-
     using Castle.Facilities.EventWiring;
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;

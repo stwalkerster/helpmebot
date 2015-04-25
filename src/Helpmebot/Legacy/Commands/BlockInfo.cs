@@ -23,15 +23,15 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     Returns the block information of a wikipedian
     /// </summary>
     [CommandInvocation("blockinfo")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Blockinfo : GenericCommand
+    public class Blockinfo : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -50,7 +50,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Blockinfo(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Blockinfo(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

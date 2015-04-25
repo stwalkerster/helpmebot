@@ -30,15 +30,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// Retrieves information on a specific page
     /// </summary>
     [CommandInvocation("page")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Page : GenericCommand
+    public class Page : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Page"/> class.
@@ -55,7 +54,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Page(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Page(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

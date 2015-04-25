@@ -26,8 +26,8 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.IRC.Interfaces;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Repositories.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
@@ -37,7 +37,7 @@ namespace helpmebot6.Commands
     /// </summary>
     [CommandInvocation("join")]
     [CommandFlag(Helpmebot.Model.Flag.LegacySuperuser)]
-    internal class Join : GenericCommand
+    public class Join : GenericCommand
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Join"/> class.
@@ -54,7 +54,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Join(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Join(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

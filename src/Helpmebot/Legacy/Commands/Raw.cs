@@ -21,15 +21,14 @@ namespace helpmebot6.Commands
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     Send a raw line to IRC
     /// </summary>
     [CommandInvocation("raw")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyDeveloper)]
-    internal class Raw : GenericCommand
+    public class Raw : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -48,7 +47,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Raw(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Raw(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

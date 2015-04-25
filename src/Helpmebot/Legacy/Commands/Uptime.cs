@@ -19,15 +19,14 @@ namespace helpmebot6.Commands
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Legacy.Model;
-    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     Gets the uptime of the bot
     /// </summary>
     [CommandInvocation("uptime")]
     [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    internal class Uptime : GenericCommand
+    public class Uptime : GenericCommand
     {
         #region Constructors and Destructors
 
@@ -46,7 +45,7 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Uptime(LegacyUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        public Uptime(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
             : base(source, channel, args, commandServiceHelper)
         {
         }

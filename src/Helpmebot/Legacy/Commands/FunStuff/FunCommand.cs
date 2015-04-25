@@ -19,8 +19,8 @@ namespace helpmebot6.Commands.FunStuff
     using Helpmebot;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
-    using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     ///     The fun command.
@@ -45,7 +45,7 @@ namespace helpmebot6.Commands.FunStuff
         /// The message Service.
         /// </param>
         protected FunCommand(
-            LegacyUser source, 
+            IUser source, 
             string channel, 
             string[] args, 
             ICommandServiceHelper commandServiceHelper)
