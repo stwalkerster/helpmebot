@@ -93,7 +93,7 @@ namespace Helpmebot.Commands.AccessControl
                 this.User,
                 flagsForUser.Implode(string.Empty));
 
-            return new CommandResponse { Message = message }.ToEnumerable();
+            yield return new CommandResponse { Message = message };
         }
 
         /// <summary>

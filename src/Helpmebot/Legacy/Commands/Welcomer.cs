@@ -31,8 +31,6 @@ namespace helpmebot6.Commands
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Repositories.Interfaces;
 
-    using Microsoft.Practices.ServiceLocation;
-
     using NHibernate.Criterion;
     using NHibernate.Linq;
 
@@ -43,6 +41,11 @@ namespace helpmebot6.Commands
     [CommandFlag(Helpmebot.Model.Flag.LegacyAdvanced)]
     public class Welcomer : GenericCommand
     {
+        /// <summary>
+        /// The repository.
+        /// </summary>
+        private readonly IWelcomeUserRepository repository;
+
         /// <summary>
         /// Initialises a new instance of the <see cref="Welcomer"/> class.
         /// </summary>
@@ -58,9 +61,13 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Welcomer(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        /// <param name="welcomeUserRepository">
+        /// The welcome User Repository.
+        /// </param>
+        public Welcomer(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper, IWelcomeUserRepository welcomeUserRepository)
             : base(source, channel, args, commandServiceHelper)
         {
+            this.repository = welcomeUserRepository;
         }
 
         /// <summary>
@@ -77,9 +84,6 @@ namespace helpmebot6.Commands
                 response.Respond(messageService.NotEnoughParameters(this.Channel, "Welcomer", 1, 0));
                 return response;
             }
-
-            // FIXME: ServiceLocator - welcomeuserrepo
-            var repository = ServiceLocator.Current.GetInstance<IWelcomeUserRepository>();
 
             List<string> argumentsList = this.Arguments.ToList();
             var mode = argumentsList.PopFromFront();
@@ -101,7 +105,7 @@ namespace helpmebot6.Commands
                                               Channel = this.Channel,
                                               Exception = false
                                           };
-                    repository.Save(welcomeUser);
+                    this.repository.Save(welcomeUser);
 
                     response.Respond(messageService.Done(this.Channel));
                     break;
@@ -116,18 +120,18 @@ namespace helpmebot6.Commands
                         Restrictions.Eq("Host", string.Join(" ", argumentsList.ToArray())),
                         Restrictions.Eq("Channel", this.Channel));
 
-                    var welcomeUsers = repository.Get(criteria);
+                    var welcomeUsers = this.repository.Get(criteria);
 
                     this.Logger.Debug("Got list of WelcomeUsers, proceeding to Delete...");
 
-                    repository.Delete(welcomeUsers);
+                    this.repository.Delete(welcomeUsers);
 
                     this.Logger.Debug("All done, cleaning up and sending message to IRC");
 
                     response.Respond(messageService.Done(this.Channel));
                     break;
                 case "list":
-                    var welcomeForChannel = repository.GetWelcomeForChannel(this.Channel);
+                    var welcomeForChannel = this.repository.GetWelcomeForChannel(this.Channel);
                     welcomeForChannel.ForEach(x => response.Respond(x.Host));
                     break;
             }

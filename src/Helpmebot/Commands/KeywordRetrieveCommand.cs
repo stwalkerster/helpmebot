@@ -124,15 +124,12 @@ namespace Helpmebot.Commands
 
             var wordResponse = this.keyword.Response.FormatWith(dict);
 
-            return new List<CommandResponse>
-                       {
-                           new CommandResponse
-                               {
-                                   Message = wordResponse,
-                                   ClientToClientProtocol =
-                                       this.keyword.Action ? "ACTION" : null
-                               }
-                       };
+            yield return
+                new CommandResponse
+                    {
+                        Message = wordResponse,
+                        ClientToClientProtocol = this.keyword.Action ? "ACTION" : null
+                    };
         }
 
         #endregion

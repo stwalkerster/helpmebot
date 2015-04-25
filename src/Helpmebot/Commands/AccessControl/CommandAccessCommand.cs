@@ -114,7 +114,7 @@ namespace Helpmebot.Commands.AccessControl
                 this.CommandServiceHelper.Client);
 
             var message = string.Format("The command {0} requires the flag '{1}'.", this.Arguments.First(), command.Flag);
-            return new CommandResponse { Message = message }.ToEnumerable();
+            yield return new CommandResponse { Message = message };
         }
 
         #endregion

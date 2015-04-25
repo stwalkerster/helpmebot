@@ -61,11 +61,13 @@ namespace helpmebot6.Commands
         /// <param name="commandServiceHelper">
         /// The message Service.
         /// </param>
-        public Learn(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
+        /// <param name="keywordService">
+        /// The keyword Service.
+        /// </param>
+        public Learn(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper, IKeywordService keywordService)
             : base(source, channel, args, commandServiceHelper)
         {
-            // FIXME: ServiceLocator - keywordservice
-            this.keywordService = ServiceLocator.Current.GetInstance<IKeywordService>();
+            this.keywordService = keywordService;
         }
 
         /// <summary>

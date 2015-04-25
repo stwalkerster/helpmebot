@@ -30,7 +30,6 @@ namespace Helpmebot.Commands.AccessControl
     using Helpmebot.Commands.CommandUtilities.Models;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Exceptions;
-    using Helpmebot.ExtensionMethods;
     using Helpmebot.IRC.Model;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
@@ -185,8 +184,7 @@ namespace Helpmebot.Commands.AccessControl
 
             this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
-            var response = new CommandResponse { Message = string.Format("Added to user mask {0}", flagGroupUser) };
-            return response.ToEnumerable();
+            yield return new CommandResponse { Message = string.Format("Added to user mask {0}", flagGroupUser) };
         }
 
         /// <summary>
@@ -239,8 +237,7 @@ namespace Helpmebot.Commands.AccessControl
 
             this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
-            var response = new CommandResponse { Message = string.Format("Deleted from user mask {0}", flagGroupUser) };
-            return response.ToEnumerable();
+            yield return new CommandResponse { Message = string.Format("Deleted from user mask {0}", flagGroupUser) };
         }
 
         #endregion

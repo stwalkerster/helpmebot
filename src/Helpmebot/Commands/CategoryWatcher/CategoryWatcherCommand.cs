@@ -154,9 +154,8 @@ namespace Helpmebot.Commands.CategoryWatcher
         {
             WatcherController.Instance().RemoveWatcherFromChannel(watcher, this.CommandSource);
 
-            return
-                new CommandResponse { Message = this.CommandServiceHelper.MessageService.Done(this.CommandSource) }
-                    .ToEnumerable();
+            yield return
+                new CommandResponse { Message = this.CommandServiceHelper.MessageService.Done(this.CommandSource) };
         }
 
         /// <summary>
@@ -172,9 +171,8 @@ namespace Helpmebot.Commands.CategoryWatcher
         {
             WatcherController.Instance().AddWatcherToChannel(watcher, this.CommandSource);
 
-            return
-                new CommandResponse { Message = this.CommandServiceHelper.MessageService.Done(this.CommandSource) }
-                    .ToEnumerable();
+            yield return
+                new CommandResponse { Message = this.CommandServiceHelper.MessageService.Done(this.CommandSource) };
         }
 
         /// <summary>
@@ -199,24 +197,26 @@ namespace Helpmebot.Commands.CategoryWatcher
 
                 WatcherController.Instance().SetDelay(watcher, newDelay, this.CommandSource);
 
-                return
+                yield return
                     new CommandResponse
                         {
                             Message = string.Format("Delay for watcher {0} set to {1}", watcher, newDelay)
-                        }.ToEnumerable();
+                        };
+
+                yield break;
             }
 
             var delay = WatcherController.Instance().GetDelay(watcher);
 
-            return
+            yield return
                 new CommandResponse
                     {
                         Message =
                             string.Format(
-                                "Delay for watcher {0} is currently set to {1}", 
-                                watcher, 
+                                "Delay for watcher {0} is currently set to {1}",
+                                watcher,
                                 delay)
-                    }.ToEnumerable();
+                    };
         }
 
         /// <summary>

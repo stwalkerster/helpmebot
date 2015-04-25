@@ -91,7 +91,7 @@ namespace Helpmebot.Commands.CategoryWatcher
 
             var message = WatcherController.Instance().ForceUpdate(commandName, this.CommandSource);
 
-            return new CommandResponse { Message = message }.ToEnumerable();
+            yield return new CommandResponse { Message = message };
         }
 
         #endregion

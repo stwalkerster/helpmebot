@@ -240,8 +240,6 @@ namespace Helpmebot.Commands.AccessControl
         /// </returns>
         private IEnumerable<CommandResponse> DeleteGroup(string flagGroup)
         {
-            var responses = new List<CommandResponse>();
-
             var existing = this.DatabaseSession.QueryOver<FlagGroup>().Where(x => x.Name == flagGroup).List();
 
             if (existing.Any(x => x.IsProtected))
@@ -249,12 +247,13 @@ namespace Helpmebot.Commands.AccessControl
                 throw new CommandErrorException("This group is protected, and cannot be deleted.");
             }
 
-            existing.Apply(item => responses.Add(new CommandResponse { Message = item.ToString() }));
-            existing.Apply(this.DatabaseSession.Delete);
+            foreach (var group in existing)
+            {
+                yield return new CommandResponse { Message = group.ToString() };
+                this.DatabaseSession.Delete(group);
+            }
 
             this.CommandServiceHelper.UserFlagService.InvalidateCache();
-
-            return responses;
         }
 
         /// <summary>
@@ -290,7 +289,7 @@ namespace Helpmebot.Commands.AccessControl
             this.DatabaseSession.SaveOrUpdate(group);
             this.CommandServiceHelper.UserFlagService.InvalidateCache();
 
-            return new CommandResponse { Message = group.ToString() }.ToEnumerable();
+            yield return new CommandResponse { Message = group.ToString() };
         }
 
         /// <summary>
