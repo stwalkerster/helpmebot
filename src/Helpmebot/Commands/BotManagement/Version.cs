@@ -18,54 +18,72 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace helpmebot6.Commands
+namespace Helpmebot.Commands.BotManagement
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using Castle.Core.Logging;
+
+    using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.Commands.Interfaces;
+    using Helpmebot.Model.Interfaces;
+
+    using NHibernate;
 #if !DEBUG
     using System;
     using Helpmebot.ExtensionMethods;
 #endif
-
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Reflection;
-
-    using Helpmebot;
-    using Helpmebot.Attributes;
-    using Helpmebot.Commands.Interfaces;
-    using Helpmebot.Model.Interfaces;
+    
 
     /// <summary>
     ///   Returns the current version of the bot.
     /// </summary>
     [CommandInvocation("version")]
-    [CommandFlag(Helpmebot.Model.Flag.LegacyNormal)]
-    public class Version : GenericCommand
+    [CommandFlag(Model.Flag.LegacyNormal)]
+    public class Version : CommandBase
     {
         /// <summary>
         /// Initialises a new instance of the <see cref="Version"/> class.
         /// </summary>
-        /// <param name="source">
-        /// The source.
+        /// <param name="commandSource">
+        /// The command source.
         /// </param>
-        /// <param name="channel">
-        /// The channel.
+        /// <param name="user">
+        /// The user.
         /// </param>
-        /// <param name="args">
-        /// The args.
+        /// <param name="arguments">
+        /// The arguments.
+        /// </param>
+        /// <param name="logger">
+        /// The logger.
+        /// </param>
+        /// <param name="databaseSession">
+        /// The database Session.
         /// </param>
         /// <param name="commandServiceHelper">
-        /// The message Service.
+        /// The command Service Helper.
         /// </param>
-        public Version(IUser source, string channel, string[] args, ICommandServiceHelper commandServiceHelper)
-            : base(source, channel, args, commandServiceHelper)
+        public Version(
+            string commandSource,
+            IUser user,
+            IEnumerable<string> arguments,
+            ILogger logger,
+            ISession databaseSession,
+            ICommandServiceHelper commandServiceHelper)
+            : base(commandSource, user, arguments, logger, databaseSession, commandServiceHelper)
         {
         }
 
         /// <summary>
-        /// Actual command logic
+        /// The execute.
         /// </summary>
-        /// <returns>the response</returns>
-        protected override CommandResponseHandler ExecuteCommand()
+        /// <returns>
+        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// </returns>
+        protected override IEnumerable<CommandResponse> Execute()
         {
             System.Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -76,8 +94,8 @@ namespace helpmebot6.Commands
 #endif
             var messageArgs = new List<string>
                                   {
-                                      version.Major.ToString(CultureInfo.InvariantCulture),
-                                      version.Minor.ToString(CultureInfo.InvariantCulture),
+                                      version.Major.ToString((IFormatProvider)CultureInfo.InvariantCulture),
+                                      version.Minor.ToString((IFormatProvider)CultureInfo.InvariantCulture),
 #if DEBUG
                                       "*",
                                       "*",
@@ -89,9 +107,12 @@ namespace helpmebot6.Commands
 #endif
                                   };
 
-            string message = this.CommandServiceHelper.MessageService.RetrieveMessage("CmdVersion", this.Channel, messageArgs);
+            string message = this.CommandServiceHelper.MessageService.RetrieveMessage(
+                "CmdVersion",
+                this.CommandSource,
+                messageArgs);
 
-            return new CommandResponseHandler(message);
+            yield return new CommandResponse { Message = message };
         }
     }
 }
