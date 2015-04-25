@@ -20,6 +20,7 @@
 
 namespace Helpmebot.Services.Interfaces
 {
+    using System;
     using System.Collections.Generic;
 
     using Helpmebot.Commands.CommandUtilities.Models;
@@ -85,5 +86,16 @@ namespace Helpmebot.Services.Interfaces
         /// The <see cref="RedirectionResult"/>.
         /// </returns>
         RedirectionResult ParseRedirection(IEnumerable<string> inputArguments);
+
+        /// <summary>
+        /// The register command.
+        /// </summary>
+        /// <param name="keyword">
+        /// The keyword.
+        /// </param>
+        /// <param name="implementation">
+        /// The implementation.
+        /// </param>
+        void RegisterCommand(string keyword, Type implementation);
     }
 }

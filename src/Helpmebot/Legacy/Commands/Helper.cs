@@ -26,7 +26,7 @@ namespace helpmebot6.Commands
     ///     Triggers an inter-channel alert
     /// </summary>
     [CommandInvocation("helper")]
-    [CommandFlag(Flag.LegacySemiignored)]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Helper : GenericCommand
     {
         #region Constructors and Destructors

@@ -187,6 +187,7 @@ namespace Helpmebot.Services
 
                 command.RedirectionTarget = redirectionResult.Target;
                 command.OriginalArguments = originalArguments;
+                command.CommandMessage = commandMessage;
 
                 return command;
             }
@@ -205,6 +206,7 @@ namespace Helpmebot.Services
 
                 command.RedirectionTarget = redirectionResult.Target;
                 command.OriginalArguments = originalArguments;
+                command.CommandMessage = commandMessage;
 
                 return command;
             }
@@ -328,6 +330,20 @@ namespace Helpmebot.Services
         public void Release(ICommand command)
         {
             this.commandFactory.Release(command);
+        }
+
+        /// <summary>
+        /// The register command.
+        /// </summary>
+        /// <param name="keyword">
+        /// The keyword.
+        /// </param>
+        /// <param name="implementation">
+        /// The implementation.
+        /// </param>
+        public void RegisterCommand(string keyword, Type implementation)
+        {
+            this.commands.Add(keyword, implementation);
         }
 
         #endregion

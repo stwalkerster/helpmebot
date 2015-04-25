@@ -35,7 +35,7 @@ namespace helpmebot6.Commands
     /// Triggers the link parser
     /// </summary>
     [CommandInvocation("link")]
-    [CommandFlag(Flag.LegacySemiignored)]
+    [CommandFlag(Flag.LegacyNormal)]
     internal class Link : GenericCommand
     {
         /// <summary>

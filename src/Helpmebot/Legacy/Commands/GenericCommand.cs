@@ -127,8 +127,6 @@ namespace helpmebot6.Commands
                             return LegacyUser.UserRights.Advanced;
                         case Flag.LegacyNormal:
                             return LegacyUser.UserRights.Normal;
-                        case Flag.LegacySemiignored:
-                            return LegacyUser.UserRights.Semiignored;
                         default:
                             return LegacyUser.UserRights.Developer;
                     }
@@ -151,6 +149,23 @@ namespace helpmebot6.Commands
                     this.Log.Warn("Warning: " + command + " not found in access list.");
                     return LegacyUser.UserRights.Developer;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets the next gen parser flag.
+        /// </summary>
+        public string NextGenParserFlag
+        {
+            get
+            {
+                var commandFlagAttribute = this.GetType().GetAttribute<CommandFlagAttribute>();
+                if (commandFlagAttribute != null)
+                {
+                    return commandFlagAttribute.Flag;
+                }
+
+                return null;
             }
         }
 

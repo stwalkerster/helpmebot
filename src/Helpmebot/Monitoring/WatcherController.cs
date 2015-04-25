@@ -25,6 +25,7 @@ namespace Helpmebot.Monitoring
 
     using Castle.Core.Logging;
 
+    using Helpmebot.Commands.CategoryWatcher;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Database;
@@ -82,6 +83,11 @@ namespace Helpmebot.Monitoring
         /// </summary>
         private readonly ILegacyDatabase legacyDatabase;
 
+        /// <summary>
+        /// The command parser.
+        /// </summary>
+        private readonly ICommandParser commandParser;
+
         #endregion
 
         #region Constructors and Destructors
@@ -113,6 +119,9 @@ namespace Helpmebot.Monitoring
         /// <param name="legacyDatabase">
         /// The legacy Database.
         /// </param>
+        /// <param name="commandParser">
+        /// The command Parser.
+        /// </param>
         protected WatcherController(
             IMessageService messageService, 
             IUrlShorteningService urlShorteningService, 
@@ -121,13 +130,15 @@ namespace Helpmebot.Monitoring
             IIgnoredPagesRepository ignoredPagesRepository,
             ILogger logger,
             IIrcClient ircClient,
-            ILegacyDatabase legacyDatabase)
+            ILegacyDatabase legacyDatabase,
+            ICommandParser commandParser)
         {
             this.messageService = messageService;
             this.urlShorteningService = urlShorteningService;
             this.watchers = new Dictionary<string, CategoryWatcher>();
             this.logger = logger;
             this.ircClient = ircClient;
+            this.commandParser = commandParser;
 
             foreach (WatchedCategory item in watchedCategoryRepository.Get())
             {
@@ -138,6 +149,8 @@ namespace Helpmebot.Monitoring
                     logger.CreateChildLogger("CategoryWatcher[" + item.Keyword + "]"));
                 this.watchers.Add(item.Keyword, categoryWatcher);
                 categoryWatcher.CategoryHasItemsEvent += this.CategoryHasItemsEvent;
+
+                this.commandParser.RegisterCommand(item.Keyword, typeof(CategoryWatcherForceCommand));
             }
 
             this.legacyDatabase = legacyDatabase;
@@ -166,8 +179,9 @@ namespace Helpmebot.Monitoring
                 var logger = ServiceLocator.Current.GetInstance<ILogger>();
                 var irc = ServiceLocator.Current.GetInstance<IIrcClient>();
                 var legacyDb = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
+                var parser = ServiceLocator.Current.GetInstance<ICommandParser>();
 
-                instance = new WatcherController(ms, ss, wcrepo, mwrepo, iprepo, logger, irc, legacyDb);
+                instance = new WatcherController(ms, ss, wcrepo, mwrepo, iprepo, logger, irc, legacyDb, parser);
             }
 
             return instance;

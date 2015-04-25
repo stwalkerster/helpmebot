@@ -21,12 +21,11 @@ namespace Helpmebot.Legacy.Model
 
     using Castle.Core.Logging;
 
-    using Helpmebot.Legacy.Database;
+    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
+    using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
-
-    using MySql.Data.MySqlClient;
 
     /// <summary>
     ///     The user.
@@ -34,11 +33,6 @@ namespace Helpmebot.Legacy.Model
     public class LegacyUser : ILegacyUser
     {
         #region Fields
-
-        /// <summary>
-        ///     The database.
-        /// </summary>
-        private readonly ILegacyDatabase db;
 
         /// <summary>
         ///     The _access level.
@@ -60,7 +54,7 @@ namespace Helpmebot.Legacy.Model
         public LegacyUser()
         {
             // FIXME: ServiceLocator - legacydatabase
-            this.db = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
+            this.Log = ServiceLocator.Current.GetInstance<ILogger>();
         }
 
         #endregion
@@ -119,20 +113,33 @@ namespace Helpmebot.Legacy.Model
                 {
                     if (this.retrievedAccessLevel == false)
                     {
-                        var command =
-                            new MySqlCommand(
-                                "SELECT user_accesslevel FROM `user` WHERE @nick LIKE user_nickname AND @user LIKE user_username AND @host LIKE user_hostname ORDER BY `user_accesslevel` ASC;");
-                        command.Parameters.AddWithValue("@nick", this.Nickname);
-                        command.Parameters.AddWithValue("@user", this.Username);
-                        command.Parameters.AddWithValue("@host", this.Hostname);
+                        // TODO: servicelocator (userflagservice)
+                        var userFlagService = ServiceLocator.Current.GetInstance<IUserFlagService>();
+                        var flagsForUser = userFlagService.GetFlagsForUser(this).ToList();
 
-                        string accesslevel = this.db.ExecuteScalarSelect(command) ?? "Normal";
+                        if (flagsForUser.Contains(Flag.LegacyDeveloper))
+                        {
+                            this.accessLevel = UserRights.Developer;
+                            this.retrievedAccessLevel = true;
+                            return this.accessLevel;
+                        }
 
-                        var ret = (UserRights)Enum.Parse(typeof(UserRights), accesslevel);
+                        if (flagsForUser.Contains(Flag.LegacySuperuser))
+                        {
+                            this.accessLevel = UserRights.Superuser;
+                            this.retrievedAccessLevel = true;
+                            return this.accessLevel;
+                        }
 
-                        this.accessLevel = ret;
+                        if (flagsForUser.Contains(Flag.LegacyAdvanced))
+                        {
+                            this.accessLevel = UserRights.Advanced;
+                            this.retrievedAccessLevel = true;
+                            return this.accessLevel;
+                        }
+
+                        this.accessLevel = UserRights.Normal;
                         this.retrievedAccessLevel = true;
-                        return ret;
                     }
 
                     return this.accessLevel;

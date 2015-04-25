@@ -170,6 +170,11 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </summary>
         public IUser User { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the command message.
+        /// </summary>
+        public CommandMessage CommandMessage { get; set; }
+
         #endregion
 
         #region Properties
@@ -388,7 +393,7 @@ namespace Helpmebot.Commands.CommandUtilities
         /// The help.
         /// </summary>
         /// <returns>
-        /// The <see cref="IEnumerable{CommandResponse}"/>.
+        /// The <see cref="IDictionary{String, HelpMessage}"/>.
         /// </returns>
         protected virtual IDictionary<string, HelpMessage> Help()
         {

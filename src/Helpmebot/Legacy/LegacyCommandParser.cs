@@ -35,14 +35,11 @@ namespace Helpmebot.Legacy
     using Helpmebot.Legacy.Configuration;
     using Helpmebot.Legacy.Model;
     using Helpmebot.Model;
-    using Helpmebot.Monitoring;
     using Helpmebot.Services.Interfaces;
 
     using helpmebot6.Commands;
 
     using Microsoft.Practices.ServiceLocation;
-
-    using CategoryWatcher = helpmebot6.Commands.CategoryWatcher;
 
     /// <summary>
     ///     A command parser
@@ -160,33 +157,6 @@ namespace Helpmebot.Legacy
             if (destination == this.commandServiceHelper.Client.Nickname)
             {
                 destination = source.Nickname;
-            }
-
-            /*
-             * check category codes
-             */
-            if (WatcherController.Instance().IsValidKeyword(command))
-            {
-                int argsLength = args.SmartLength();
-
-                var newArgs = new string[argsLength + 1];
-                int newArrayPos = 1;
-                foreach (string t in args)
-                {
-                    if (!string.IsNullOrEmpty(t))
-                    {
-                        newArgs[newArrayPos] = t;
-                    }
-
-                    newArrayPos++;
-                }
-
-                newArgs[0] = command;
-                string directedTo = FindRedirection(ref newArgs);
-                CommandResponseHandler crh =
-                    new CategoryWatcher(source, destination, newArgs, this.commandServiceHelper).RunCommand();
-                this.HandleCommandResponseHandler(source, destination, directedTo, crh);
-                return;
             }
 
             /* 

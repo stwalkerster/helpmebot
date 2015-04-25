@@ -41,7 +41,7 @@ namespace Helpmebot.Commands.AccessControl
     /// The access command.
     /// </summary>
     [CommandFlag(Model.Flag.Access)]
-    [CommandInvocation("accessng")]
+    [CommandInvocation("access")]
     public class AccessCommand : CommandBase
     {
         #region Constructors and Destructors

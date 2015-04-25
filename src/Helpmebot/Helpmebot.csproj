@@ -83,6 +83,8 @@
     <Compile Include="CommandResponseDestination.cs" />
     <Compile Include="CommandResponseHandler.cs" />
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
+    <Compile Include="Commands\CategoryWatcher\CategoryWatcherCommand.cs" />
+    <Compile Include="Commands\CategoryWatcher\CategoryWatcherForceCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
     <Compile Include="Commands\CommandUtilities\Models\RedirectionResult.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
@@ -126,7 +128,6 @@
     <Compile Include="Legacy\Commands\AccBot\AccStats.cs" />
     <Compile Include="Legacy\Commands\AccBot\AccStatus.cs" />
     <Compile Include="Legacy\Commands\AccBot\AccDeploy.cs" />
-    <Compile Include="Legacy\Commands\Access.cs" />
     <Compile Include="Legacy\Commands\Afccount.cs" />
     <Compile Include="Legacy\Commands\Age.cs" />
     <Compile Include="Legacy\Commands\BlockInfo.cs" />
@@ -235,11 +236,7 @@
     <Compile Include="Model\BlockInformation.cs" />
     <Compile Include="Legacy\Commands\Blockuser.cs" />
     <Compile Include="Legacy\Commands\CategoryWatcher.cs" />
-    <Compile Include="Legacy\Commands\CategoryWatcherCommand\Delay.cs" />
-    <Compile Include="Legacy\Commands\CategoryWatcherCommand\Disable.cs" />
-    <Compile Include="Legacy\Commands\CategoryWatcherCommand\Enable.cs" />
     <Compile Include="Legacy\Commands\Autolink.cs" />
-    <Compile Include="Legacy\Commands\CategoryWatcherCommand\Status.cs" />
     <Compile Include="Legacy\Commands\Configcacheclear.cs" />
     <Compile Include="Legacy\Commands\Commandaccess.cs" />
     <Compile Include="Legacy\Commands\CategorySize.cs" />
@@ -426,5 +423,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Legacy\Commands\CategoryWatcherCommand\" />
+  </ItemGroup>
 </Project>

@@ -127,10 +127,10 @@ namespace Helpmebot.Services
 
             var flagGroups = (from flagGroupUser in this.flagGroupUsers
                               where
-                                  flagGroupUser.AccountRegex.Match(user.Account).Success
-                                  && flagGroupUser.NicknameRegex.Match(user.Nickname).Success
-                                  && flagGroupUser.UsernameRegex.Match(user.Username).Success
-                                  && flagGroupUser.HostnameRegex.Match(user.Hostname).Success
+                                  flagGroupUser.AccountRegex.Match(user.Account ?? string.Empty).Success
+                                  && flagGroupUser.NicknameRegex.Match(user.Nickname ?? string.Empty).Success
+                                  && flagGroupUser.UsernameRegex.Match(user.Username ?? string.Empty).Success
+                                  && flagGroupUser.HostnameRegex.Match(user.Hostname ?? string.Empty).Success
                               select flagGroupUser.FlagGroup).ToList();
 
             this.logger.DebugFormat("Retrieved {0} flag groups for user {1}", flagGroups.Count, user);

@@ -52,11 +52,6 @@ namespace Helpmebot.Model
         public const string LegacyNormal = ".";
 
         /// <summary>
-        /// The legacy semi-ignored.
-        /// </summary>
-        public const string LegacySemiignored = "#";
-
-        /// <summary>
         /// The legacy superuser.
         /// </summary>
         public const string LegacySuperuser = "@";

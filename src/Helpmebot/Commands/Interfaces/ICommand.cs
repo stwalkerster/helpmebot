@@ -21,6 +21,7 @@ namespace Helpmebot.Commands.Interfaces
 {
     using System.Collections.Generic;
 
+    using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
@@ -59,6 +60,11 @@ namespace Helpmebot.Commands.Interfaces
         /// Gets the user who triggered the command.
         /// </summary>
         IUser User { get; }
+
+        /// <summary>
+        /// Gets or sets the command message.
+        /// </summary>
+        CommandMessage CommandMessage { get; set; }
 
         #endregion
 
