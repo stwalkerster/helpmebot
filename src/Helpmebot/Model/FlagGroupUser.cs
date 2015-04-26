@@ -26,7 +26,7 @@ namespace Helpmebot.Model
     /// <summary>
     /// The flag group user.
     /// </summary>
-    public class FlagGroupUser : EntityBase
+    public class FlagGroupUser : GuidEntityBase
     {
         #region Fields
 

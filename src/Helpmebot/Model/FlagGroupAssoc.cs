@@ -24,7 +24,7 @@ namespace Helpmebot.Model
     /// <summary>
     /// The flag group associations
     /// </summary>
-    public class FlagGroupAssoc : EntityBase
+    public class FlagGroupAssoc : GuidEntityBase
     {
         #region Public Properties
 

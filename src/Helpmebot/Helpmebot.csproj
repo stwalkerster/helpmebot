@@ -164,6 +164,7 @@
     <Compile Include="Model\ShortUrlCacheEntry.cs" />
     <Compile Include="Model\WelcomeUser.cs" />
     <Compile Include="Persistence\EntityBase.cs" />
+    <Compile Include="Persistence\GuidEntityBase.cs" />
     <Compile Include="Persistence\Interfaces\IDatabaseEntity.cs" />
     <Compile Include="Persistence\Interfaces\ISessionFactoryProvider.cs" />
     <Compile Include="Persistence\Mappings\AccessLogEntryMap.cs" />
