@@ -20,8 +20,8 @@
 
 namespace Helpmebot.Commands.BotManagement
 {
-    using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
 
     using Castle.Core.Logging;
@@ -93,8 +93,8 @@ namespace Helpmebot.Commands.BotManagement
 #endif
             var messageArgs = new List<string>
                                   {
-                                      version.Major.ToString((IFormatProvider)CultureInfo.InvariantCulture),
-                                      version.Minor.ToString((IFormatProvider)CultureInfo.InvariantCulture),
+                                      version.Major.ToString(CultureInfo.InvariantCulture),
+                                      version.Minor.ToString(CultureInfo.InvariantCulture),
 #if DEBUG
                                       "*",
                                       "*",
@@ -102,7 +102,7 @@ namespace Helpmebot.Commands.BotManagement
 #else
                                       version.Build.ToString(CultureInfo.InvariantCulture),
                                       version.Revision.ToString(CultureInfo.InvariantCulture),
-                                      date.ToInternetFormat()
+                                      date.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 #endif
                                   };
 
