@@ -34,7 +34,6 @@ namespace Helpmebot.Commands.BotManagement
     using NHibernate;
 #if !DEBUG
     using System;
-    using Helpmebot.ExtensionMethods;
 #endif
     
     /// <summary>
