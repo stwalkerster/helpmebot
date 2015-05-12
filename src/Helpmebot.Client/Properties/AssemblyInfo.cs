@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CommonAssemblyInfo.cs" company="Helpmebot Development Team">
+// <copyright file="AssemblyInfo.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,16 +14,25 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   CommonAssemblyInfo.cs
+//   AssemblyInfo.cs
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Reflection;
-using System.Resources;
+using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Simon Walker")]
-[assembly: AssemblyProduct("Helpmebot")]
-[assembly: AssemblyCopyright("Copyright Simon Walker (c) 2009-2015 Some Rights Reserved")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("6.4.*")]
-[assembly: NeutralResourcesLanguage("en-GB")]
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("Helpmebot.Client")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCulture("")]
+
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
+
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("356bb148-2c34-4bda-b2b3-459e7cb1e607")]

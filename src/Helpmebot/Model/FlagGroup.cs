@@ -29,6 +29,15 @@ namespace Helpmebot.Model
     /// </summary>
     public class FlagGroup : EntityBase
     {
+        /// <summary>
+        /// Initialises a new instance of the <see cref="FlagGroup"/> class.
+        /// </summary>
+        public FlagGroup()
+        {
+            this.Flags = new List<FlagGroupAssoc>();
+            this.Users = new List<FlagGroupUser>();
+        }
+
         #region Public Properties
 
         /// <summary>

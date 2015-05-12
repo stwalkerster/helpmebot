@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CommonAssemblyInfo.cs" company="Helpmebot Development Team">
+// <copyright file="IApplication.cs" company="Helpmebot Development Team">
 //   Helpmebot is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
 //   the Free Software Foundation, either version 3 of the License, or
@@ -14,16 +14,20 @@
 //   along with Helpmebot.  If not, see http://www.gnu.org/licenses/ .
 // </copyright>
 // <summary>
-//   CommonAssemblyInfo.cs
+//   The Application interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
-using System.Resources;
-
-[assembly: AssemblyCompany("Simon Walker")]
-[assembly: AssemblyProduct("Helpmebot")]
-[assembly: AssemblyCopyright("Copyright Simon Walker (c) 2009-2015 Some Rights Reserved")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyVersion("6.4.*")]
-[assembly: NeutralResourcesLanguage("en-GB")]
+namespace Helpmebot.Client
+{
+    /// <summary>
+    /// The Application interface.
+    /// </summary>
+    public interface IApplication
+    {
+        /// <summary>
+        /// The run.
+        /// </summary>
+        void Run();
+    }
+}
