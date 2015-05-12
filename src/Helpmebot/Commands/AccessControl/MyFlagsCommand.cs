@@ -37,6 +37,7 @@ namespace Helpmebot.Commands.AccessControl
     /// </summary>
     [CommandInvocation("myflags")]
     [CommandInvocation("myaccess")]
+    [CommandInvocation("whoami")]
     [CommandFlag(Model.Flag.Standard)]
     public class MyFlagsCommand : CommandBase
     {
