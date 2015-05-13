@@ -21,7 +21,9 @@
 namespace Helpmebot.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
 
     using Castle.Core.Logging;
 
@@ -122,7 +124,7 @@ namespace Helpmebot.Client
                 ownerFlags.Apply(x => owner.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = owner }));
                 this.logger.InfoFormat("Creating {0}", owner);
                 database.Save(owner);
-
+                
                 var superuser = new FlagGroup { IsProtected = true, Name = "LegacySuperuser" };
                 var superuserFlags = new[] { "A", "P", "S", "B", "C" };
                 superuserFlags.Apply(x => superuser.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = superuser }));
@@ -153,6 +155,8 @@ namespace Helpmebot.Client
                 this.logger.InfoFormat("Creating user {0}", stwalkerster);
                 database.Save(stwalkerster);
 
+                database.Flush();
+
                 this.logger.InfoFormat("Importing old users");
 
                 var sqlQuery = database.CreateSQLQuery(
@@ -160,19 +164,34 @@ namespace Helpmebot.Client
                       replace(user_nickname, '%', '*') nickname
                     , replace(user_username, '%', '*') username
                     , replace(user_hostname, '%', '*') hostname
-                    , '*' account
                     , CASE user_accesslevel
 	                    when 'Superuser' then (select id from flaggroup where name = 'LegacySuperuser')
                         when 'Advanced' then (select id from flaggroup where name = 'LegacyAdvanced')
 	                    when 'Normal' then (select id from flaggroup where name = 'LegacyNormal')
 	                    when 'Developer' then (select id from flaggroup where name = 'Owner')
                       end flaggroup_id
-                    , 0 protected
-                    , 0 id
                     from user");
 
-                var groupUsers = sqlQuery.AddEntity(typeof(FlagGroupUser)).List<FlagGroupUser>();
-                groupUsers.Apply(x => database.Save(x));
+                var groupUsers = sqlQuery.List();
+                
+                Dictionary<string, FlagGroup> flagGroups = database.QueryOver<FlagGroup>().List().ToDictionary(x => x.Id.ToString());
+
+                foreach (var obj in groupUsers)
+                {
+                    var oldGroupUser = (object[])obj;
+
+                    var groupUser = new FlagGroupUser
+                                        {
+                                            Nickname = (string)oldGroupUser[0],
+                                            Username = (string)oldGroupUser[1],
+                                            Hostname = (string)oldGroupUser[2],
+                                            Account = "*",
+                                            Protected = false,
+                                            FlagGroup = flagGroups[(string)oldGroupUser[3]]
+                                        };
+
+                    database.Save(groupUser);
+                }
 
                 this.logger.InfoFormat("Committing transaction.");
 

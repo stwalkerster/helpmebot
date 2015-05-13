@@ -35,7 +35,7 @@ namespace Helpmebot.Persistence.Mappings
         public FlagGroupMap()
         {
             this.Table("flaggroup");
-            this.Id(x => x.Id, "id");
+            this.Id(x => x.Id, "id").GeneratedBy.GuidComb();
             this.Map(x => x.Name, "name");
             this.Map(x => x.DenyGroup, "denygroup");
             this.Map(x => x.IsProtected, "protected");
