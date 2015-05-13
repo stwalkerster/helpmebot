@@ -119,25 +119,40 @@ namespace Helpmebot.Client
 
                 this.logger.Info("Creating new groups");
 
-                var owner = new FlagGroup { IsProtected = true, Name = "Owner" };
+                var owner = new FlagGroup { IsProtected = true, Name = "Owner", Flags = new List<FlagGroupAssoc>() };
                 var ownerFlags = new[] { "D", "O", "A", "P", "S", "B", "C" };
                 ownerFlags.Apply(x => owner.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = owner }));
                 this.logger.InfoFormat("Creating {0}", owner);
                 database.Save(owner);
-                
-                var superuser = new FlagGroup { IsProtected = true, Name = "LegacySuperuser" };
+
+                var superuser = new FlagGroup
+                                    {
+                                        IsProtected = true,
+                                        Name = "LegacySuperuser",
+                                        Flags = new List<FlagGroupAssoc>()
+                                    };
                 var superuserFlags = new[] { "A", "P", "S", "B", "C" };
                 superuserFlags.Apply(x => superuser.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = superuser }));
                 this.logger.InfoFormat("Creating {0}", superuser);
                 database.Save(superuser);
 
-                var advanced = new FlagGroup { IsProtected = true, Name = "LegacyAdvanced" };
+                var advanced = new FlagGroup
+                                   {
+                                       IsProtected = true,
+                                       Name = "LegacyAdvanced",
+                                       Flags = new List<FlagGroupAssoc>()
+                                   };
                 var advancedFlags = new[] { "P", "B", "C" };
                 advancedFlags.Apply(x => advanced.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = advanced })); 
                 this.logger.InfoFormat("Creating {0}", advanced);
                 database.Save(advanced);
 
-                var normal = new FlagGroup { IsProtected = true, Name = "LegacyNormal" };
+                var normal = new FlagGroup
+                                 {
+                                     IsProtected = true,
+                                     Name = "LegacyNormal",
+                                     Flags = new List<FlagGroupAssoc>()
+                                 };
                 var normalFlags = new[] { "B" };
                 normalFlags.Apply(x => normal.Flags.Add(new FlagGroupAssoc { Flag = x, FlagGroup = normal })); 
                 this.logger.InfoFormat("Creating {0}", normal);
