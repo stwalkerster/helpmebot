@@ -31,6 +31,7 @@ namespace Helpmebot.Commands.CommandUtilities
     using Helpmebot.IRC.Events;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.IRC.Messages;
+    using Helpmebot.Legacy.Configuration;
     using Helpmebot.Services.Interfaces;
 
     /// <summary>
@@ -50,6 +51,9 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </summary>
         private readonly ILogger logger;
 
+        /// <summary>
+        /// The core configuration.
+        /// </summary>
         private readonly ICoreConfiguration coreConfiguration;
 
         #endregion
@@ -64,6 +68,9 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </param>
         /// <param name="logger">
         /// The logger.
+        /// </param>
+        /// <param name="coreConfiguration">
+        /// The core Configuration.
         /// </param>
         public CommandHandler(ICommandParser commandParser, ILogger logger, ICoreConfiguration coreConfiguration)
         {
@@ -123,15 +130,20 @@ namespace Helpmebot.Commands.CommandUtilities
                 return;
             }
 
+            // TODO: remove legacy config reference
+            var isSilenced = LegacyConfig.Singleton()["silence", command.CommandSource] == "true";
+
             try
             {
                 IEnumerable<CommandResponse> commandResponses = command.Run();
                 commandResponses.ForEach(
                     x =>
                         {
+                            bool suppressMessage = isSilenced;
+
                             if (commandMessage.OverrideSilence)
                             {
-                                // TODO: HMB-155 do something!
+                                suppressMessage = false;
                             }
 
                             x.RedirectionTarget = command.RedirectionTarget;
@@ -142,9 +154,11 @@ namespace Helpmebot.Commands.CommandUtilities
                             {
                                 case CommandResponseDestination.ChannelDebug:
                                     destination = this.coreConfiguration.DebugChannel;
+                                    suppressMessage = false;
                                     break;
                                 case CommandResponseDestination.PrivateMessage:
                                     destination = command.User.Nickname;
+                                    suppressMessage = false;
                                     break;
                                 case CommandResponseDestination.Default:
                                     destination = command.CommandSource;
@@ -155,7 +169,10 @@ namespace Helpmebot.Commands.CommandUtilities
                                     break;
                             }
 
-                            client.Send(new PrivateMessage(destination, x.CompileMessage()));
+                            if (!suppressMessage)
+                            {
+                                client.Send(new PrivateMessage(destination, x.CompileMessage()));
+                            }
                         });
             }
             finally
