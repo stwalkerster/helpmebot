@@ -27,6 +27,7 @@ namespace Helpmebot.Commands.CommandUtilities
     using Castle.Core.Logging;
 
     using Helpmebot.Commands.Interfaces;
+    using Helpmebot.Configuration.XmlSections.Interfaces;
     using Helpmebot.IRC.Events;
     using Helpmebot.IRC.Interfaces;
     using Helpmebot.IRC.Messages;
@@ -49,6 +50,8 @@ namespace Helpmebot.Commands.CommandUtilities
         /// </summary>
         private readonly ILogger logger;
 
+        private readonly ICoreConfiguration coreConfiguration;
+
         #endregion
 
         #region Constructors and Destructors
@@ -62,10 +65,11 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <param name="logger">
         /// The logger.
         /// </param>
-        public CommandHandler(ICommandParser commandParser, ILogger logger)
+        public CommandHandler(ICommandParser commandParser, ILogger logger, ICoreConfiguration coreConfiguration)
         {
             this.commandParser = commandParser;
             this.logger = logger;
+            this.coreConfiguration = coreConfiguration;
         }
 
         #endregion
@@ -127,7 +131,7 @@ namespace Helpmebot.Commands.CommandUtilities
                         {
                             if (commandMessage.OverrideSilence)
                             {
-                                // TODO: do something!
+                                // TODO: HMB-155 do something!
                             }
 
                             x.RedirectionTarget = command.RedirectionTarget;
@@ -137,7 +141,7 @@ namespace Helpmebot.Commands.CommandUtilities
                             switch (x.Destination)
                             {
                                 case CommandResponseDestination.ChannelDebug:
-                                    destination = "##helpmebot"; // FIXME: Use configuration?
+                                    destination = this.coreConfiguration.DebugChannel;
                                     break;
                                 case CommandResponseDestination.PrivateMessage:
                                     destination = command.User.Nickname;
