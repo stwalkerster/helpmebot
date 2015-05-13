@@ -28,8 +28,6 @@ namespace Helpmebot.Services
 
     using Castle.Core.Logging;
 
-    using FluentNHibernate.Utils;
-
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.CommandUtilities.Models;
