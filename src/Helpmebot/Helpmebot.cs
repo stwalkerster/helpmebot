@@ -212,6 +212,10 @@ namespace Helpmebot
             newIrc.ReceivedMessage += commandHandler.OnMessageReceived;
 
             newIrc.InviteReceivedEvent += IrcInviteEvent;
+
+            // FIXME: ServiceLocator - WLS
+            var wls = ServiceLocator.Current.GetInstance<IWikiLinkService>();
+            newIrc.ReceivedMessage += wls.ParseIncomingMessage;
         }
 
         /// <summary>

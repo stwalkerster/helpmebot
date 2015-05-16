@@ -17,13 +17,15 @@
 //   Retrieves a link to block a user.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace helpmebot6.Commands
 {
     using Helpmebot;
     using Helpmebot.Attributes;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Legacy.Configuration;
+    using Helpmebot.Services.Interfaces;
+
+    using Microsoft.Practices.ServiceLocation;
     using Helpmebot.Model.Interfaces;
 
     /// <summary>
@@ -61,16 +63,6 @@ namespace helpmebot6.Commands
         {
             string[] args = this.Arguments;
 
-            bool secure = bool.Parse(LegacyConfig.Singleton()["useSecureWikiServer", this.Channel]);
-            if (args.Length > 0)
-            {
-                if (args[0] == "@secure")
-                {
-                    secure = true;
-                    GlobalFunctions.PopFromFront(ref args);
-                }
-            }
-
             string name = string.Join(" ", args);
 
             string prefix = string.Empty;
@@ -96,7 +88,10 @@ namespace helpmebot6.Commands
                 }
             }
 
-            string url = Linker.GetRealLink(this.Channel, prefix + page + name, secure).Replace("\0", string.Empty);
+            // FIXME: servicelocator wls
+            var linkService = ServiceLocator.Current.GetInstance<IWikiLinkService>();
+
+            string url = linkService.GetLink(prefix + page + name).ToString();
 
             return new CommandResponseHandler(url);
         }
