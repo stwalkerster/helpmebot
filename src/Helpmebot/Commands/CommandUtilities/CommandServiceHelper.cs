@@ -53,11 +53,6 @@ namespace Helpmebot.Commands.CommandUtilities
         private readonly IConfigurationHelper configurationHelper;
 
         /// <summary>
-        ///     The inter-wiki prefix repository.
-        /// </summary>
-        private readonly IInterwikiPrefixRepository interwikiPrefixRepository;
-
-        /// <summary>
         ///     The media wiki site repository.
         /// </summary>
         private readonly IMediaWikiSiteRepository mediaWikiSiteRepository;
@@ -99,9 +94,6 @@ namespace Helpmebot.Commands.CommandUtilities
         /// <param name="mediaWikiSiteRepository">
         /// The media Wiki Site Repository.
         /// </param>
-        /// <param name="interwikiPrefixRepository">
-        /// The inter-wiki Prefix Repository.
-        /// </param>
         /// <param name="channelRepository">
         /// The channel Repository.
         /// </param>
@@ -117,7 +109,6 @@ namespace Helpmebot.Commands.CommandUtilities
             IUrlShorteningService urlShorteningService, 
             IConfigurationHelper configurationHelper, 
             IMediaWikiSiteRepository mediaWikiSiteRepository, 
-            IInterwikiPrefixRepository interwikiPrefixRepository, 
             IChannelRepository channelRepository, 
             IUserFlagService userFlagService, 
             IAccessLogService accessLogService)
@@ -129,7 +120,6 @@ namespace Helpmebot.Commands.CommandUtilities
             this.urlShorteningService = urlShorteningService;
             this.configurationHelper = configurationHelper;
             this.mediaWikiSiteRepository = mediaWikiSiteRepository;
-            this.interwikiPrefixRepository = interwikiPrefixRepository;
             this.channelRepository = channelRepository;
         }
 
@@ -178,17 +168,6 @@ namespace Helpmebot.Commands.CommandUtilities
             get
             {
                 return this.configurationHelper;
-            }
-        }
-
-        /// <summary>
-        ///     Gets the inter-wiki prefix repository.
-        /// </summary>
-        public IInterwikiPrefixRepository InterwikiPrefixRepository
-        {
-            get
-            {
-                return this.interwikiPrefixRepository;
             }
         }
 

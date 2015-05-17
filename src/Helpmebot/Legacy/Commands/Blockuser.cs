@@ -22,10 +22,11 @@ namespace helpmebot6.Commands
     using Helpmebot.Attributes;
     using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
+    using Helpmebot.Model;
+    using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
 
     using Microsoft.Practices.ServiceLocation;
-    using Helpmebot.Model.Interfaces;
 
     /// <summary>
     /// Retrieves a link to block a user.
@@ -76,7 +77,10 @@ namespace helpmebot6.Commands
                 name = parts[1];
                 prefix = parts[0];
 
-                if (this.CommandServiceHelper.InterwikiPrefixRepository.GetByPrefix(prefix) == null)
+                var interwikiPrefix =
+                    this.DatabaseSession.QueryOver<InterwikiPrefix>().Where(x => x.Prefix == parts[0]).SingleOrDefault();
+
+                if (interwikiPrefix == null)
                 {
                     name = origname;
                     prefix = string.Empty;

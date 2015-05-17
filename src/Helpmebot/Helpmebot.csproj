@@ -185,10 +185,8 @@
     <Compile Include="Persistence\SessionFactoryProvider.cs" />
     <Compile Include="Repositories\ChannelRepository.cs" />
     <Compile Include="Repositories\FlagGroupRepository.cs" />
-    <Compile Include="Repositories\Interfaces\IInterwikiPrefixRepository.cs" />
     <Compile Include="Repositories\Interfaces\IMediaWikiSiteRepository.cs" />
     <Compile Include="Repositories\Interfaces\IResponseRepository.cs" />
-    <Compile Include="Repositories\InterwikiPrefixRepository.cs" />
     <Compile Include="Repositories\MediaWikiSiteRepository.cs" />
     <Compile Include="Repositories\ResponseRepository.cs" />
     <Compile Include="Repositories\WatchedCategoryRepository.cs" />
