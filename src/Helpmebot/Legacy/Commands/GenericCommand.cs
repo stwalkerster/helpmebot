@@ -24,8 +24,8 @@ namespace helpmebot6.Commands
 
     using Castle.Core.Logging;
 
-    using Helpmebot;
     using Helpmebot.Commands.CommandUtilities;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Model.Interfaces;
 

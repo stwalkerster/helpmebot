@@ -23,7 +23,6 @@ namespace Helpmebot.TypedFactories
     using System.Collections.Generic;
 
     using Helpmebot.Commands.Interfaces;
-    using Helpmebot.IRC.Interfaces;
     using Helpmebot.Model.Interfaces;
 
     using helpmebot6.Commands;

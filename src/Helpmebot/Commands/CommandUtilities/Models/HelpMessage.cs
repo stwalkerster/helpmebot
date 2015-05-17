@@ -22,6 +22,7 @@ namespace Helpmebot.Commands.CommandUtilities.Models
     using System.Collections.Generic;
     using System.Linq;
 
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.ExtensionMethods;
 
     /// <summary>

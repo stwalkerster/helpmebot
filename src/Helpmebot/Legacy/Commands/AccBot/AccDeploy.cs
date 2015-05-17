@@ -17,15 +17,14 @@
 //   Defines the Accdeploy type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace helpmebot6.Commands
 {
     using System;
     using System.IO;
     using System.Web;
 
-    using Helpmebot;
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Legacy.Configuration;
@@ -75,14 +74,6 @@ namespace helpmebot6.Commands
 
             string revision;
 
-            bool showUrl = false;
-
-            if (args[0].ToLower() == "@url")
-            {
-                showUrl = true;
-                GlobalFunctions.PopFromFront(ref args);
-            }
-
             if (args.Length > 0 && args[0] != string.Empty)
             {
                 revision = string.Join(" ", args);
@@ -105,10 +96,6 @@ namespace helpmebot6.Commands
                 var r = new StreamReader(data);
 
                 var crh = new CommandResponseHandler();
-                if (showUrl)
-                {
-                    crh.Respond(requestUri, CommandResponseDestination.PrivateMessage);
-                }
 
                 foreach (var x in r.ReadToEnd().Split('\n', '\r'))
                 {

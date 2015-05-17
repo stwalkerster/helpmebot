@@ -20,8 +20,8 @@ namespace helpmebot6.Commands
     using System.Web;
     using System.Xml.XPath;
 
-    using Helpmebot;
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Model.Interfaces;

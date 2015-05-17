@@ -22,8 +22,8 @@ namespace helpmebot6.Commands
 {
     using System.Diagnostics.CodeAnalysis;
 
-    using Helpmebot;
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Model.Interfaces;
 

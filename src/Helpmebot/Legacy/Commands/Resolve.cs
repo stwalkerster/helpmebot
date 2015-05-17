@@ -24,8 +24,8 @@ namespace helpmebot6.Commands
     using System.Net;
     using System.Net.Sockets;
 
-    using Helpmebot;
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;

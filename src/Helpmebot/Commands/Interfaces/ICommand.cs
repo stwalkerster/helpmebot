@@ -21,6 +21,7 @@ namespace Helpmebot.Commands.Interfaces
 {
     using System.Collections.Generic;
 
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
 

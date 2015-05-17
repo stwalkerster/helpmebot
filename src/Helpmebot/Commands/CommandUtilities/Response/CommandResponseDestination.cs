@@ -18,7 +18,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Helpmebot
+namespace Helpmebot.Commands.CommandUtilities.Response
 {
     /// <summary>
     ///     Command response destinations

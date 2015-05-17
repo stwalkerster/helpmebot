@@ -24,15 +24,13 @@ namespace helpmebot6.Commands
     using System.Globalization;
     using System.Linq;
 
-    using Helpmebot;
     using Helpmebot.Attributes;
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.ExtensionMethods;
     using Helpmebot.Model;
     using Helpmebot.Model.Interfaces;
     using Helpmebot.Services.Interfaces;
-
-    using Microsoft.Practices.ServiceLocation;
 
     /// <summary>
     ///   Learns a keyword

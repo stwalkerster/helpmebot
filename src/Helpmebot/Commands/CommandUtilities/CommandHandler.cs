@@ -26,6 +26,7 @@ namespace Helpmebot.Commands.CommandUtilities
     using Castle.Core.Internal;
     using Castle.Core.Logging;
 
+    using Helpmebot.Commands.CommandUtilities.Response;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Configuration.XmlSections.Interfaces;
     using Helpmebot.IRC.Events;

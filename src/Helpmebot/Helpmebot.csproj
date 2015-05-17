@@ -79,9 +79,9 @@
     <Compile Include="Background\NotificationBackgroundService.cs" />
     <Compile Include="Background\SystemMonitoringClientService.cs" />
     <Compile Include="Background\TimerBackgroundServiceBase.cs" />
-    <Compile Include="CommandResponse.cs" />
-    <Compile Include="CommandResponseDestination.cs" />
-    <Compile Include="CommandResponseHandler.cs" />
+    <Compile Include="Commands\CommandUtilities\Response\CommandResponse.cs" />
+    <Compile Include="Commands\CommandUtilities\Response\CommandResponseDestination.cs" />
+    <Compile Include="Commands\CommandUtilities\Response\CommandResponseHandler.cs" />
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
     <Compile Include="Commands\AccessControl\CommandAccessCommand.cs" />
     <Compile Include="Commands\AccessControl\MyFlagsCommand.cs" />
