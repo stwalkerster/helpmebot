@@ -25,6 +25,7 @@ namespace Helpmebot.Exceptions
     /// <summary>
     /// The configuration exception.
     /// </summary>
+    [Serializable]
     public class ConfigurationException : Exception
     {
         #region Constructors and Destructors
