@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Helpmebot</RootNamespace>
     <AssemblyName>Helpmebot</AssemblyName>
-    <StartupObject>Helpmebot.Helpmebot6</StartupObject>
+    <StartupObject>Helpmebot.Application</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -114,6 +114,7 @@
     <Compile Include="ExtensionMethods\ObjectExtensions.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ExtensionMethods\TypedFactoryExtensions.cs" />
+    <Compile Include="Application.cs" />
     <Compile Include="IRC\Events\JoinEventArgs.cs" />
     <Compile Include="IRC\Events\UserEventArgsBase.cs" />
     <Compile Include="IRC\Interfaces\IIrcClient.cs" />
