@@ -32,6 +32,8 @@ namespace Helpmebot.Startup.Installers
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
 
+    using FluentNHibernate.Utils;
+
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Configuration;
@@ -159,13 +161,16 @@ namespace Helpmebot.Startup.Installers
                     .ImplementedBy<IrcClient>()
                     .DependsOn(Dependency.OnValue("password", configurationHelper.PrivateConfiguration.IrcPassword))
                     .PublishEvent(
-                        p => p.ReceivedMessage += null, 
+                        p => p.ReceivedMessage += null,
                         x =>
                         x.To<WikiLinkService>(l => l.ParseIncomingMessage(null, null))
                             .To<CommandHandler>(l => l.OnMessageReceived(null, null)))
                     .PublishEvent(
-                        p => p.JoinReceivedEvent += null, 
-                        x => x.To<JoinMessageService>(l => l.WelcomeNewbieOnJoinEvent(null, null)));
+                        p => p.JoinReceivedEvent += null,
+                        x => x.To<JoinMessageService>(l => l.WelcomeNewbieOnJoinEvent(null, null)))
+                    .PublishEvent(
+                        p => p.InviteReceivedEvent += null,
+                        x => x.To<InviteHandlerService>(l => l.OnInviteReceivedEvent(null, null)));
 
             container.Register(
                 networkClient, 
