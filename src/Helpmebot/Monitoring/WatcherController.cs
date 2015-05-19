@@ -180,6 +180,8 @@ namespace Helpmebot.Monitoring
                 var logger = ServiceLocator.Current.GetInstance<ILogger>();
                 var irc = ServiceLocator.Current.GetInstance<IIrcClient>();
                 var legacyDb = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
+                legacyDb.Connect();
+
                 var parser = ServiceLocator.Current.GetInstance<ICommandParser>();
 
                 instance = new WatcherController(ms, ss, wcrepo, mwrepo, iprepo, logger, irc, legacyDb, parser);

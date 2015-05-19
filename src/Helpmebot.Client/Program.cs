@@ -45,7 +45,7 @@ namespace Helpmebot.Client
 
             var container = new WindsorContainer();
             ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(container));
-            container.Install(FromAssembly.Containing<WindsorServiceLocator>(new WindsorBootstrap()));
+            container.Install(FromAssembly.Containing<WindsorServiceLocator>());
 
             container.Register(Component.For<IApplication>().ImplementedBy<ClientApplication>());
 

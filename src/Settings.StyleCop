@@ -17,6 +17,7 @@
       <Value>callback</Value>
       <Value>sanitiser</Value>
       <Value>superuser</Value>
+      <Value>startup</Value>
     </CollectionProperty>
     <StringProperty Name="Culture">en-GB</StringProperty>
   </GlobalSettings>

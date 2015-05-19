@@ -64,6 +64,7 @@ namespace Helpmebot.Legacy.Configuration
         {
             // FIXME: ServiceLocator - Legacy database
             this.legacyDatabase = ServiceLocator.Current.GetInstance<ILegacyDatabase>();
+            this.legacyDatabase.Connect();
 
             this.configurationCache = new Dictionary<string, ConfigurationSetting>();
         }

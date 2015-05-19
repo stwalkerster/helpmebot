@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Helpmebot</RootNamespace>
     <AssemblyName>Helpmebot</AssemblyName>
-    <StartupObject>Helpmebot.Application</StartupObject>
+    <StartupObject>Helpmebot.Startup.ApplicationStartup</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -79,13 +79,15 @@
     <Compile Include="Background\NotificationBackgroundService.cs" />
     <Compile Include="Background\SystemMonitoringClientService.cs" />
     <Compile Include="Background\TimerBackgroundServiceBase.cs" />
+    <Compile Include="Commands\BotManagement\DieCommand.cs" />
+    <Compile Include="Commands\BotManagement\UptimeCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Response\CommandResponse.cs" />
     <Compile Include="Commands\CommandUtilities\Response\CommandResponseDestination.cs" />
     <Compile Include="Commands\CommandUtilities\Response\CommandResponseHandler.cs" />
     <Compile Include="Commands\AccessControl\AccessCommand.cs" />
     <Compile Include="Commands\AccessControl\CommandAccessCommand.cs" />
     <Compile Include="Commands\AccessControl\MyFlagsCommand.cs" />
-    <Compile Include="Commands\BotManagement\Version.cs" />
+    <Compile Include="Commands\BotManagement\VersionCommand.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherCommand.cs" />
     <Compile Include="Commands\CategoryWatcher\CategoryWatcherForceCommand.cs" />
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="ExtensionMethods\IPAddressExtensions.cs" />
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Legacy\Database\ILegacyDatabase.cs" />
+    <Compile Include="Startup\ApplicationStartup.cs" />
     <Compile Include="Model\AccessLogEntry.cs" />
     <Compile Include="Model\CommandMessage.cs" />
     <Compile Include="Model\Flag.cs" />
@@ -223,15 +226,8 @@
     <Compile Include="Services\KeywordService.cs" />
     <Compile Include="Services\UserFlagService.cs" />
     <Compile Include="Services\WikiLinkService.cs" />
-    <Compile Include="Startup\DeferredInstallerAttribute.cs" />
-    <Compile Include="Startup\DeferredWindsorBootstrap.cs" />
     <Compile Include="Startup\Facilities\PersistenceFacility.cs" />
-    <Compile Include="Startup\Installers\LegacyInstaller.cs" />
-    <Compile Include="Startup\Installers\PersistenceInstaller.cs" />
-    <Compile Include="Startup\Installers\LoggerInstaller.cs" />
-    <Compile Include="Startup\Installers\RepositoryInstaller.cs" />
-    <Compile Include="Startup\Installers\ConfigurationInstaller.cs" />
-    <Compile Include="Startup\Installers\ServiceInstaller.cs" />
+    <Compile Include="Startup\Installers\MainInstaller.cs" />
     <Compile Include="IRC\Events\DataReceivedEventArgs.cs" />
     <Compile Include="Model\GeolocateResult.cs" />
     <Compile Include="Monitoring\CategoryHasItemsEventArgs.cs" />
@@ -271,7 +267,6 @@
     <Compile Include="Legacy\Commands\Decode.cs" />
     <Compile Include="Legacy\Commands\Fetchall.cs" />
     <Compile Include="Legacy\Commands\Forget.cs" />
-    <Compile Include="Legacy\Commands\Die.cs" />
     <Compile Include="Legacy\Commands\FunStuff\Trout.cs" />
     <Compile Include="Legacy\Commands\GenericCommand.cs" />
     <Compile Include="Legacy\Commands\Geolocate.cs" />
@@ -294,7 +289,6 @@
     <Compile Include="Legacy\Commands\Silence.cs" />
     <Compile Include="Legacy\Commands\ThreadStatus.cs" />
     <Compile Include="Legacy\Commands\Time.cs" />
-    <Compile Include="Legacy\Commands\Uptime.cs" />
     <Compile Include="Legacy\Commands\UserInfo.cs" />
     <Compile Include="Legacy\Commands\Welcomer.cs" />
     <Compile Include="ExtensionMethods\FormatWithExtension.cs" />
@@ -305,17 +299,11 @@
     <Compile Include="Legacy\Configuration\ConfigurationSetting.cs" />
     <Compile Include="Legacy\Database\LegacyDatabase.cs" />
     <Compile Include="GlobalFunctions.cs" />
-    <Compile Include="Helpmebot6.cs" />
     <Compile Include="Monitoring\WatcherController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\IMessageService.cs" />
     <Compile Include="Services\MessageService.cs" />
-    <Compile Include="Startup\InstallerPriorityAttribute.cs" />
-    <Compile Include="Startup\Installers\StartableInstaller.cs" />
-    <Compile Include="Startup\Installers\TypedFactoryInstaller.cs" />
-    <Compile Include="Startup\Installers\EventWiringFacilitySetup.cs" />
     <Compile Include="Startup\Resolvers\AppSettingsDependencyResolver.cs" />
-    <Compile Include="Startup\WindsorBootstrap.cs" />
     <Compile Include="Threading\IThreadedSystem.cs" />
     <Compile Include="Threading\ThreadList.cs" />
     <Compile Include="Startup\WindsorServiceLocator.cs" />

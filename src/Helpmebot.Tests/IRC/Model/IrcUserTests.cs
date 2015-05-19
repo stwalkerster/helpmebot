@@ -19,8 +19,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Helpmebot.Tests.IRC.Model
 {
-    using System;
-
     using Helpmebot.IRC.Model;
     using Helpmebot.Tests.TestData;
 
