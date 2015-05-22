@@ -125,12 +125,17 @@ namespace Helpmebot.Services
                 this.flagGroupUsers = this.DatabaseSession.QueryOver<FlagGroupUser>().List();
             }
 
+            var account = (user.Account ?? string.Empty).ToLower();
+            var nickname = (user.Nickname ?? string.Empty).ToLower();
+            var username = (user.Username ?? string.Empty).ToLower();
+            var hostname = (user.Hostname ?? string.Empty).ToLower();
+
             var flagGroups = (from flagGroupUser in this.flagGroupUsers
                               where
-                                  flagGroupUser.AccountRegex.Match(user.Account ?? string.Empty).Success
-                                  && flagGroupUser.NicknameRegex.Match(user.Nickname ?? string.Empty).Success
-                                  && flagGroupUser.UsernameRegex.Match(user.Username ?? string.Empty).Success
-                                  && flagGroupUser.HostnameRegex.Match(user.Hostname ?? string.Empty).Success
+                                  flagGroupUser.AccountRegex.Match(account).Success
+                                  && flagGroupUser.NicknameRegex.Match(nickname).Success
+                                  && flagGroupUser.UsernameRegex.Match(username).Success
+                                  && flagGroupUser.HostnameRegex.Match(hostname).Success
                               select flagGroupUser.FlagGroup).ToList();
 
             this.logger.DebugFormat("Retrieved {0} flag groups for user {1}", flagGroups.Count, user);

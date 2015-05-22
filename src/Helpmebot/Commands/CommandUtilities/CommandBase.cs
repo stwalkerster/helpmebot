@@ -259,12 +259,15 @@ namespace Helpmebot.Commands.CommandUtilities
                     var commandResponses = this.Execute() ?? new List<CommandResponse>();
                     var completedResponses = this.OnCompleted() ?? new List<CommandResponse>();
 
+                    // Resolve the list into a concrete list before committing the transaction.
+                    var responses = commandResponses.Concat(completedResponses).ToList();
+
                     if (transaction.IsActive)
                     {
                         transaction.Commit();
                     }
 
-                    return commandResponses.Concat(completedResponses);
+                    return responses;
                 }
                 catch (CommandInvocationException e)
                 {
