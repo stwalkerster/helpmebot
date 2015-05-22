@@ -93,6 +93,7 @@
     <Compile Include="Commands\CommandUtilities\Models\HelpMessage.cs" />
     <Compile Include="Commands\CommandUtilities\Models\RedirectionResult.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\Miscellaneous\NotifyOnJoinCommand.cs" />
     <Compile Include="Exceptions\ArgumentCountException.cs" />
     <Compile Include="Commands\AccessControl\FlagGroupCommand.cs" />
     <Compile Include="Commands\CommandUtilities\CommandBase.cs" />
@@ -150,7 +151,9 @@
     <Compile Include="ExtensionMethods\ListExtensions.cs" />
     <Compile Include="Legacy\Database\ILegacyDatabase.cs" />
     <Compile Include="Services\Interfaces\IInviteHandlerService.cs" />
+    <Compile Include="Services\Interfaces\INotifyOnJoinService.cs" />
     <Compile Include="Services\InviteHandlerService.cs" />
+    <Compile Include="Services\NotifyOnJoinService.cs" />
     <Compile Include="Startup\ApplicationStartup.cs" />
     <Compile Include="Model\AccessLogEntry.cs" />
     <Compile Include="Model\CommandMessage.cs" />
@@ -264,7 +267,6 @@
     <Compile Include="Legacy\Commands\FunStuff\Vorticough.cs" />
     <Compile Include="Legacy\Commands\FunStuff\Cookie.cs" />
     <Compile Include="Legacy\Commands\Gancount.cs" />
-    <Compile Include="Legacy\Commands\Notify.cs" />
     <Compile Include="Legacy\Commands\Editcount.cs" />
     <Compile Include="Legacy\Commands\Decode.cs" />
     <Compile Include="Legacy\Commands\Fetchall.cs" />

@@ -32,8 +32,6 @@ namespace Helpmebot.Startup.Installers
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
 
-    using FluentNHibernate.Utils;
-
     using Helpmebot.Commands.CommandUtilities;
     using Helpmebot.Commands.Interfaces;
     using Helpmebot.Configuration;
@@ -58,12 +56,12 @@ namespace Helpmebot.Startup.Installers
         /// <summary>
         /// The copyright.
         /// </summary>
-        private readonly string copyright = "Copyright (c)";
+        private readonly string copyright;
 
         /// <summary>
         /// The version.
         /// </summary>
-        private readonly string version = "0.0.0.0";
+        private readonly string version;
 
         #endregion
 
@@ -167,7 +165,9 @@ namespace Helpmebot.Startup.Installers
                             .To<CommandHandler>(l => l.OnMessageReceived(null, null)))
                     .PublishEvent(
                         p => p.JoinReceivedEvent += null,
-                        x => x.To<JoinMessageService>(l => l.WelcomeNewbieOnJoinEvent(null, null)))
+                        x =>
+                        x.To<JoinMessageService>(l => l.WelcomeNewbieOnJoinEvent(null, null))
+                            .To<NotifyOnJoinService>(l => l.OnJoinReceivedEvent(null, null)))
                     .PublishEvent(
                         p => p.InviteReceivedEvent += null,
                         x => x.To<InviteHandlerService>(l => l.OnInviteReceivedEvent(null, null)));
